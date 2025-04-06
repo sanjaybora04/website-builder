@@ -6,38 +6,38 @@ services:
     volumes:
       - .:/app
     working_dir: /app/frontend
-    # networks:
-    #   - traefik_default
+    networks:
+      - traefik_default
     environment:
       - NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
       - NEXT_PUBLIC_API_URL=${API_URL}
-    # deploy:
-    #   labels:
-    #     - com.host.description=label
-    #     - traefik.enable=true
-    #     - traefik.docker.network=traefik_default
-    #     - traefik.http.routers.website_builder_backend.rule=Host(`sitecraft.sanjaybora.in`)
-    #     - traefik.http.routers.website_builder_backend.entrypoints=https
-    #     - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
+    deploy:
+      labels:
+        - com.host.description=label
+        - traefik.enable=true
+        - traefik.docker.network=traefik_default
+        - traefik.http.routers.website_builder_backend.rule=Host(`sitecraft.sanjaybora.in`)
+        - traefik.http.routers.website_builder_backend.entrypoints=https
+        - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
   website_builder_backend:
     image: node:20-alpine 
     command: sh -c "apk update && apk add --update --no-cache openssl && yarn install --frozen-lockfile && yarn build && yarn start"
     volumes:
       - .:/app
     working_dir: /app/backend
-    # networks:
-    #   - traefik_default
+    networks:
+      - traefik_default
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
-#     deploy:
-#       labels:
-#         - traefik.enable=true
-#         - traefik.docker.network=traefik_default
-#         - traefik.http.routers.website_builder_backend.rule=Host(`api.sitecraft.sanjaybora.in`)
-#         - traefik.http.routers.website_builder_backend.entrypoints=https
-#         - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik_default
+        - traefik.http.routers.website_builder_backend.rule=Host(`api.sitecraft.sanjaybora.in`)
+        - traefik.http.routers.website_builder_backend.entrypoints=https
+        - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
 
-# networks:
-#   traefik_default:
-#     external: true
+networks:
+  traefik_default:
+    external: true
