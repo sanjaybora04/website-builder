@@ -2,7 +2,7 @@ version: '3.8'
 services:
   website_builder_frontend:
     image: node:20-alpine
-    command: sh -c "yarn && yarn build && yarn start"
+    command: sh -c "yarn install --frozen-lockfile && yarn build && yarn start"
     volumes:
       - .:/app
     working_dir: /app/frontend
@@ -21,7 +21,7 @@ services:
         - traefik.http.services.website_builder_frontend.loadbalancer.server.port=3000
   website_builder_backend:
     image: node:20-alpine 
-    command: sh -c "apk update && apk add --update --no-cache openssl && yarn && yarn build && yarn start"
+    command: sh -c "apk update && apk add --update --no-cache openssl && yarn install --frozen-lockfile && yarn build && yarn start"
     volumes:
       - .:/app
     working_dir: /app/backend
