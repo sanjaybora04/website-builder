@@ -15,9 +15,9 @@ export function Component({ config }: { config: TestType }) {
                 <div className="text-center mt-2">{config.paragraph}</div>
             </div>
             <div className="flex flex-col sm:flex-row gap-5">
-                <img src="/images/test.svg" className="sm:w-1/3"/>
-                <img src="/images/test.svg" className="sm:w-1/3"/>
-                <img src="/images/test.svg" className="sm:w-1/3"/>
+                <img src={process.env.NEXT_PUBLIC_BASE_URL+"/images/test.svg"} className="sm:w-1/3"/>
+                <img src={process.env.NEXT_PUBLIC_BASE_URL+"/images/test.svg"} className="sm:w-1/3"/>
+                <img src={process.env.NEXT_PUBLIC_BASE_URL+"/images/test.svg"} className="sm:w-1/3"/>
             </div>
         </div>
     )

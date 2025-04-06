@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useAtomValue } from "jotai";
 import { websiteEditorAtom } from "@/lib/atoms";
+import Routes from "@/lib/routes";
 const mobileWidth = 360
 const mobileHeight = 640
 const desktopWidth = 1920
@@ -55,7 +56,7 @@ export default function Preview() {
 
     return (
         <div id="previewContainer" className="flex justify-center items-center w-full h-full p-4">
-            <iframe src="/testpage" className={cn("border shadow-lg",)} style={{ zoom, height, width }}/>
+            <iframe src={Routes.preview} className={cn("border shadow-lg",)} style={{ zoom, height, width }}/>
         </div>
     );
 }
