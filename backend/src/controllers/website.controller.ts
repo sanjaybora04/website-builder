@@ -2,48 +2,7 @@ import dotenv from 'dotenv';
 import prisma from '../../prisma';
 dotenv.config();
 
-function catchError(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    const originalMethod = descriptor.value;
-    descriptor.value = async function (...args: any[]) {
-        try {
-            return await originalMethod.apply(this, args);
-        } catch (error: any) {
-            console.error(`${target.constructor.name}.${propertyKey} : `, error);
-            const [req, res, next] = args;
-            if (res) {
-                res.status(500).json({ message: 'Internal Server Error! Try again' });
-            } else {
-                throw error; // rethrow if there is no response object
-            }
-        }
-    };
-    return descriptor;
-}
-
 class Website {
-
-    constructor() {
-        this.get = this.get.bind(this);
-        this.getAll = this.getAll.bind(this);
-        this.create = this.create.bind(this);
-        this.update = this.update.bind(this);
-        this.delete = this.delete.bind(this);
-        this.getDraft = this.getDraft.bind(this);
-        this.setDraft = this.setDraft.bind(this);
-        this.setDomain = this.setDomain.bind(this);
-        this.checkDomain = this.checkDomain.bind(this);
-        
-        // Apply decorator to all methods
-        for (const key of Object.getOwnPropertyNames(this)) {
-            const method = this.constructor.prototype[key];
-            if (typeof method === 'function' && method.constructor.name === 'Function') {
-                const descriptor = Object.getOwnPropertyDescriptor(this, key);
-                if (descriptor) {
-                    Object.defineProperty(this, key, catchError(this, key, descriptor));
-                }
-            }
-        }
-    }
 
     async get(req:any,res:any){
         const {websiteId} = req.params
@@ -54,7 +13,6 @@ class Website {
     }
 
     async getAll(req:any,res:any){
-        console.log(req.user)
         const websites = await prisma.website.findMany({where:{
             admins:{
                 some:{
@@ -63,8 +21,12 @@ class Website {
             }
         }})
 
-        console.log(websites)
         return res.json(websites)
+    }
+
+    async getByDomain(req:any,res:any){
+        const website = await prisma.website.findFirst({where:{domain:req.body.domain}})
+        return res.json(website)
     }
 
     async create(req:any,res:any){
