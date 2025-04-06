@@ -20,8 +20,6 @@ services:
         - traefik.http.routers.website_builder_frontend.priority=1
         - traefik.http.routers.website_builder_frontend.entrypoints=http,https
         - traefik.http.services.website_builder_frontend.loadbalancer.server.port=3000
-        - traefik.http.routers.website_builder_frontend.tls=true
-        - traefik.http.routers.website_builder_frontend.tls.certresolver=myresolver
 
   website_builder_backend:
     image: node:20-alpine 
