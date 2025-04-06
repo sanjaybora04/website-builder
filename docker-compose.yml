@@ -11,6 +11,7 @@ services:
     environment:
       - NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
       - NEXT_PUBLIC_API_URL=${API_URL}
+      - NEXT_PUBLIC_BASE_URL=${WEBSITE_URL}
     deploy:
       labels:
         - traefik.enable=true
