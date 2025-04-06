@@ -15,7 +15,7 @@ services:
       labels:
         - traefik.enable=true
         - traefik.docker.network=traefik_default
-        - traefik.http.routers.website_builder_frontend.rule=HostRegexp(`^.+\.sanjaybora\.in$`)
+        - traefik.http.routers.website_builder_frontend.rule=HostRegexp(`^.+\\.sanjaybora\\.in$$`)
         - traefik.http.routers.website_builder_frontend.entrypoints=http,https
         - traefik.http.services.website_builder_frontend.loadbalancer.server.port=3000
   website_builder_backend:
