@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  website_builder_frontend:
+    build: ./frontend
+    networks:
+      - traefik_default
+    environment:
+      - NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+    deploy:
+      - traefik.enable=true
+      - traefik.docker.network=traefik_default
+      - traefik.http.routers.website_builder_backend.rule=Host(`test.joinyourtrip.com`)
+      - traefik.http.routers.website_builder_backend.entrypoints=https
+      - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
+  website_builder_backend:
+    build: ./backend
+    networks:
+      - traefik_default
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+    deploy:
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik_default
+        - traefik.http.routers.website_builder_backend.rule=Host(`test.joinyourtrip.com`)
+        - traefik.http.routers.website_builder_backend.entrypoints=https
+        - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
+
+networks:
+  traefik_default:
+    external: true

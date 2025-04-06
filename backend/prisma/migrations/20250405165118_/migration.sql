@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Website" ALTER COLUMN "googleTag" DROP NOT NULL,
+ALTER COLUMN "icon" DROP NOT NULL,
+ALTER COLUMN "customCodeForHead" DROP NOT NULL;

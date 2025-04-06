@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid()) @db.Uuid
+  email        String
+  name         String
+  googleOauthId String
+  websites     Website[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Website {
+  id            String        @id @default(uuid()) @db.Uuid
+  name          String
+  domain        String
+  googleTag     String?
+  icon          String?
+  customCodeForHead String?
+  admins        User[]
+  draftPages    Json[]
+  pages         Json[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
