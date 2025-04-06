@@ -6,12 +6,13 @@ services:
       - traefik_default
     environment:
       - NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+      - NEXT_PUBLIC_API_URL=${API_URL}
     deploy:
       labels:
         - com.host.description=label
         - traefik.enable=true
         - traefik.docker.network=traefik_default
-        - traefik.http.routers.website_builder_backend.rule=Host(`test.joinyourtrip.com`)
+        - traefik.http.routers.website_builder_backend.rule=Host(`sitecraft.sanjaybora.in`)
         - traefik.http.routers.website_builder_backend.entrypoints=https
         - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
   website_builder_backend:
@@ -25,7 +26,7 @@ services:
       labels:
         - traefik.enable=true
         - traefik.docker.network=traefik_default
-        - traefik.http.routers.website_builder_backend.rule=Host(`test.joinyourtrip.com`)
+        - traefik.http.routers.website_builder_backend.rule=Host(`api.sitecraft.sanjaybora.in`)
         - traefik.http.routers.website_builder_backend.entrypoints=https
         - traefik.http.services.website_builder_backend.loadbalancer.server.port=5000
 
