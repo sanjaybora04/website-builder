@@ -8,8 +8,8 @@ const builderComponents: BuilderComponent[] = [
         description: "Basic header component",
         category: 'header',
         keywords: [],
-        configInput: dynamic(()=>import('@/components/builder-components/test-header').then(mod=>mod.Editor)),
-        component: dynamic(()=>import('@/components/builder-components/test-header').then(mod=>mod.Component)),
+        configInput: dynamic(()=>import('@/components/builder-components/header').then(mod=>mod.Editor)),
+        component: dynamic(()=>import('@/components/builder-components/header').then(mod=>mod.Component)),
         examples: [
             {
                 companyName: "SiteCraft"

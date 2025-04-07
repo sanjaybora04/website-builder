@@ -10,7 +10,7 @@ export function PublishWebsiteButton(){
     async function publish(){
         const id = toast.loading('Publishing website...')
         try{
-            const res = await api.website.update(websiteEditor?.website?.id,{pages:websiteEditor?.website?.pages})
+            await api.website.update(websiteEditor?.website?.id,{pages:websiteEditor?.website?.pages})
             toast.success('Website Published!!!',{id})
         }catch{
             toast.dismiss(id)

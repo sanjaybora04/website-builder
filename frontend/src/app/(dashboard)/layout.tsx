@@ -1,6 +1,6 @@
-import DashboardHeader from "@/components/dashboard-header";
-import MainHeader from "@/components/mainheader";
-import { Providers } from "@/components/providers";
+import DashboardHeader from "@/components/layout/dashboard-header";
+import MainHeader from "@/components/layout/mainheader";
+import { Providers } from "@/components/layout/providers";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

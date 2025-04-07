@@ -1,6 +1,6 @@
 'use client'
 
-import DashboardHeader from "../dashboard-header"
+import DashboardHeader from "../layout/dashboard-header"
 
 export default function Settings(){
     return (

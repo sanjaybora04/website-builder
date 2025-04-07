@@ -30,6 +30,7 @@ class Website {
     }
 
     async create(req:any,res:any){
+        //create a unique website domain based on website name
         await prisma.user.update({where:{id:req.user.id},data:{
             websites:{
                 create:{

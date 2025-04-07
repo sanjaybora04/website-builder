@@ -13,13 +13,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Website } from "@/lib/types"
-import { toast } from "sonner"
 
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Name is required", }),
     domain: z.string(),
-    googleTag: z.string().optional()
 })
 
 type formType = z.infer<typeof formSchema>
@@ -30,21 +28,15 @@ export default function WebsiteForm({ data, onSubmit }: { data?: Website, onSubm
         resolver: zodResolver(formSchema),
         defaultValues: data ? {
             name: data.name,
-            googleTag: data.googleTag
+            domain: data.domain,
         } : {
             name: "",
-            googleTag: ""
         },
     })
 
     async function handleSubmit(values: formType) {
-        const id = toast.loading('Creating Website...')
-
-        if (await onSubmit({...values})) {
+        if (await onSubmit({ ...values })) {
             form.reset()
-            toast.success('Website Created Successfully',{id})
-        }else{
-            toast.dismiss(id)
         }
     }
 
@@ -65,7 +57,7 @@ export default function WebsiteForm({ data, onSubmit }: { data?: Website, onSubm
                     )}
                 />
 
-<FormField
+                <FormField
                     control={form.control}
                     name="domain"
                     render={({ field }) => (
@@ -78,22 +70,6 @@ export default function WebsiteForm({ data, onSubmit }: { data?: Website, onSubm
                         </FormItem>
                     )}
                 />
-
-                <FormField
-                    control={form.control}
-                    name="googleTag"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Google Tag</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Enter google tag" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-
-
 
                 <Button type="submit">Submit</Button>
             </form>
