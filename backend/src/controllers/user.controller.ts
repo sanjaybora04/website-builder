@@ -80,7 +80,7 @@ class User {
         const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { assets: true } })
         if (!user) return res.status(404).json({ error: "User not found" })
 
-        user.assets = user.assets.map(a=>({...a,url:'https://'+process.env.MINIO_ENDPOINT+'/'+process.env.MINIO_BUCKET+a.key}))
+        user.assets = user.assets.map(a=>({...a,url:'https://'+process.env.MINIO_ENDPOINT+'/'+a.key}))
 
         return res.json({
             usage: {
