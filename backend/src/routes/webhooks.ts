@@ -6,8 +6,8 @@ const router = Router()
 router.post('/minio', async(req,res)=>{
     if(req.body.EventName=="s3:ObjectCreated:Put"){
         const key = req.body.Key
-        const size = req.body.Records[0].object.size
-        const contentType = req.body.Records[0].object.contentType
+        const size = req.body.Records[0].s3.object.size
+        const contentType = req.body.Records[0].s3.object.contentType
         const [userId,filename] = key.split('/')
         const user = await prisma.user.findUnique({where:{id:userId}})
         if(!user) return res.end()
