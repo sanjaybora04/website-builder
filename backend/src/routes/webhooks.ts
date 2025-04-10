@@ -15,7 +15,7 @@ router.post('/minio', async(req,res)=>{
             usedStorage: {
                 increment:size
             },
-            mediaFiles:{
+            assets:{
                 create:{
                     key,
                     filename,

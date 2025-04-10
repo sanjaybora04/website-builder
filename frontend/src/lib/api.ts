@@ -45,6 +45,9 @@ apiClient.interceptors.response.use(
 const api = {
     user: {
         signin: async (token: any) => await apiClient.post('/user/signin', { token }),
+        getUploadUrl: async () => await apiClient.get('/user/storage/uploadurl'),
+        getAssets: async () => await apiClient.get('/user/storage/assets'),
+        deleteAsset: async (assetId: any) => await apiClient.delete(`/user/storage/asset/${assetId}`),
     },
     website: {
         get: async (websiteId: string) => await apiClient.get(`/website/${websiteId}`),

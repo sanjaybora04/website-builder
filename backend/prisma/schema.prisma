@@ -13,7 +13,7 @@ model User {
   name         String
   googleOauthId String
   websites     Website[]
-  mediaFiles   MediaFile[]
+  assets       Asset[]
   usedStorage  Int          @default(0) // in bytes
   storageLimit Int          @default(1073741824) // e.g., 1 GB
   createdAt    DateTime      @default(now())
@@ -34,7 +34,7 @@ model Website {
   updatedAt     DateTime      @updatedAt
 }
 
-model MediaFile {
+model Asset {
   id          String   @id @default(uuid()) @db.Uuid
   userId      String   @db.Uuid
   user        User     @relation(fields: [userId], references: [id])

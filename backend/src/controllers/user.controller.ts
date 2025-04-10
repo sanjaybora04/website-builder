@@ -6,7 +6,7 @@ import * as Minio from 'minio'
 dotenv.config();
 
 class User {
-    minio
+    minio:Minio.Client
     constructor() {
         // Initialize MinIO client
         this.minio = new Minio.Client({
@@ -66,14 +66,35 @@ class User {
 
     }
 
-    async getUploadUrl(req: any, res: any) {
-        const user = await prisma.user.findUnique({where:{id:req.user.id}})
-        if(!user) return res.status(404).json({error:"User not found"})
-        if(user.usedStorage>=user.storageLimit) return res.status(413).json({error:"You've reached your storage limit. Please delete files or upgrade your plan to continue uploading."})
+    getUploadUrl = async(req: any, res: any)=>{
+        const user = await prisma.user.findUnique({ where: { id: req.user.id } })
+        if (!user) return res.status(404).json({ error: "User not found" })
+        if (user.usedStorage >= user.storageLimit) return res.status(413).json({ error: "You've reached your storage limit. Please delete files or upgrade your plan to continue uploading." })
 
         const filepath = `${req.user.id}/${crypto.randomUUID()}`
         const presignedUrl = await this.minio.presignedPutObject(process.env.MINIO_BUCKET!, filepath, 60 * 60);// valid for 1 hour
-        return res.json({ url: presignedUrl, key: process.env.MINIO_BUCKET+'/'+filepath });
+        return res.json({ url: presignedUrl, key: process.env.MINIO_BUCKET + '/' + filepath });
+    }
+
+    async getAssets(req: any, res: any) {
+        const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { assets: true } })
+        if (!user) return res.status(404).json({ error: "User not found" })
+
+        user.assets = user.assets.map(a=>({...a,url:'https://'+process.env.MINIO_ENDPOINT+'/'+process.env.MINIO_BUCKET+a.key}))
+
+        return res.json({
+            usage: {
+                storageLimit: user.storageLimit,
+                usedStorage: user.usedStorage
+            },
+            assets:user.assets
+        })
+    }
+
+    async deleteAsset(req: any, res: any) {
+        const {assetId} = req.params
+        await prisma.asset.delete({where:{userId:req.user.id,id:assetId}})
+        return res.end()
     }
 }
 
