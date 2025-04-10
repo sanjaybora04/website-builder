@@ -13,6 +13,9 @@ model User {
   name         String
   googleOauthId String
   websites     Website[]
+  mediaFiles   MediaFile[]
+  usedStorage  Int          @default(0) // in bytes
+  storageLimit Int          @default(1073741824) // e.g., 1 GB
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -29,4 +32,15 @@ model Website {
   pages         Json[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+}
+
+model MediaFile {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  user        User     @relation(fields: [userId], references: [id])
+  key         String   // Full path in MinIO like `user123/banner.png`
+  filename    String   // Original file name, optional but useful
+  size        Int      // In bytes
+  contentType String   // MIME type: image/png, video/mp4, etc.
+  createdAt   DateTime @default(now())
 }

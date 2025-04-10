@@ -20,7 +20,7 @@ export default function MobileNav({ links }: { links:{index:number,label:string,
 
             {/* This button will trigger open the mobile sheet menu */}
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden" aria-label='Mobile menu button'>
+                <Button variant="ghost" size="icon" className="sm:hidden" aria-label='Mobile menu button'>
                     <MenuIcon />
                 </Button>
             </SheetTrigger>
