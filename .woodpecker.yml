@@ -1,17 +1,26 @@
 pipeline:
   build-frontend:
-    image: docker
+    image: moby/buildkit:rootless
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/buildkit:/run/buildkit
     commands:
-      - docker build -t website-builder-frontend:latest ./frontend
+      - buildctl --addr unix:///run/buildkit/buildkitd.sock build \
+          --frontend dockerfile.v0 \
+          --local context=./frontend \
+          --local dockerfile=./frontend/Dockerfile \
+          --output type=docker,name=website-builder-frontend:latest
 
   build-backend:
-    image: docker
+    image: moby/buildkit:rootless
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/buildkit:/run/buildkit
     commands:
-      - docker build -t website-builder-backend:latest ./backend
+      - buildctl --addr unix:///run/buildkit/buildkitd.sock build \
+          --frontend dockerfile.v0 \
+          --local context=./backend \
+          --local dockerfile=./backend/Dockerfile \
+          --output type=docker,name=website-builder-backend:latest
+
 
   # deploy:
   #   image: curlimages/curl
