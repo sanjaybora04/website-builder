@@ -1,0 +1,20 @@
+pipeline:
+  build-frontend:
+    image: docker
+    commands:
+      - docker build -t localhost:5000/service-a:latest ./service-a
+      - docker push localhost:5000/service-a:latest
+
+  build-backend:
+    image: docker
+    commands:
+      - docker build -t localhost:5000/service-b:latest ./service-b
+      - docker push localhost:5000/service-b:latest
+
+  # deploy:
+  #   image: curlimages/curl
+  #   commands:
+  #     - >
+  #       curl -X POST \
+  #       -H "Authorization: Bearer ${PORTAINER_TOKEN}" \
+  #       http://portainer.local:9000/api/stacks/${STACK_ID}/redeploy

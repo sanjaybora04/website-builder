@@ -6,7 +6,7 @@ import * as Minio from 'minio'
 dotenv.config();
 
 class User {
-    minio:Minio.Client
+    minio: Minio.Client
     constructor() {
         // Initialize MinIO client
         this.minio = new Minio.Client({
@@ -66,7 +66,7 @@ class User {
 
     }
 
-    getUploadUrl = async(req: any, res: any)=>{
+    getUploadUrl = async (req: any, res: any) => {
         const user = await prisma.user.findUnique({ where: { id: req.user.id } })
         if (!user) return res.status(404).json({ error: "User not found" })
         if (user.usedStorage >= user.storageLimit) return res.status(413).json({ error: "You've reached your storage limit. Please delete files or upgrade your plan to continue uploading." })
@@ -80,22 +80,55 @@ class User {
         const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { assets: true } })
         if (!user) return res.status(404).json({ error: "User not found" })
 
-        user.assets = user.assets.map(a=>({...a,url:'https://'+process.env.MINIO_ENDPOINT+'/'+a.key}))
+        user.assets = user.assets.map(a => ({ ...a, url: 'https://' + process.env.MINIO_ENDPOINT + '/' + a.key }))
 
         return res.json({
             usage: {
                 storageLimit: user.storageLimit,
                 usedStorage: user.usedStorage
             },
-            assets:user.assets
+            assets: user.assets
         })
     }
 
-    async deleteAsset(req: any, res: any) {
-        const {assetId} = req.params
-        await prisma.asset.delete({where:{userId:req.user.id,id:assetId}})
-        return res.end()
+    deleteAsset = async (req: any, res: any) => {
+        const { assetId } = req.params;
+
+        // Fetch the asset
+        const asset = await prisma.asset.findUnique({
+            where: { id: assetId }
+        });
+
+        if (!asset || asset.userId !== req.user.id) {
+            return res.status(404).json({ error: "Asset not found or unauthorized" });
+        }
+
+        // Remove the bucket name prefix from the key
+        const bucketName = process.env.MINIO_BUCKET!;
+        const objectKey = asset.key.replace(`${bucketName}/`, "");
+
+        // Delete from MinIO
+        await this.minio.removeObject(bucketName, objectKey);
+
+        // Delete from DB
+        await prisma.asset.delete({
+            where: { id: assetId }
+        });
+
+        // Update user's usedStorage
+        await prisma.user.update({
+            where: { id: req.user.id },
+            data: {
+                usedStorage: {
+                    decrement: asset.size
+                }
+            }
+        });
+
+        return res.end();
     }
+
+
 }
 
 export default new User();
