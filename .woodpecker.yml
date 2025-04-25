@@ -1,15 +1,17 @@
 pipeline:
   build-frontend:
     image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t localhost:5000/website-builder-frontend:latest ./backend
-      - docker push localhost:5000/website-builder-frontend:latest
+      - docker build -t website-builder-frontend:latest ./frontend
 
   build-backend:
     image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t localhost:5000/website-builder-backend:latest ./backend
-      - docker push localhost:5000/website-builder-backend:latest
+      - docker build -t website-builder-backend:latest ./backend
 
   # deploy:
   #   image: curlimages/curl
