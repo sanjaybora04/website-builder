@@ -2,7 +2,7 @@ when:
   event:
     - push
 
-steps:
+pipeline:
   build-frontend:
     image: docker
     volumes:
