@@ -8,7 +8,12 @@ pipeline:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t website-builder-frontend:latest ./frontend
+      - |
+        docker build \
+          --build-arg NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=143876800064-2dp99jo42u5dmb7avteco297m13b276a.apps.googleusercontent.com \
+          --build-arg NEXT_PUBLIC_API_URL=http://localhost:5000 \
+          --build-arg NEXT_PUBLIC_BASE_URL=http://localhost:3000 \
+          -t website-builder-frontend:latest ./frontend
   
   build-backend:
     image: docker
