@@ -11,8 +11,8 @@ pipeline:
       - |
         docker build \
           --build-arg NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=143876800064-2dp99jo42u5dmb7avteco297m13b276a.apps.googleusercontent.com \
-          --build-arg NEXT_PUBLIC_API_URL=http://localhost:5000 \
-          --build-arg NEXT_PUBLIC_BASE_URL=http://localhost:3000 \
+          --build-arg NEXT_PUBLIC_API_URL=https://api.sanjaybora.in \
+          --build-arg NEXT_PUBLIC_BASE_URL=https://sitecraft.sanjaybora.in \
           -t website-builder-frontend:latest ./frontend
   
   build-backend:
