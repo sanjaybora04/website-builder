@@ -1,11 +1,15 @@
-pipeline:
+when:
+  event:
+    - push
+
+steps:
   build-frontend:
     image: docker
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
       - docker build -t website-builder-frontend:latest ./frontend
-
+  
   build-backend:
     image: docker
     volumes:
@@ -13,10 +17,18 @@ pipeline:
     commands:
       - docker build -t website-builder-backend:latest ./backend
 
-  # deploy:
-  #   image: curlimages/curl
-  #   commands:
-  #     - >
-  #       curl -X POST \
-  #       -H "Authorization: Bearer ${PORTAINER_TOKEN}" \
-  #       http://portainer.local:9000/api/stacks/${STACK_ID}/redeploy
+  redeploy:
+    image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker service update --force website-builder_frontend
+      - docker service update --force website-builder_backend
+
+  cleanup:
+    image: docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - docker container prune -f
+      - docker image prune -af
