@@ -1,14 +1,12 @@
 import React, { useState, ChangeEvent } from 'react';
 import imageCompression from 'browser-image-compression';
 import api from '@/lib/api';
-import { Button, buttonVariants } from '../ui/button';
-import { Upload } from 'lucide-react';
-import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import { buttonVariants } from '../ui/button';
+import { Loader, Upload } from 'lucide-react';
 
 const FileUploadComponent: React.FC = () => {
-    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+    const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [uploading, setUploading] = useState<boolean>(false);
-    const [uploadedFileURL, setUploadedFileURL] = useState<string | null>(null);
 
     const compressImage = async (file: File): Promise<File> => {
         const allowedTypes = [ // allowed types for compression
@@ -55,8 +53,8 @@ const FileUploadComponent: React.FC = () => {
 
             xhr.onload = () => {
                 if (xhr.status === 200) {
-                    setUploadedFileURL(url.split('?')[0]);
-                    setUploadProgress(100);
+                    setUploadProgress(0);
+                    window.location.reload()
                 } else {
                     throw new Error('Upload failed');
                 }
@@ -76,35 +74,27 @@ const FileUploadComponent: React.FC = () => {
     };
 
     return (
-        <Dialog>
-            <input id='fileupload' type="file" onChange={handleFileChange} disabled={uploading}
+        <>
+            <input id='fileupload' type="file" content='image' onChange={handleFileChange} disabled={uploading}
                 className='hidden' />
             <label htmlFor='fileupload' className={buttonVariants()}>
                 <Upload />Upload
             </label>
-            <DialogContent>
-                <div className="w-full bg-gray-200 h-2 rounded">
-                    <div
-                        className="bg-blue-500 h-2 rounded transition-all duration-300"
-                        style={{ width: `${uploadProgress}%` }}
-                    />
-                </div>
 
-                {uploadedFileURL && (
-                    <div className="mt-2">
-                        <p className="text-green-600">File uploaded successfully!</p>
-                        <a
-                            href={uploadedFileURL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="underline text-blue-600"
-                        >
-                            View File
-                        </a>
+            {uploading||uploadProgress>0 &&
+                <div className='fixed top-0 left-0 w-screen h-screen z-[999] bg-black bg-opacity-50 flex items-center justify-center'>
+                    <div className='w-full max-w-80 p-2 border rounded bg-accent'>
+                        <div><Loader className='inline w-4 h-4 mr-1 animate-spin'/>Uploading-{uploadProgress}%</div>
+                        <div className="w-full bg-gray-200 h-2 mt-2 rounded">
+                            <div
+                                className="bg-blue-500 h-2 rounded transition-all duration-300"
+                                style={{ width: `${uploadProgress}%` }}
+                            />
+                        </div>
                     </div>
-                )}
-            </DialogContent>
-        </Dialog>
+                </div>
+            }
+        </>
     );
 };
 

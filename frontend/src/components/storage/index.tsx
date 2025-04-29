@@ -33,6 +33,7 @@ export default function Storage() {
         const res = await api.user.deleteAsset(assetId)
         if (res.status == 200) {
             toast.success('Asset Deleted', { id })
+            window.location.reload()
         } else {
             toast.dismiss(id)
         }
