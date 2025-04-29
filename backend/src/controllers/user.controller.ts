@@ -3,6 +3,7 @@ import prisma from '../../prisma';
 import axios from 'axios';
 import jwt from 'jsonwebtoken'
 import * as Minio from 'minio'
+import crypto from 'crypto'
 dotenv.config();
 
 class User {
