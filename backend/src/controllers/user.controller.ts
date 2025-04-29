@@ -77,6 +77,25 @@ class User {
         return res.json({ url: presignedUrl, key: process.env.MINIO_BUCKET + '/' + filepath });
     }
 
+    async addAsset(req:any,res:any){
+        const {key} = req.body
+        await prisma.user.update({where:{id:req.user.id},data:{
+            assets:{
+                upsert:{
+                    where:{key},
+                    create:{
+                        key,
+                        filename:'',
+                        size:0,
+                        contentType:''
+                    },
+                    update:{}
+                }
+            }
+        }})
+        res.end()
+    }
+    
     async getAssets(req: any, res: any) {
         const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { assets: true } })
         if (!user) return res.status(404).json({ error: "User not found" })
@@ -93,11 +112,11 @@ class User {
     }
 
     deleteAsset = async (req: any, res: any) => {
-        const { assetId } = req.params;
+        const { key } = req.body;
 
         // Fetch the asset
         const asset = await prisma.asset.findUnique({
-            where: { id: assetId }
+            where: { key }
         });
 
         if (!asset || asset.userId !== req.user.id) {
@@ -113,7 +132,7 @@ class User {
 
         // Delete from DB
         await prisma.asset.delete({
-            where: { id: assetId }
+            where: { key }
         });
 
         // Update user's usedStorage

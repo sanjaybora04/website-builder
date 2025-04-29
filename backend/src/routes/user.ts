@@ -8,8 +8,10 @@ router.post('/signin', User.signin)
 
 router.get('/storage/uploadurl',checkAuth, User.getUploadUrl)
 
+router.post('/storage/addasset',checkAuth,User.addAsset)
+
 router.get('/storage/assets',checkAuth,User.getAssets)
 
-router.delete('/storage/asset/:assetId',checkAuth,User.deleteAsset)
+router.post('/storage/deleteasset',checkAuth,User.deleteAsset)
 
 export default router;

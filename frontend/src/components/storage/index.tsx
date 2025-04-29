@@ -28,9 +28,9 @@ export default function Storage() {
         loadData()
     }, [])
 
-    async function onDelete(assetId: string) {
+    async function onDelete(key: string) {
         const id = toast.loading('Deleting asset...')
-        const res = await api.user.deleteAsset(assetId)
+        const res = await api.user.deleteAsset(key)
         if (res.status == 200) {
             toast.success('Asset Deleted', { id })
             window.location.reload()
@@ -48,7 +48,7 @@ export default function Storage() {
             <div className="flex flex-wrap gap-5 mt-10">
                 {state?.assets?.map((a: any, index: any) =>
                     <div key={index} className="w-52 h-52 rounded overflow-hidden relative">
-                        <button onClick={() => onDelete(a.id)} className="absolute top-2 right-2 text-red-500 cursor-pointer"><Trash2 className="w-5 h-5" /></button>
+                        <button onClick={() => onDelete(a.key)} className="absolute top-2 right-2 text-red-500 cursor-pointer"><Trash2 className="w-5 h-5" /></button>
                         <img key={index} src={a.url} className="w-full h-full object-cover" />
                     </div>
                 )}

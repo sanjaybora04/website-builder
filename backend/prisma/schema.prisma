@@ -35,10 +35,9 @@ model Website {
 }
 
 model Asset {
-  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @id
   userId      String   @db.Uuid
   user        User     @relation(fields: [userId], references: [id])
-  key         String   // Full path in MinIO like `user123/banner.png`
   filename    String   // Original file name, optional but useful
   size        Int      // In bytes
   contentType String   // MIME type: image/png, video/mp4, etc.

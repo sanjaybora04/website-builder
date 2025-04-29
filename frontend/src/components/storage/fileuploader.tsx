@@ -7,20 +7,19 @@ import { Loader, Upload } from 'lucide-react';
 const FileUploadComponent: React.FC = () => {
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [uploading, setUploading] = useState<boolean>(false);
+    const [compressing, setCompressing] = useState<boolean>(false);
 
     const compressImage = async (file: File): Promise<File> => {
-        const allowedTypes = [ // allowed types for compression
-            'image/jpeg',
-            'image/png',
-            'image/webp'
-        ];
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!allowedTypes.includes(file.type)) return file;
+
         const options = {
             maxSizeMB: 1,
             maxWidthOrHeight: 1920,
             useWebWorker: true,
             fileType: file.type
         };
+
         return await imageCompression(file, options);
     };
 
@@ -28,17 +27,17 @@ const FileUploadComponent: React.FC = () => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        setUploading(true);
-        setUploadProgress(0);
-
+        setCompressing(true);
         try {
-            const { data } = await api.user.getUploadUrl();
-            const { url, key } = data
-
             const isImage = file.type.startsWith('image/');
             const fileToUpload = isImage ? await compressImage(file) : file;
+            setCompressing(false);
 
-            // return console.log(file)
+            setUploading(true);
+            setUploadProgress(0);
+
+            const { data } = await api.user.getUploadUrl();
+            const { url,key } = data;
 
             const xhr = new XMLHttpRequest();
             xhr.open('PUT', url, true);
@@ -51,10 +50,12 @@ const FileUploadComponent: React.FC = () => {
                 }
             };
 
-            xhr.onload = () => {
+            xhr.onload = async() => {
                 if (xhr.status === 200) {
+                    await api.user.addAsset(key)
                     setUploadProgress(0);
-                    window.location.reload()
+                    setUploading(false);
+                    window.location.reload();
                 } else {
                     throw new Error('Upload failed');
                 }
@@ -68,32 +69,44 @@ const FileUploadComponent: React.FC = () => {
         } catch (err) {
             console.error(err);
             alert('Upload failed.');
-        } finally {
+            setCompressing(false);
             setUploading(false);
         }
     };
 
     return (
         <>
-            <input id='fileupload' type="file" content='image' onChange={handleFileChange} disabled={uploading}
-                className='hidden' />
-            <label htmlFor='fileupload' className={buttonVariants()}>
-                <Upload />Upload
+            <input
+                id="fileupload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                disabled={uploading || compressing}
+                className="hidden"
+            />
+            <label htmlFor="fileupload" className={buttonVariants()}>
+                <Upload className="mr-1" />
+                Upload
             </label>
 
-            {uploading||uploadProgress>0 &&
-                <div className='fixed top-0 left-0 w-screen h-screen z-[999] bg-black bg-opacity-50 flex items-center justify-center'>
-                    <div className='w-full max-w-80 p-2 border rounded bg-accent'>
-                        <div><Loader className='inline w-4 h-4 mr-1 animate-spin'/>Uploading-{uploadProgress}%</div>
-                        <div className="w-full bg-gray-200 h-2 mt-2 rounded">
-                            <div
-                                className="bg-blue-500 h-2 rounded transition-all duration-300"
-                                style={{ width: `${uploadProgress}%` }}
-                            />
+            {(compressing || uploading) && (
+                <div className="fixed top-0 left-0 w-screen h-screen z-[999] bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="w-full max-w-80 p-4 border rounded bg-accent text-center">
+                        <div className="flex items-center">
+                            <Loader className="inline w-4 h-4 mr-2 animate-spin" />
+                            {compressing ? 'Optimizing image...' : `Uploading - ${uploadProgress}%`}
                         </div>
+                        {!compressing && (
+                            <div className="w-full bg-gray-200 h-2 mt-2 rounded">
+                                <div
+                                    className="bg-blue-500 h-2 rounded transition-all duration-300"
+                                    style={{ width: `${uploadProgress}%` }}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
-            }
+            )}
         </>
     );
 };

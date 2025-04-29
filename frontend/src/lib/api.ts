@@ -47,7 +47,8 @@ const api = {
         signin: async (token: any) => await apiClient.post('/user/signin', { token }),
         getUploadUrl: async () => await apiClient.get('/user/storage/uploadurl'),
         getAssets: async () => await apiClient.get('/user/storage/assets'),
-        deleteAsset: async (assetId: any) => await apiClient.delete(`/user/storage/asset/${assetId}`),
+        addAsset: async(key:string)=> await apiClient.post('/user/storage/addasset', {key}),
+        deleteAsset: async (key: any) => await apiClient.post(`/user/storage/deleteasset`,{key}),
     },
     website: {
         get: async (websiteId: string) => await apiClient.get(`/website/${websiteId}`),
