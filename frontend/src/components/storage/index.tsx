@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import FileUploader from "./fileuploader";
 import { toast } from "sonner";
+import FileSelector from "./fileSelector";
 
 export default function Storage() {
     const [state, setState] = useState({
@@ -45,11 +46,11 @@ export default function Storage() {
                 <Input placeholder="search assets" />
                 <FileUploader />
             </div>
-            <div className="flex flex-wrap gap-5 mt-10">
+            <div className="flex flex-wrap justify-center gap-5 mt-10">
                 {state?.assets?.map((a: any, index: any) =>
                     <div key={index} className="w-52 h-52 rounded overflow-hidden relative">
                         <button onClick={() => onDelete(a.key)} className="absolute top-2 right-2 text-red-500 cursor-pointer"><Trash2 className="w-5 h-5" /></button>
-                        <img key={index} src={a.url} className="w-full h-full object-cover" />
+                        <img key={index} src={process.env.NEXT_PUBLIC_S3_URL+'/'+a.key} className="w-full h-full object-cover" />
                     </div>
                 )}
             </div>

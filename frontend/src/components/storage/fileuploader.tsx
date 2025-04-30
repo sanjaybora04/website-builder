@@ -1,10 +1,11 @@
+"use client"
 import React, { useState, ChangeEvent } from 'react';
 import imageCompression from 'browser-image-compression';
 import api from '@/lib/api';
 import { buttonVariants } from '../ui/button';
 import { Loader, Upload } from 'lucide-react';
 
-const FileUploadComponent: React.FC = () => {
+export default function FileUploadComponent({onUpload}:{onUpload?:any}){
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [uploading, setUploading] = useState<boolean>(false);
     const [compressing, setCompressing] = useState<boolean>(false);
@@ -53,9 +54,9 @@ const FileUploadComponent: React.FC = () => {
             xhr.onload = async() => {
                 if (xhr.status === 200) {
                     await api.user.addAsset(key)
+                    onUpload?.(process.env.NEXT_PUBLIC_S3_URL+'/'+key)
                     setUploadProgress(0);
                     setUploading(false);
-                    window.location.reload();
                 } else {
                     throw new Error('Upload failed');
                 }
@@ -110,5 +111,3 @@ const FileUploadComponent: React.FC = () => {
         </>
     );
 };
-
-export default FileUploadComponent;
