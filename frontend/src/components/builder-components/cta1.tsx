@@ -16,12 +16,12 @@ type TestType = {
 
 export function Component({ config }: { config: TestType }) {
     return (
-        <div className="p-4 py-10 sm:p-10 md:px-20 border border-black bg-stone-100">
+        <div className="p-4 py-10 sm:p-10 md:px-20">
             <div className="max-w-3xl mx-auto">
                 <div className="text-2xl sm:text-3xl font-semibold font-raleway text-center">{config.title}</div>
                 <div className="text-center mt-2">{config.paragraph}</div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-5">
+            <div className="flex flex-col sm:flex-row gap-5 mt-5">
                 <img src={config.image1} className="sm:w-1/3 object-cover" />
                 <img src={config.image2} className="sm:w-1/3 object-cover" />
                 <img src={config.image3} className="sm:w-1/3 object-cover" />

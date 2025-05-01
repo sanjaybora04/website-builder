@@ -36,7 +36,7 @@ export type BuilderComponent= {
     id: string,
     name: string,
     description: string
-    category:'header'|'footer'|'other',
+    category:'header'|'hero'|'cta'|'footer'|'other',
     keywords: string[],
     configInput: any,
     component: any,
