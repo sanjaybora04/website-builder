@@ -50,7 +50,7 @@ export default function Storage() {
                 {state?.assets?.map((a: any, index: any) =>
                     <div key={index} className="w-52 h-52 rounded overflow-hidden relative">
                         <button onClick={() => onDelete(a.key)} className="absolute top-2 right-2 text-red-500 cursor-pointer"><Trash2 className="w-5 h-5" /></button>
-                        <img key={index} src={process.env.NEXT_PUBLIC_S3_URL+'/'+a.key} className="w-full h-full object-cover" />
+                        <img key={index} src={process.env.NEXT_PUBLIC_S3_URL+'/'+a.key} className="w-full h-full object-contain" />
                     </div>
                 )}
             </div>

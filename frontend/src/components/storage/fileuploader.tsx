@@ -4,6 +4,7 @@ import imageCompression from 'browser-image-compression';
 import api from '@/lib/api';
 import { buttonVariants } from '../ui/button';
 import { Loader, Upload } from 'lucide-react';
+import { createPortal } from 'react-dom';
 
 export default function FileUploadComponent({onUpload}:{onUpload?:any}){
     const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -90,7 +91,7 @@ export default function FileUploadComponent({onUpload}:{onUpload?:any}){
                 Upload
             </label>
 
-            {(compressing || uploading) && (
+            {(compressing || uploading) && createPortal(
                 <div className="fixed top-0 left-0 w-screen h-screen z-[999] bg-black bg-opacity-50 flex items-center justify-center">
                     <div className="w-full max-w-80 p-4 border rounded bg-accent text-center">
                         <div className="flex items-center">
@@ -106,7 +107,8 @@ export default function FileUploadComponent({onUpload}:{onUpload?:any}){
                             </div>
                         )}
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );
