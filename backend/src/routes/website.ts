@@ -6,7 +6,7 @@ const router = Router()
 
 router.post('/draft/:websiteId',checkAuth,Website.setDraft)
 
-router.post('/domain/:websiteId',checkAuth,Website.setDomain)
+// router.post('/domain/:websiteId',checkAuth,Website.setDomain)
 router.get('/domain/:websiteId',checkAuth,Website.checkDomain)
 
 router.post('/getbydomain',Website.getByDomain)

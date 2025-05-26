@@ -18,7 +18,14 @@ import { Website } from "@/lib/types"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
-    domain: z.string().min(1, { message: "Domain is required" }),
+    domain: z
+    .string()
+    .trim()
+    .min(1, "Domain is required")
+    .regex(
+      /^(?!:\/\/)([a-zA-Z0-9-_]+\.)+[a-zA-Z]{2,}$/,
+      "Invalid domain format"
+    ),
 })
 
 type FormType = z.infer<typeof formSchema>
@@ -48,7 +55,7 @@ export default function WebsiteForm({
 
     async function handleSubmit(values: FormType) {
         if (await onSubmit({ ...values })) {
-            form.reset()
+            console.log('form submitted')
         }
     }
 
