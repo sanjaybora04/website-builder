@@ -51,9 +51,10 @@ class Website {
     async update(req: any, res: any) {
         const { websiteId } = req.params
 
-        const domain_exists = await prisma.website.findFirst({ where: { domain: req.body.domain } })
-        console.log(domain_exists?.id,websiteId)
-        if (domain_exists && domain_exists.id!=websiteId) return res.status(409).json({ error: `${req.body.domain} is already registered` })
+        if (req.body.domain) {
+            const domain_exists = await prisma.website.findFirst({ where: { domain: req.body.domain } })
+            if (domain_exists && domain_exists.id != websiteId) return res.status(409).json({ error: `${req.body.domain} is already registered` })
+        }
 
         // check if user owns the website
 
