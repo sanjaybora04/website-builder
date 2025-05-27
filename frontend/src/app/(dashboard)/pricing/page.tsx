@@ -62,7 +62,7 @@ export default function PricingPage() {
         <section className="text-center space-y-4">
           <h1 className="text-4xl font-bold">Simple pricing for all builders</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Whether you're a hobbyist, freelancer, or agency — get started for free. Paid plans coming soon.
+            Whether you&apos;re a hobbyist, freelancer, or agency — get started for free. Paid plans coming soon.
           </p>
           <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-md text-sm font-medium">
             <Rocket className="h-4 w-4" /> Currently in beta. Paid plans launching soon.
@@ -174,9 +174,11 @@ export default function PricingPage() {
         {/* Support & Feedback */}
         <section className="bg-muted py-12 rounded-xl text-center space-y-4">
           <h2 className="text-2xl font-bold">Need help or want to share feedback?</h2>
-          <p className="text-muted-foreground">We're constantly improving. Reach out and help shape the future of this tool.</p>
-          <Button variant="outline" size="lg">
+          <p className="text-muted-foreground">We&apos;re constantly improving. Reach out and help shape the future of this tool.</p>
+          <Button variant="outline" size="lg" asChild>
+            <a href='mailto:sanjaybora380@gmail.com'>
             <MessageCircle className="h-4 w-4 mr-2" /> Contact Support
+            </a>
           </Button>
         </section>
 
