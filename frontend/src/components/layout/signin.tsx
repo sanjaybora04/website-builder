@@ -1,3 +1,5 @@
+'use client'
+
 import useAuth from "@/hooks/use-auth";
 import api from "@/lib/api";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -10,6 +12,7 @@ import { Check, LayoutGrid, LogOut, Moon, PcCase, Settings, Sun, SunMoon } from 
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import Routes from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 export default function Signin() {
     return (
@@ -20,6 +23,7 @@ export default function Signin() {
 }
 
 function Component() {
+    const router = useRouter()
     const { user, authorize, unauthorize } = useAuth()
     const { theme, setTheme } = useTheme()
 
@@ -28,6 +32,9 @@ function Component() {
             const id = toast.loading('Logging in...');
             const response = await api.user.signin(tokenResponse.access_token)
             if (response.status === 200) {
+                if([Routes.home,Routes.about,Routes.feedback,Routes.pricing,Routes.support].includes(window.location.pathname)){
+                    router.push(Routes.overview)
+                }
                 toast.success('Logged In', { id });
                 authorize(response.data);
             } else {

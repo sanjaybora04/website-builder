@@ -1,7 +1,7 @@
 "use client"
 import { useTheme } from "next-themes";
 import { Button } from "../ui/button";
-import { Menu, Moon, Sun, Wrench } from "lucide-react";
+import { Menu, Moon, Route, Sun, Wrench } from "lucide-react";
 import Routes from "@/lib/routes";
 import Link from "next/link";
 import Signin from "./signin";
@@ -17,10 +17,11 @@ export default function MainHeader() {
             </Link>
             <div className="flex gap-5 text-sm items-center">
                 <div className="hidden sm:flex gap-5 items-center">
-                    <div className="hover:underline font-semibold">About</div>
-                    <div className="hover:underline font-semibold">Pricing</div>
-                    <div className="hover:underline font-semibold">Feedback</div>
-                    <div className="hover:underline font-semibold">Support</div>
+                    <Link href={Routes.home} className="hover:underline font-semibold">Home</Link>
+                    <Link href={Routes.about} className="hover:underline font-semibold">About</Link>
+                    <Link href={Routes.pricing} className="hover:underline font-semibold">Pricing</Link>
+                    <Link href={Routes.feedback} className="hover:underline font-semibold">Feedback</Link>
+                    {/* <Link href={Routes.support} className="hover:underline font-semibold">Support</Link> */}
                 </div>
                 <Button size='icon' onClick={() => theme == 'dark' ? setTheme('light') : setTheme('dark')}>
                     {theme == "dark" ? <Sun /> : <Moon />}
@@ -34,10 +35,27 @@ export default function MainHeader() {
                             <DrawerDescription className="text-center">Start building your online presence</DrawerDescription>
                         </DrawerHeader>
                         <div className="p-4 space-y-2">
-                            <Button variant='ghost' className="w-full">About</Button>
-                            <Button variant='ghost' className="w-full">Pricing</Button>
-                            <Button variant='ghost' className="w-full">Feedback</Button>
-                            <Button variant='ghost' className="w-full">Support</Button>
+                            <Button variant='ghost' className="w-full">
+                                <Link href={Routes.home}>
+                                    Home
+                                </Link>
+                            </Button>
+                            <Button variant='ghost' className="w-full">
+                                <Link href={Routes.about}>
+                                    About
+                                </Link>
+                            </Button>
+                            <Button variant='ghost' className="w-full" asChild>
+                                <Link href={Routes.pricing}>
+                                    Pricing
+                                </Link>
+                            </Button>
+                            <Button variant='ghost' className="w-full">
+                                <Link href={Routes.feedback}>
+                                    Feedback
+                                </Link>
+                            </Button>
+                            {/* <Button variant='ghost' className="w-full">Support</Button> */}
                         </div>
                         <DrawerClose className="m-4 mt-40" asChild>
                             <Button className="min-w-80 mx-auto">Close</Button>

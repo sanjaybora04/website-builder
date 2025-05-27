@@ -1,12 +1,16 @@
 const Routes = {
-    home: "/home",
     overview: '/',
     storage: '/storage',
     settings: '/settings',
     plan: '/plan',
     websiteEditor: (websiteId:string)=>`/website-editor/${websiteId}`,
     preview: '/preview',
-    site: '/site'
+    site: '/site',
+    home: "/home",
+    about: '/about',
+    pricing: '/pricing',
+    feedback: '/feedback',
+    support: '/support'
 }
 
 export default Routes
