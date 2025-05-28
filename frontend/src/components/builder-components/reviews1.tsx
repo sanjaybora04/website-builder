@@ -24,7 +24,7 @@ export function Component({ config }: { config: ReviewsConfig }) {
       <div className="flex flex-col sm:flex-row gap-6 max-w-5xl mx-auto mt-10">
         {config.reviews?.map((r, i) => (
           <div key={i} className="bg-white p-6 rounded-lg shadow space-y-4">
-            <p className="text-gray-700 italic">"{r.review}"</p>
+            <p className="text-gray-700 italic">&quot;{r.review}&quot;</p>
             <div className="flex items-center gap-4">
               {r.avatar && <img src={r.avatar} className="w-12 h-12 rounded-full object-cover" />}
               <div>
