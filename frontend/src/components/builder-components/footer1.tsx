@@ -16,7 +16,7 @@ type FooterType = {
 
 export function Component({ config }: { config: FooterType }) {
     return (
-        <footer className="bg-gray-900 text-white px-6 py-10">
+        <footer className="bg-gray-900 text-white px-4 py-10 sm:px-10 md:px-20">
             <div className="max-w-6xl mx-auto flex flex-col items-center gap-4">
                 {config.title && <h2 className="text-2xl font-bold">{config.title}</h2>}
                 {config.description && <p className="text-center text-gray-400 max-w-xl">{config.description}</p>}

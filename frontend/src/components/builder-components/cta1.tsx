@@ -16,7 +16,7 @@ type TestType = {
 
 export function Component({ config }: { config: TestType }) {
     return (
-        <div className="p-4 py-10 sm:p-10 md:px-20">
+        <div className="px-4 py-10 sm:px-10 md:px-20">
             <div className="max-w-3xl mx-auto">
                 <div className="text-2xl sm:text-3xl font-semibold font-raleway text-center">{config.title}</div>
                 <div className="text-center mt-2">{config.paragraph}</div>

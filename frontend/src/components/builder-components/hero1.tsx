@@ -19,7 +19,7 @@ type TestType = {
 
 export function Component({ config }: { config: TestType }) {
     return (
-        <div className="p-4 py-10 sm:p-10 md:px-20 flex flex-col sm:flex-row gap-5 sm:gap-10">
+        <div className="px-4 py-10 sm:px-10 md:px-20 flex flex-col sm:flex-row gap-5 sm:gap-10">
             <div className="sm:w-1/2 flex flex-col justify-center gap-5">
                 <h1 className="text-3xl sm:text-6xl font-bold font-raleway">{config.title}</h1>
                 <p>{config.paragraph}</p>
