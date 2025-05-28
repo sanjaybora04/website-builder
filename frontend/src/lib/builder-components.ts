@@ -28,9 +28,9 @@ const builderComponents: BuilderComponent[] = [
             {
                 title: "Why choose us?",
                 paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex optio unde consequatur qui esse vitae illo doloremque perspiciatis quae porro impedit',
-                image1: '/images/test.svg',
-                image2: '/images/test.svg',
-                image3: '/images/test.svg',
+                image1: `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
+                image2: `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
+                image3: `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
             }
         ]
     },
@@ -46,14 +46,35 @@ const builderComponents: BuilderComponent[] = [
             {
                 title: "Boost Your Startup Business Faster",
                 paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex optio unde consequatur qui esse vitae illo doloremque perspiciatis quae porro impedit',
-                image: '/images/test.svg',
+                image: `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
                 link: {
                     label:'Get Started',
                     href:'#'
                 }
             }
         ]
+    },
+    {
+        id: 'footer-1',
+        name: "Simple Footer",
+        description: "Minimal footer with title, description, and links",
+        category: 'footer',
+        keywords: ['footer', 'links', 'bottom'],
+        configInput: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Editor)),
+        component: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Component)),
+        examples: [
+            {
+                title: "SiteCraft",
+                description: "Crafting modern websites with simplicity and speed.",
+                links: [
+                    { label: "About", href: "#" },
+                    { label: "Contact", href: "#" },
+                    { label: "Privacy", href: "#" }
+                ]
+            }
+        ]
     }
+    
 ]
 
 export default builderComponents

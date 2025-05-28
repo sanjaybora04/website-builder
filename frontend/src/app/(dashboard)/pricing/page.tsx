@@ -8,6 +8,8 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import Link from "next/link"
+import Routes from "@/lib/routes"
 
 const plans = [
   {
@@ -120,7 +122,7 @@ export default function PricingPage() {
                     </TooltipContent>
                   </Tooltip>
                 ) : (
-                  <Button className="w-full mt-6">Get Started</Button>
+                  <Button className="w-full mt-6" asChild><Link href={Routes.overview}>Get Started</Link></Button>
                 )}
               </CardContent>
             </Card>

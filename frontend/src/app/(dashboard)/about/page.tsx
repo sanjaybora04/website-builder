@@ -61,7 +61,7 @@ export default function AboutPage() {
         <p className="text-muted-foreground">Your feedback means the world to us. Let us know what you want to see next.</p>
         <Button size="lg" variant="outline" asChild>
           <Link href={Routes.feedback}>
-          <MessageCircle className="h-4 w-4 mr-2" /> Share Feedback
+           <MessageCircle className="h-4 w-4 mr-2" /> Share Feedback
           </Link>
         </Button>
       </section>
