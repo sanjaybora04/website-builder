@@ -21,7 +21,7 @@ export function Component({ config }: { config: ReviewsConfig }) {
   return (
     <div className="py-10 px-4 md:px-20 bg-gray-50">
       {config.title && <h2 className="text-2xl sm:text-3xl font-semibold font-raleway text-center">{config.title}</h2>}
-      <div className="flex flex-col sm:flex-row gap-6 max-w-5xl mx-auto mt-10">
+      <div className="flex flex-col sm:flex-row justify-center gap-6 max-w-5xl mx-auto mt-10">
         {config.reviews?.map((r, i) => (
           <div key={i} className="bg-white p-6 rounded-lg shadow space-y-4">
             <p className="text-gray-700 italic">&quot;{r.review}&quot;</p>
