@@ -19,3 +19,9 @@
 * guided tour
 
 * when user goes to dashboard directly, redirect to homepage and open signin dialog
+
+* open homepage when user deletes page and deleted page was open
+
+* if user is in editor and clicks on link, it should change the activepage to requested one
+
+* add import export feature
