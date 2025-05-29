@@ -94,7 +94,7 @@ function Component() {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu> :
-                <Button onClick={() => handleGoogleSignin()}>
+                <Button id="signin" onClick={() => handleGoogleSignin()}>
                     <img src="/images/google.svg" className="w-5 h-5" />
                     Signin
                 </Button>

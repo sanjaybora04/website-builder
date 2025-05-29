@@ -2,12 +2,14 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import useAuth from "@/hooks/use-auth"
 import Routes from "@/lib/routes"
 import { CheckCircle, MousePointerClick, UploadCloud, Rocket } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export default function LandingPage() {
+  const {user} = useAuth()
   const router = useRouter()
 
   return (
@@ -19,9 +21,12 @@ export default function LandingPage() {
           Our drag-and-drop builder lets you design, customize, and launch stunning websites in minutes. No code required.
         </p>
         <Button size="lg" asChild>
-          <Link href={Routes.overview}>
+          {user?
+          <Link href={Routes.overview}>Start Building Now</Link>:
+          <label htmlFor="signin">
             Start Building Now
-          </Link>
+          </label>
+          }
         </Button>
       </section>
 
@@ -121,9 +126,12 @@ export default function LandingPage() {
         <h2 className="text-4xl font-bold mb-4">Launch Your Website Today</h2>
         <p className="text-lg mb-6">Join 1,000+ creators building online with zero code.</p>
         <Button size="lg" asChild>
-          <Link href={Routes.overview}>
+        {user?
+          <Link href={Routes.overview}>Get Started for Free</Link>:
+          <label htmlFor="signin">
             Get Started for Free
-          </Link>
+          </label>
+          }
         </Button>
       </section>
 

@@ -59,7 +59,7 @@ export default function WebsiteForm({
 
     const [dnsStatus, setDnsStatus] = useState<"pending" | "valid" | "invalid" | "error" | null>(null)
     const [dnsRecords, setDnsRecords] = useState<string[] | null>(null)
-    const [domainType, setDomainType] = useState<"subdomain" | "custom">("subdomain")
+    const [domainType, setDomainType] = useState<"subdomain" | "custom">(!data?.domain||data?.domain?.endsWith(process.env.NEXT_PUBLIC_BASE_DOMAIN!)?"subdomain":"custom")
 
     async function handleSubmit(values: FormType) {
         if (await onSubmit({ ...values })) {
@@ -100,7 +100,7 @@ export default function WebsiteForm({
                     )}
                 />
 
-                <Tabs defaultValue="subdomain" onValueChange={(val) => {form.setValue('domain','');setDomainType(val as "subdomain" | "custom")}}>
+                <Tabs value={domainType} onValueChange={(val) => {form.setValue('domain','');setDomainType(val as "subdomain" | "custom")}}>
                     <TabsList>
                         <TabsTrigger value="subdomain">Subdomain (Free)</TabsTrigger>
                         <TabsTrigger value="custom">
@@ -141,7 +141,7 @@ export default function WebsiteForm({
 
 
                     <TabsContent value="custom">
-                        {false ?
+                        {true ?
                             <FormField
                                 control={form.control}
                                 name="domain"

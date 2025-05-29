@@ -10,6 +10,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import Link from "next/link"
 import Routes from "@/lib/routes"
+import useAuth from "@/hooks/use-auth"
 
 const plans = [
   {
@@ -55,11 +56,12 @@ const plans = [
 
 export default function PricingPage() {
   const [isYearly, setIsYearly] = useState(false)
+  const {user} = useAuth()
 
   return (
     <TooltipProvider>
       <div className="max-w-7xl mx-auto px-4 py-12 space-y-24">
-        
+
         {/* Hero */}
         <section className="text-center space-y-4">
           <h1 className="text-4xl font-bold">Simple pricing for all builders</h1>
@@ -122,7 +124,14 @@ export default function PricingPage() {
                     </TooltipContent>
                   </Tooltip>
                 ) : (
-                  <Button className="w-full mt-6" asChild><Link href={Routes.overview}>Get Started</Link></Button>
+                  <Button className="w-full mt-6" asChild>
+                    {user ?
+                      <Link href={Routes.overview}>Get Started</Link> :
+                      <label htmlFor="signin">
+                        Get Started
+                      </label>
+                    }
+                  </Button>
                 )}
               </CardContent>
             </Card>
@@ -179,7 +188,7 @@ export default function PricingPage() {
           <p className="text-muted-foreground">We&apos;re constantly improving. Reach out and help shape the future of this tool.</p>
           <Button variant="outline" size="lg" asChild>
             <a href='mailto:sanjaybora380@gmail.com'>
-            <MessageCircle className="h-4 w-4 mr-2" /> Contact Support
+              <MessageCircle className="h-4 w-4 mr-2" /> Contact Support
             </a>
           </Button>
         </section>
