@@ -1,48 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { websiteEditorAtom } from "@/lib/atoms";
 import { useAtom } from "jotai";
-import { ChevronsUpDown, Edit, EllipsisIcon, Trash2 } from "lucide-react";
-import PageForm from "./add-page";
-import { Page } from "@/lib/types";
+import { ChevronsUpDown, EllipsisIcon, Trash2 } from "lucide-react";
+import AddPage from "./add-page";
+import EditPage from "./edit-page";
 
 export default function Pages() {
     const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
 
     if (!websiteEditor) return null
 
-    async function addPage(data: Page) {
-        setWebsiteEditor((prev:any) => ({ 
-            ...prev, 
-            website: { 
-                ...prev?.website, 
-                pages: [...prev?.website?.pages||[], data] 
-            } 
-        }))
-        return true
-    }
-
-    async function editPage(path: string, data: Page) {
-        setWebsiteEditor((prev:any) => ({
-            ...prev, website: {
-                ...prev?.website, 
-                pages: prev?.website?.pages?.map((p:any) => {
-                    if (p.path != path) return p;
-                    return data
-                })
-            }
-        }))
-        return true
-    }
-
     async function deletePage(path: string) {
-        setWebsiteEditor((prev:any) => ({ ...prev,
-            activePage:prev?.activePage==path?undefined:prev?.activePage, // if delete page is active set activepage to undefined
-            activeComponent:prev?.activePage==path?undefined:prev?.activeComponent, // if component of deleted page is active then set it to undefined
-             website: { ...prev?.website, pages: prev?.website?.pages?.filter((p:any) => p.path != path) } }))
+        setWebsiteEditor((prev: any) => ({
+            ...prev,
+            activePage: prev?.activePage == path ? undefined : prev?.activePage, // if delete page is active set activepage to undefined
+            activeComponent: prev?.activePage == path ? undefined : prev?.activeComponent, // if component of deleted page is active then set it to undefined
+            website: { ...prev?.website, pages: prev?.website?.pages?.filter((p: any) => p.path != path) }
+        }))
         return true
     }
 
@@ -77,12 +54,7 @@ export default function Pages() {
                                         <DropdownMenu>
                                             <DropdownMenuTrigger><EllipsisIcon /></DropdownMenuTrigger>
                                             <DropdownMenuContent>
-                                                <Dialog>
-                                                    <DialogTrigger asChild className="w-full">
-                                                        <Button variant='ghost' className="justify-start"><Edit />Edit</Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent><PageForm data={p} onSubmit={(v) => editPage(p.path, v)} /></DialogContent>
-                                                </Dialog>
+                                                <EditPage page={p}/>
                                                 <Button variant='ghost' className="justify-start w-full" onClick={() => deletePage(p.path)}><Trash2 />Delete</Button>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
@@ -98,15 +70,10 @@ export default function Pages() {
                             ))}
 
                         </CommandGroup>
-                        
+
                     </CommandList>
-                        <CommandSeparator />
-                            <Dialog>
-                                <DialogTrigger className="w-full p-1">
-                                    <Button className="w-full">Add Page</Button>
-                                </DialogTrigger>
-                                <DialogContent><PageForm onSubmit={(v)=>addPage(v)} /></DialogContent>
-                            </Dialog>
+                    <CommandSeparator />
+                    <AddPage />
                 </Command>
             </PopoverContent>
         </Popover>

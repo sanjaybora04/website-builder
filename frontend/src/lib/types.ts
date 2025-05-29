@@ -4,7 +4,7 @@ export type Website = {
     id?: string,
     name: string,
     domain?: string,
-    pages?: Page[],
+    pages: Page[],
     googleTag?: string,
 }
 
