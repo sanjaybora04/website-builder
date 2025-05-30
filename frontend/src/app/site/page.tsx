@@ -1,4 +1,4 @@
-export const dynamic = 'auto' // or 'force-static'
+export const dynamic = 'force-static'
 
 // app/_site/[...slug]/page.tsx
 import { notFound } from 'next/navigation'
