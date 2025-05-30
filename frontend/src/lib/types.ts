@@ -3,7 +3,7 @@ export type Website = {
     name: string,
     domain?: string,
     pages: Page[],
-    favicon?: string,
+    favicon: string,
     googleTag?: string,
 }
 

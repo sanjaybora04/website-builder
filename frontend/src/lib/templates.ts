@@ -10,6 +10,7 @@ export const templates:Template[] = [
         name: "Blank",
         website:{
             name: "New Website",
+            favicon: `${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`,
             pages: [
                 {
                     path:'/',

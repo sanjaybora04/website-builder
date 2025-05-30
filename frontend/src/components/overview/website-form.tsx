@@ -17,13 +17,16 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Website } from "@/lib/types"
 import { templates } from "@/lib/templates"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Trash2 } from "lucide-react"
 import Link from "next/link"
 import Routes from "@/lib/routes"
 import useAuth from "@/hooks/use-auth"
+import FileUploadComponent from "../storage/fileuploader"
+import FileSelector from "../storage/fileSelector"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
+    favicon: z.string(),
     domain: z
         .string()
         .trim()
@@ -44,14 +47,13 @@ export default function WebsiteForm({
     data?: Website
     onSubmit: (values: Website) => Promise<boolean>
 }) {
-    const {user} = useAuth()
-
     const form = useForm<FormType>({
         resolver: zodResolver(formSchema),
         defaultValues: data
             ? {
                 name: data.name,
                 domain: data.domain,
+                favicon: data.favicon,
                 pages: data.pages
             }
             : templates.find(t => t.name === "Blank")?.website
@@ -59,7 +61,7 @@ export default function WebsiteForm({
 
     const [dnsStatus, setDnsStatus] = useState<"pending" | "valid" | "invalid" | "error" | null>(null)
     const [dnsRecords, setDnsRecords] = useState<string[] | null>(null)
-    const [domainType, setDomainType] = useState<"subdomain" | "custom">(!data?.domain||data?.domain?.endsWith(process.env.NEXT_PUBLIC_BASE_DOMAIN!)?"subdomain":"custom")
+    const [domainType, setDomainType] = useState<"subdomain" | "custom">(!data?.domain || data?.domain?.endsWith(process.env.NEXT_PUBLIC_BASE_DOMAIN!) ? "subdomain" : "custom")
 
     async function handleSubmit(values: FormType) {
         if (await onSubmit({ ...values })) {
@@ -100,7 +102,35 @@ export default function WebsiteForm({
                     )}
                 />
 
-                <Tabs value={domainType} onValueChange={(val) => {form.setValue('domain','');setDomainType(val as "subdomain" | "custom")}}>
+                <FormField
+                    control={form.control}
+                    name="favicon"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Favicon</FormLabel>
+                            <FormControl>
+                                {/* <Input placeholder="Social share image" {...field} /> */}
+                                {field.value ?
+                                    <div className="relative my-2">
+                                        <img src={field.value} className="rounded-full w-14 h-14" />
+                                        <Button variant='destructive' size='icon' className="absolute top-2 right-2"
+                                            onClick={() => {
+                                                field.onChange('')
+                                            }}
+                                        ><Trash2 /></Button>
+                                    </div> :
+                                    <div className="flex items-center gap-2">
+                                        <FileUploadComponent onUpload={(url: string) => field.onChange(url)} />
+                                        <FileSelector onSelect={(url: string) => field.onChange(url)} />
+                                    </div>
+                                }
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <Tabs value={domainType} onValueChange={(val) => { form.setValue('domain', ''); setDomainType(val as "subdomain" | "custom") }}>
                     <TabsList>
                         <TabsTrigger value="subdomain">Subdomain (Free)</TabsTrigger>
                         <TabsTrigger value="custom">
