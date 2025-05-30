@@ -40,11 +40,7 @@ export async function generateMetadata({params}:{params:Promise<any>}):Promise<M
         alternates:{
             canonical:host+path
         },
-        icons: {
-            icon: site.favicon,
-            shortcut:site.favicon,
-            apple: site.favicon
-        }
+        icons: site.favicon
     })
 }
 
