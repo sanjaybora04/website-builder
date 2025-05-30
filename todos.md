@@ -1,18 +1,9 @@
 * if user doesnt pay within 30 days for his existing plan then we can delete the latest created resources to downgrade the plan
 
-* header should always be 80 pixels
-
-* check domain dns record before adding website, check if domain already exists before adding, allow creating website without domain
-
-* provide image size for each image field to resize the image according to it, if not provided take full hd
-
-* create homepage by default on creating blank website
 
 * sort pages properly
 
 * put proper schema in all component editors
-
-* close modals on submit
 
 * guided tour
 
@@ -22,14 +13,17 @@
 
 * add import export feature
 
+* header should always be 80 pixels.❌
 * use sticky for header
 
 * dark mode switch not working properly
 
 * apply loader in navigation change
 
-* when website is created or edited, close the form
-
 * guided tour in website editor
 
-* 
+* allow choosing image from unsplash, provide required width and height in each component editor and apply transformations according to that
+
+* give id to each component, allow editing component name(but user should still be able to see the component type)
+
+* favicon, metadata

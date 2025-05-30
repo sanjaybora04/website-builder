@@ -199,7 +199,7 @@ export default function WebsiteForm({
                     </TabsContent>
                 </Tabs>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={form.formState.isSubmitting}>Submit</Button>
             </form>
         </Form>
     )

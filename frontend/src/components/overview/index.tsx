@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import Link from "next/link"
 import Routes from "@/lib/routes"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import api from "@/lib/api"
 import { toast } from "sonner"
 import WebsiteCard from "./website-card"
@@ -21,6 +21,8 @@ const websitesAtom = atom<Website[]>()
 
 export default function Overview() {
     const [websites, setWebsites] = useAtom(websitesAtom)
+
+    const [addWebsiteFormOpen, setAddWebsiteFormOpen] = useState(false)
 
     async function loadWebsites() {
         const res = await api.website.getAll()
@@ -35,6 +37,7 @@ export default function Overview() {
         try {
             await api.website.create(data)
             loadWebsites()
+            setAddWebsiteFormOpen(false)
             toast.success('Website created', { id })
             return true
         } catch {
@@ -53,7 +56,7 @@ export default function Overview() {
                     <div className="text-lg sm:text-xl font-raleway font-semibold">
                         Start Building Your Online Presence
                     </div>
-                    <Dialog>
+                    <Dialog open={addWebsiteFormOpen} onOpenChange={setAddWebsiteFormOpen}>
                         <DialogTrigger asChild>
                             <Button>
                                 <Plus />

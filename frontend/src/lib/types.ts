@@ -13,7 +13,7 @@ export type Page = {
     title: string,
     description: string,
     image: string,
-    components?: Component[]
+    components: Component[]
 }
 
 export type Component = {

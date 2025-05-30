@@ -12,7 +12,25 @@ const builderComponents: BuilderComponent[] = [
         component: dynamic(() => import('@/components/builder-components/header1').then(mod => mod.Component)),
         examples: [
             {
-                companyName: "SiteCraft"
+                websiteName: "SiteCraft",
+                logo: "",
+                links: [
+                    {
+                        index:1,
+                        label:"Home",
+                        href:"#"
+                    },
+                    {
+                        index:1,
+                        label:"About",
+                        href:"#"
+                    },
+                    {
+                        index:1,
+                        label:"Contact",
+                        href:"#"
+                    }
+                ]
             }
         ]
     },
