@@ -42,7 +42,7 @@ export async function generateMetadata({params}:{params:Promise<any>}):Promise<M
         },
         icons: {
             shortcut:{
-                url:site.favicon
+                url:site.favicon||""
             }
         }
     })
