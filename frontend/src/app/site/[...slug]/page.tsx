@@ -12,10 +12,10 @@ async function getWebsiteByDomain(host: string): Promise<Website> {
         body: JSON.stringify({
             domain: host,
         }),
-        next: {
-            tags: [host],
-            revalidate:3600
-        },
+        // next: {
+        //     tags: [host],
+        //     revalidate:3600
+        // },
     })
     const site = await res.json()
 

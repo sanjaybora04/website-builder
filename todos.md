@@ -24,3 +24,5 @@
 * use a common update function in builder editor components and apply debouncing
 
 * show loader on navigation
+
+* apply caching and revalidation
