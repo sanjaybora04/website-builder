@@ -1,3 +1,5 @@
+export const dynamic = 'auto' // or 'force-static'
+
 // app/_site/[...slug]/page.tsx
 import { notFound } from 'next/navigation'
 import builderComponents from '@/lib/builder-components'
