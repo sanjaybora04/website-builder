@@ -15,7 +15,8 @@ export const templates:Template[] = [
                     path:'/',
                     title:"HomePage",
                     description:"description",
-                    image:`${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`
+                    image:`${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
+                    components: []
                 }
             ]
         }

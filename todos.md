@@ -10,7 +10,7 @@
 
 * sort pages properly
 
-* put proper schema in page path and other fields
+* put proper schema in all component editors
 
 * close modals on submit
 
@@ -25,3 +25,11 @@
 * use sticky for header
 
 * dark mode switch not working properly
+
+* apply loader in navigation change
+
+* when website is created or edited, close the form
+
+* guided tour in website editor
+
+* 
