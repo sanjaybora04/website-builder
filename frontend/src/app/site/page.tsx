@@ -41,9 +41,9 @@ export async function generateMetadata({params}:{params:Promise<any>}):Promise<M
             canonical:host+path
         },
         icons: {
-            shortcut:{
-                url:site.favicon||""
-            }
+            icon: site.favicon,
+            shortcut:site.favicon,
+            apple: site.favicon
         }
     })
 }
