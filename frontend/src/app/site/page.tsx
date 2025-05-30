@@ -1,5 +1,3 @@
-export const dynamic = 'force-static'
-
 // app/_site/[...slug]/page.tsx
 import { notFound } from 'next/navigation'
 import builderComponents from '@/lib/builder-components'
@@ -15,7 +13,8 @@ async function getWebsiteByDomain(host: string): Promise<Website> {
             domain: host,
         }),
         next: {
-            tags: [host]
+            tags: [host],
+            revalidate:60
         },
     })
     const site = await res.json()
