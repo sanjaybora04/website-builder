@@ -1,10 +1,9 @@
-import { ReactNode } from "react"
-
 export type Website = {
     id?: string,
     name: string,
     domain?: string,
     pages: Page[],
+    favicon: string,
     googleTag?: string,
 }
 

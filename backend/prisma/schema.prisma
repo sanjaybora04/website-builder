@@ -25,7 +25,7 @@ model Website {
   name          String
   domain        String        @unique
   googleTag     String?
-  icon          String?
+  favicon       String?
   customCodeForHead String?
   admins        User[]
   draftPages    Json[]

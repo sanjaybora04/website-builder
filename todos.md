@@ -27,3 +27,5 @@
 * give id to each component, allow editing component name(but user should still be able to see the component type)
 
 * favicon, metadata
+
+* allow gif and ico images

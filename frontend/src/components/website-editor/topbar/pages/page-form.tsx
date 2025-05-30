@@ -16,13 +16,16 @@ import { Page, Website } from "@/lib/types"
 import { useAtom } from "jotai"
 import { websiteEditorAtom } from "@/lib/atoms"
 import { toast } from "sonner"
+import FileUploadComponent from "@/components/storage/fileuploader"
+import FileSelector from "@/components/storage/fileSelector"
+import { Trash2 } from "lucide-react"
 
 
 const formSchema = z.object({
     path: z
-    .string()
-    .min(1, "Path is required")
-    .regex(/^\/[a-zA-Z0-9\-_\/]*$/, "Path must start with '/' and contain valid characters"),
+        .string()
+        .min(1, "Path is required")
+        .regex(/^\/[a-zA-Z0-9\-_\/]*$/, "Path must start with '/' and contain valid characters"),
     title: z.string(),
     description: z.string(),
     image: z.string(),
@@ -53,12 +56,12 @@ export default function PageForm({ data, onSubmit }: { data?: Page, onSubmit: (v
 
     async function handleSubmit(values: formType) {
         // check if path already exists
-        if(values.path!=data?.path){//if path is being edited or added
-            if(websiteEditor?.website.pages?.some(p=>p.path==values.path)){
+        if (values.path != data?.path) {//if path is being edited or added
+            if (websiteEditor?.website.pages?.some(p => p.path == values.path)) {
                 return toast.error("Path already exists.\nPlease add a different path")
             }
         }
-        if (await onSubmit({...values})) {
+        if (await onSubmit({ ...values })) {
             // console.log('form submitted')
         }
     }
@@ -115,7 +118,21 @@ export default function PageForm({ data, onSubmit }: { data?: Page, onSubmit: (v
                         <FormItem>
                             <FormLabel>Image</FormLabel>
                             <FormControl>
-                                <Input placeholder="Social share image" {...field} />
+                                {/* <Input placeholder="Social share image" {...field} /> */}
+                                {field.value ?
+                                    <div className="relative">
+                                        <img src={field.value} />
+                                        <Button variant='destructive' size='icon' className="absolute top-2 right-2"
+                                            onClick={() => {
+                                                field.onChange('')
+                                            }}
+                                        ><Trash2 /></Button>
+                                    </div> :
+                                    <div className="flex items-center gap-2">
+                                        <FileUploadComponent onUpload={(url: string) => field.onChange(url)} />
+                                        <FileSelector onSelect={(url: string) => field.onChange(url)} />
+                                    </div>
+                                }
                             </FormControl>
                             <FormMessage />
                         </FormItem>
