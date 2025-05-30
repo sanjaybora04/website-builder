@@ -18,7 +18,7 @@ async function getWebsiteByDomain(host:string):Promise<Website>{
     return site
 }
 
-export async function generateMetaData({params}:{params:Promise<any>}):Promise<Metadata>{
+export async function generateMetadata({params}:{params:Promise<any>}):Promise<Metadata>{
     const host = (await headers()).get('host')!
     const path = '/' + ((await params)?.slug?.join('/') || '')
 
