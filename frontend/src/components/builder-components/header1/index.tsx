@@ -20,7 +20,7 @@ type HeaderType = {
 export function Component({ config }: { config: HeaderType }) {
     return (
         <>
-            <div className="sticky top-0 left-0 w-screen h-20 flex items-center justify-between gap-5  px-4 sm:px-10 md:px-20 bg-white border-b shadow">
+            <div className="sticky top-0 left-0 h-20 flex items-center justify-between gap-5  px-4 sm:px-10 md:px-20 bg-white border-b shadow">
                 <div className="flex gap-2 items-center">
                     <img src={config.logo} />
                     <div className="text-xl font-semibold font-raleway">{config.websiteName}</div>

@@ -29,3 +29,5 @@
 * favicon, metadata
 
 * allow gif and ico images
+
+* use a common update function in builder editor components and apply debouncing
