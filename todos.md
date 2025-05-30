@@ -5,20 +5,13 @@
 
 * put proper schema in all component editors
 
-* guided tour
-
 * open homepage when user deletes page and deleted page was open
 
 * if user is in editor and clicks on link, it should change the activepage to requested one
 
 * add import export feature
 
-* header should always be 80 pixels.❌
-* use sticky for header
-
 * dark mode switch not working properly
-
-* apply loader in navigation change
 
 * guided tour in website editor
 
@@ -26,8 +19,8 @@
 
 * give id to each component, allow editing component name(but user should still be able to see the component type)
 
-* favicon, metadata
-
 * allow gif and ico images
 
 * use a common update function in builder editor components and apply debouncing
+
+* show loader on navigation

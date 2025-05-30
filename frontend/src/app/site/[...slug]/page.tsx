@@ -12,6 +12,9 @@ async function getWebsiteByDomain(host:string):Promise<Website>{
         body: JSON.stringify({
             domain: host,
         }),
+        next: {
+            revalidate: 60, // Cache and revalidate after 60 seconds
+          },
     })
     const site = await res.json()
 
