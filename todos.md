@@ -25,4 +25,4 @@
 
 * show loader on navigation
 
-* apply caching and revalidation
+* apply caching and revalidation, make sure its not caching one response for all websites and routes

@@ -5,6 +5,7 @@ import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Textarea } from "../ui/textarea"
+import ParagraphEditor from "./paragraph-editor"
 
 type TestType = {
     title?: string,
@@ -17,9 +18,9 @@ type TestType = {
 export function Component({ config }: { config: TestType }) {
     return (
         <div className="px-4 py-10 sm:px-10 md:px-20">
-            <div className="max-w-3xl mx-auto">
+            <div>
                 <div className="text-2xl sm:text-3xl font-semibold font-raleway text-center">{config.title}</div>
-                <div className="text-center mt-2">{config.paragraph}</div>
+                <div className="mt-2" dangerouslySetInnerHTML={{__html:config.paragraph}} />
             </div>
             <div className="flex flex-col sm:flex-row gap-5 mt-5">
                 <img src={config.image1} className="sm:w-1/3 object-cover" />
@@ -37,7 +38,7 @@ export function Editor({ values, handleSubmit }: { values: TestType, handleSubmi
             <Label>Title</Label>
             <Input value={values.title} onChange={(e) => handleSubmit({ title: e.target.value })} />
             <Label>Paragraph</Label>
-            <Textarea value={values.paragraph} onChange={(e) => handleSubmit({ paragraph: e.target.value })} />
+            <ParagraphEditor value={values.paragraph ?? ''} onChange={(v) => handleSubmit({ paragraph: v })} />
             <Label>Image1</Label>
             {values.image1 ?
                 <div className="relative">
