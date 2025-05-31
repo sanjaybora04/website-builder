@@ -97,7 +97,7 @@ export default function RichTextEditor({
 
                 {/* Link buttons */}
                 <Button
-                    variant="outline"
+                    variant={editor.isActive('link') ? 'default' : 'outline'}
                     size="icon"
                     onClick={() => {
                         const url = window.prompt('Enter URL')
