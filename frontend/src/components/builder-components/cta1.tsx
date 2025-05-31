@@ -20,7 +20,7 @@ export function Component({ config }: { config: TestType }) {
         <div className="px-4 py-10 sm:px-10 md:px-20">
             <div>
                 <div className="text-2xl sm:text-3xl font-semibold font-raleway text-center">{config.title}</div>
-                <div className="mt-2" dangerouslySetInnerHTML={{__html:config.paragraph}} />
+                <div className="mt-2" dangerouslySetInnerHTML={{__html:config.paragraph||''}} />
             </div>
             <div className="flex flex-col sm:flex-row gap-5 mt-5">
                 <img src={config.image1} className="sm:w-1/3 object-cover" />
