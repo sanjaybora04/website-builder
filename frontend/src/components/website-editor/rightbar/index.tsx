@@ -34,7 +34,6 @@ export default function EditorRightBar() {
             </div>
             {websiteEditor?.activeComponent &&
                 <ConfigInput values={activeComponent?.config} handleSubmit={(config: any) => {
-                    console.log(activeComponent?.config)
                     setWebsiteEditor((prev: any) => ({
                         ...prev,
                         website: {
