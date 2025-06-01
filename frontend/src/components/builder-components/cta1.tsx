@@ -5,7 +5,7 @@ import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { useDebouncedCallback } from 'use-debounce'
-import RichTextEditor from "./rich-text-editor"
+import RichTextEditor from "../ui/editor/rich-text-editor"
 
 type TestType = {
     title?: string,
@@ -46,7 +46,6 @@ export function Editor({ values, handleSubmit }: { values: TestType, handleSubmi
                 showBackgroundColor
                 showHeading
                 showLink
-                showList
             />
 
             <RichTextEditor

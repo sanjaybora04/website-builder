@@ -80,7 +80,7 @@ export default function WebsiteEditor({ websiteId }: { websiteId: string }) {
                 <EditorLeftBar />
             </div>
             <div className={cn(
-                "h-[calc(100vh-56px)] flex-grow border transition-all duration-300",
+                "h-[calc(100vh-56px)] flex-grow border transition-all duration-300 overflow-clip",
                 websiteEditor?.leftSidebarOpen ? "ml-64 sm:ml-80" : "ml-0",
                 websiteEditor?.activeComponent ? "mr-64 sm:mr-80" : "mr-0"
             )}>

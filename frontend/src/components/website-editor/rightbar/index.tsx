@@ -53,6 +53,7 @@ export default function EditorRightBar() {
                     }));
                 }} />
             }
+            <div className="h-20"/>
         </ScrollArea>
     )
 }
