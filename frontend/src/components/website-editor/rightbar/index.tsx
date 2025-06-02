@@ -1,9 +1,10 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { websiteEditorAtom } from "@/lib/atoms";
 import builderComponents from "@/lib/builder-components";
 import { useAtom } from "jotai";
 import { Edit, X } from "lucide-react";
 import { useMemo } from "react";
+import { merge } from 'lodash'
 
 export default function EditorRightBar() {
     const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
@@ -20,8 +21,9 @@ export default function EditorRightBar() {
             : null;
     }, [activeComponent]);
     return (
-        <ScrollArea className="h-full">
-            <div className="sticky top-0 flex justify-between pb-2 mb-3 border-b bg-accent z-10">
+        <div className="h-full">
+
+            <div className="sticky top-0 flex justify-between pb-2 border-b bg-accent z-10">
                 <div className="flex items-center gap-1">
                     <div className=" max-w-48 overflow-hidden text-ellipsis whitespace-nowrap">
                         {activeComponent?.name}
@@ -32,28 +34,35 @@ export default function EditorRightBar() {
                     <X />
                 </button>
             </div>
-            {websiteEditor?.activeComponent &&
-                <ConfigInput values={activeComponent?.config} handleSubmit={(config: any) => {
-                    setWebsiteEditor((prev: any) => ({
-                        ...prev,
-                        website: {
-                            ...prev.website,
-                            pages: prev.website.pages.map((p: any) => {
-                                if (p.path === prev.activePage) {
-                                    return {
-                                        ...p,
-                                        components: p.components.map((comp: any) =>
-                                            comp.dndId === prev?.activeComponent ? { ...comp, config: { ...comp.config, ...config } } : comp
-                                        ),
-                                    };
-                                }
-                                return p;
-                            }),
-                        },
-                    }));
-                }} />
-            }
-            <div className="h-20"/>
-        </ScrollArea>
+
+            <ScrollArea className="h-full relative">
+                {websiteEditor?.activeComponent &&
+                    <ConfigInput values={activeComponent?.config} handleSubmit={(config: any) => {
+                        setWebsiteEditor((prev: any) => ({
+                            ...prev,
+                            website: {
+                                ...prev.website,
+                                pages: prev.website.pages.map((p: any) => {
+                                    if (p.path === prev.activePage) {
+                                        return {
+                                            ...p,
+                                            components: p.components.map((comp: any) =>
+                                                comp.dndId === prev.activeComponent ? {
+                                                  ...comp,
+                                                  config: merge({}, comp.config, config)
+                                                } : comp
+                                              ),
+                                        };
+                                    }
+                                    return p;
+                                }),
+                            },
+                        }));
+                    }} />
+                }
+                <div className="h-20" />
+                <ScrollBar className="z-40"/>
+            </ScrollArea>
+        </div>
     )
 }

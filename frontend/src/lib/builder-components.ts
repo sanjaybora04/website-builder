@@ -65,10 +65,6 @@ const builderComponents: BuilderComponent[] = [
                 title: "Boost Your Startup Business Faster",
                 paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex optio unde consequatur qui esse vitae illo doloremque perspiciatis quae porro impedit',
                 image: `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
-                link: {
-                    label: 'Get Started',
-                    href: '#'
-                }
             }
         ]
     },

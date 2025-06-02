@@ -22,6 +22,7 @@ import { Label } from '../../label'
 import { CustomBulletList } from './custombulletlist'
 import { CustomOrderedList } from './customorderedlist'
 import { CustomListItem } from './customlistitem'
+import { useDebouncedCallback } from 'use-debounce'
 
 export default function RichTextEditor({
     label,
@@ -44,6 +45,11 @@ export default function RichTextEditor({
     showLink?: boolean
     showAlignment?: boolean
 }) {
+    const debouncedOnChange = useDebouncedCallback((html: string) => {
+        onChange(html)
+    }, 200) // 300ms delay (you can adjust this)
+    
+
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -66,7 +72,7 @@ export default function RichTextEditor({
             },
         },
         onUpdate: ({ editor }) => {
-            onChange(editor.getHTML())
+            debouncedOnChange(editor.getHTML())
         },
     })
 
