@@ -26,3 +26,7 @@
 * show loader on navigation
 
 * apply caching and revalidation, make sure its not caching one response for all websites and routes
+
+* override the rich text link
+
+* allow user to use lucide icons in their website

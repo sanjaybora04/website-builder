@@ -7,6 +7,7 @@ import RichTextEditor from "../ui/editor/rich-text-editor"
 import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button"
 import Panel from "../ui/editor/panel"
 import { Input } from "../ui/input"
+import ColorPicker from "../ui/editor/color-picker"
 
 type ComponentType = {
     layout?: {
@@ -40,47 +41,10 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
     return (
         <>
             <Panel title="Layout" defaultOpen={false}>
-                <Input value={values.layout?.id} onChange={(e)=>handleSubmit({layout:{id:e.target.value}})} placeholder="Component Id"/>
+                <Input value={values.layout?.id} onChange={(e) => handleSubmit({ layout: { id: e.target.value } })} placeholder="Component Id" />
                 <div className="flex gap-1">
-                    <div className='flex'>
-                        <label className="cursor-pointer w-5 h-5 rounded relative flex flex-col items-center gap-1">
-                            <Type />
-                            <div className="w-full h-1" style={{ backgroundColor: values.layout?.color || '#000' }} />
-                            <input
-                                type="color"
-                                onChange={(e) => handleSubmit({ layout: { color: e.target.value } })}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                title="Text Color"
-                            />
-                        </label>
-                        {values.layout?.color && (
-                            <button
-                                className='w-4 h-5 cursor-pointer'
-                                title='Remove Text Color'
-                                onClick={() => handleSubmit({ layout: { color: undefined } })}
-                            ><X className='w-full h-full' /></button>
-                        )}
-                    </div>
-
-                    <div className='flex'>
-                        <label className="cursor-pointer w-5 h-5 rounded relative flex flex-col items-center gap-1">
-                            <Brush />
-                            <div className="w-full h-1" style={{ backgroundColor: values.layout?.backgroundColor || '#fff' }} />
-                            <input
-                                type="color"
-                                onChange={(e) => handleSubmit({ layout: { backgroundColor: e.target.value } })}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                title="Background Color"
-                            />
-                        </label>
-                        {values.layout?.backgroundColor && (
-                            <button
-                                className='w-4 h-5 cursor-pointer'
-                                title='Remove Background Color'
-                                onClick={() => handleSubmit({ layout: { backgroundColor: undefined } })}
-                            ><X className='w-full h-full' /></button>
-                        )}
-                    </div>
+                    <ColorPicker icon={<Type />} color={values.layout?.color || "#000"} onChange={(v) => handleSubmit({ layout: { color: v } })} />
+                    <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor || "#fff"} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
                 </div>
 
             </Panel>

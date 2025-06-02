@@ -47,7 +47,7 @@ export default function RichTextEditor({
 }) {
     const debouncedOnChange = useDebouncedCallback((html: string) => {
         onChange(html)
-    }, 200) // 300ms delay (you can adjust this)
+    }, 100) // 300ms delay (you can adjust this)
     
 
     const editor = useEditor({
