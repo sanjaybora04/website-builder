@@ -28,8 +28,8 @@ export default function MobileNav({ links }: { links:ButtonConfig[]}) {
 
             <SheetContent side="left">
                 <div className="space-y-3 mt-16 px-4">
-                    {links.map(l=>
-                    <ButtonComponent config={l} className=" w-full"/>
+                    {links.map((l,index)=>
+                    <ButtonComponent key={index} config={l} className=" w-full"/>
                     )}
                 </div>
             </SheetContent>

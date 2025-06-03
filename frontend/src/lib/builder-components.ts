@@ -12,25 +12,21 @@ const builderComponents: BuilderComponent[] = [
         component: dynamic(() => import('@/components/builder-components/header1').then(mod => mod.Component)),
         examples: [
             {
-                websiteName: "SiteCraft",
-                logo: "",
-                links: [
-                    {
-                        index: 1,
-                        label: "Home",
-                        href: "#"
-                    },
-                    {
-                        index: 1,
-                        label: "About",
-                        href: "#"
-                    },
-                    {
-                        index: 1,
-                        label: "Contact",
-                        href: "#"
-                    }
-                ]
+                "layout": {
+                    "color": "#ffffff",
+                    "backgroundColor": "#684a36"
+                },
+                "content": {
+                    "title": "<p>SiteCraft</p>",
+                    "buttons": [
+                        {
+                            "link": "#",
+                            "size": "default",
+                            "label": "Click Me",
+                            "bgColor": "#34251b"
+                        }
+                    ]
+                }
             }
         ]
     },

@@ -1,3 +1,4 @@
+'use client'
 import { X } from "lucide-react";
 import { useDebounce } from "use-debounce";
 import { useEffect, useState } from "react";

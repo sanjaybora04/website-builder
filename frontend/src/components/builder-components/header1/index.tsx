@@ -36,8 +36,8 @@ export function Component({ config }: { config: HeaderType }) {
                     <div className="text-xl sm:text-2xl font-semibold font-raleway" dangerouslySetInnerHTML={{ __html: config.content?.title || "" }} />
                 </div>
                 <div className="hidden sm:flex gap-5">
-                    {config.content?.buttons?.map(b =>
-                        <ButtonComponent config={b} />
+                    {config.content?.buttons?.map((b,index) =>
+                        <ButtonComponent key={index} config={b} />
                     )}
                 </div>
                 {config.content?.buttons && <Sidebar links={config.content?.buttons} />}
