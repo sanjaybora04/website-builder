@@ -25,6 +25,7 @@ import {
 import { Button } from "../../button";
 import Link from "next/link";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function ButtonEditor({
   label,
@@ -144,7 +145,7 @@ export function ButtonEditor({
   );
 }
 
-export function ButtonComponent({ config }: { config?: ButtonConfig }) {
+export function ButtonComponent({ config,className }: { config?: ButtonConfig, className?:string }) {
   const labelHTML = { __html: config?.label || "" };
 
   const renderButton = () => {
@@ -156,7 +157,7 @@ export function ButtonComponent({ config }: { config?: ButtonConfig }) {
           variant={config?.variant}
           size={config?.size || "default"}
           style={{ backgroundColor: config?.bgColor }}
-          className="rounded-md"
+          className={cn("rounded-md",className)}
           asChild
         >
           <Link href={action.href || "#"}>
@@ -171,7 +172,8 @@ export function ButtonComponent({ config }: { config?: ButtonConfig }) {
         variant={config?.variant}
         size={config?.size || "default"}
         style={{ backgroundColor: config?.bgColor }}
-        className="rounded-md"
+        className={cn("rounded-md",className)}
+
       >
         <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
       </Button>

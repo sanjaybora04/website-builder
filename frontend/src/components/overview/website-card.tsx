@@ -3,7 +3,7 @@ import { Website } from "@/lib/types";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Edit, Ellipsis, Trash2 } from "lucide-react";
+import { DownloadIcon, Edit, Ellipsis, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
 import WebsiteForm from "./website-form";
@@ -12,7 +12,7 @@ import api from "@/lib/api";
 import { useState } from "react";
 
 export default function WebsiteCard({ website, loadWebsites }: { website: Website, loadWebsites: any }) {
-    const [editWebsiteFormOpen,setEditWebsiteFormOpen] = useState(false)
+    const [editWebsiteFormOpen, setEditWebsiteFormOpen] = useState(false)
 
     async function deleteWebsite() {
         const prompt = window.prompt('Are you sure you want to delete this website?\nType DELETE to confirm')
@@ -31,7 +31,7 @@ export default function WebsiteCard({ website, loadWebsites }: { website: Websit
     async function editWebsite(data: Website) {
         const id = toast.loading('Updating Website...')
         try {
-            await api.website.update(website.id,data)
+            await api.website.update(website.id, data)
             loadWebsites()
             setEditWebsiteFormOpen(false)
             toast.success('Website updated', { id })
@@ -41,6 +41,29 @@ export default function WebsiteCard({ website, loadWebsites }: { website: Websit
             return false
         }
     }
+
+    async function exportWebsite() {
+        const id = toast.loading('Exporting website...')
+        try {
+            const res = await api.website.get(website.id!)  // Ensure this fetches full exportable data
+            const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' })
+            const url = URL.createObjectURL(blob)
+
+            const link = document.createElement('a')
+            link.href = url
+            link.download = `${website.name || 'website'}.json`
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            URL.revokeObjectURL(url)
+
+            toast.success('Export complete', { id })
+        } catch {
+            toast.error('Failed to export website', { id })
+        }
+    }
+
+
     return (
         <div key={website.id} className="relative">
             <Link href={Routes.websiteEditor(website.id!)}>
@@ -79,6 +102,12 @@ export default function WebsiteCard({ website, loadWebsites }: { website: Websit
                         <Trash2 />
                         Delete
                     </DropdownMenuItem>
+
+                    <DropdownMenuItem onClick={exportWebsite}>
+                        <DownloadIcon className="mr-2 h-4 w-4" />
+                        Export
+                    </DropdownMenuItem>
+
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>

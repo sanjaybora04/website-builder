@@ -30,15 +30,15 @@ export default function FileSelector({ onSelect }: { onSelect?: any }) {
                 </DialogHeader>
                 {/* <Input placeholder="Search..." /> */}
                 <ScrollArea className="max-h-[80vh]">
-                    <div className="grid gap-2 grid-cols-2 ">
+                    <div className="grid gap-5 grid-cols-2 ">
                     {assets.map((a: any) =>
                         <button
                         key={a.key}
                         onClick={() => {
                             onSelect(process.env.NEXT_PUBLIC_S3_URL + '/' + a.key)
                         }}
-                        className="cursor-pointer">
-                            <img src={process.env.NEXT_PUBLIC_S3_URL + '/' + a.key} />
+                        className="cursor-pointer w-full border rounded bg-accent">
+                            <img src={process.env.NEXT_PUBLIC_S3_URL + '/' + a.key} className="w-full aspect-square object-contain" />
                         </button>
                     )}
                     </div>

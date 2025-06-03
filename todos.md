@@ -30,3 +30,5 @@
 * override the rich text link
 
 * allow user to use lucide icons in their website
+
+* take params to decide which actions to allow in button, allow all by default

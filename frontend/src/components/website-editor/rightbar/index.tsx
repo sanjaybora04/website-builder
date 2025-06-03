@@ -4,7 +4,7 @@ import builderComponents from "@/lib/builder-components";
 import { useAtom } from "jotai";
 import { Edit, X } from "lucide-react";
 import { useMemo } from "react";
-import { merge } from 'lodash'
+import { deepMergeWithDeletion } from "@/lib/utils";
 
 export default function EditorRightBar() {
     const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
@@ -47,11 +47,13 @@ export default function EditorRightBar() {
                                         return {
                                             ...p,
                                             components: p.components.map((comp: any) =>
-                                                comp.dndId === prev.activeComponent ? {
-                                                  ...comp,
-                                                  config: merge({}, comp.config, config)
-                                                } : comp
-                                              ),
+                                                comp.dndId === prev.activeComponent
+                                                    ? {
+                                                        ...comp,
+                                                        config: deepMergeWithDeletion(comp.config, config),
+                                                    }
+                                                    : comp
+                                            ),
                                         };
                                     }
                                     return p;
@@ -61,7 +63,7 @@ export default function EditorRightBar() {
                     }} />
                 }
                 <div className="h-20" />
-                <ScrollBar className="z-40"/>
+                <ScrollBar className="z-40" />
             </ScrollArea>
         </div>
     )

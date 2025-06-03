@@ -16,19 +16,19 @@ const builderComponents: BuilderComponent[] = [
                 logo: "",
                 links: [
                     {
-                        index:1,
-                        label:"Home",
-                        href:"#"
+                        index: 1,
+                        label: "Home",
+                        href: "#"
                     },
                     {
-                        index:1,
-                        label:"About",
-                        href:"#"
+                        index: 1,
+                        label: "About",
+                        href: "#"
                     },
                     {
-                        index:1,
-                        label:"Contact",
-                        href:"#"
+                        index: 1,
+                        label: "Contact",
+                        href: "#"
                     }
                 ]
             }
@@ -62,10 +62,22 @@ const builderComponents: BuilderComponent[] = [
         component: dynamic(() => import('@/components/builder-components/hero1').then(mod => mod.Component)),
         examples: [
             {
-                title: "Boost Your Startup Business Faster",
-                paragraph: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex optio unde consequatur qui esse vitae illo doloremque perspiciatis quae porro impedit',
-                image: `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
+                layout: {
+                    id: "",
+                    color: "#e6dbdb",
+                    backgroundColor: "#1a1a1a"
+                },
+                content: {
+                    image: `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
+                    title: "<h1>Boost Your<span style=\"color: oklch(0.145 0 0)\"> </span><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://test.sanjaybora.in/about#\"><span style=\"color: rgb(255, 114, 94)\"><u>Startup</u></span></a><span style=\"color: oklch(0.145 0 0)\"> </span>Business Faster</h1>",
+                    paragraph: "<p><br>Lorem ipsum dolor sit amet consectetur <span style=\"color: rgb(255, 114, 94)\"><u>adipisicing</u></span> elit. Ex optio unde consequatur qui esse vitae illo doloremque perspiciatis quae porro impedit<br><br></p><ul style=\"list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.5rem;\"><li style=\"margin-bottom: 0.25rem;\"><p>hello how are you</p></li><li style=\"margin-bottom: 0.25rem;\"><p>hello i am good how are you</p></li></ul>",
+                    button: {
+                        label: "<p>Get Started</p>",
+                        bgColor: "#dd260e"
+                    },
+                }
             }
+
         ]
     },
     {

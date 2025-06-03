@@ -7,8 +7,9 @@ import { ChevronRightIcon, Menu as MenuIcon } from 'lucide-react';
 import Routes from '@/lib/routes';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { ButtonComponent, ButtonConfig } from '@/components/ui/editor/button';
 
-export default function MobileNav({ links }: { links:{index:number,label:string,href:string}[] }) {
+export default function MobileNav({ links }: { links:ButtonConfig[]}) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname()
 
@@ -26,11 +27,9 @@ export default function MobileNav({ links }: { links:{index:number,label:string,
             </SheetTrigger>
 
             <SheetContent side="left">
-                <div className="flex flex-col items-start gap-3 mt-10">
+                <div className="space-y-3 mt-16 px-4">
                     {links.map(l=>
-                    <Button key={l.index} variant="ghost" className='md:hidden w-full justify-start' asChild>
-                        <Link href={l.href}>{l.label}</Link>
-                    </Button>
+                    <ButtonComponent config={l} className=" w-full"/>
                     )}
                 </div>
             </SheetContent>

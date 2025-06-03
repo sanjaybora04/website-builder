@@ -19,7 +19,7 @@ export default function Panel({ title, defaultOpen = true, children }: PanelProp
         {title}
         <ChevronRight className={cn('w-4 h-4 duration-200', open ? "rotate-90" : "")} />
       </CollapsibleTrigger>
-      <CollapsibleContent className="space-y-3 py-3">
+      <CollapsibleContent className="space-y-5 py-3">
         {children}
       </CollapsibleContent>
     </Collapsible>
