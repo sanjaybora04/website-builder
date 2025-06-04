@@ -1,18 +1,14 @@
-import Link from "next/link"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Brush, Plus, Trash2, Type } from "lucide-react"
+import { Brush, Type } from "lucide-react"
 import Sidebar from "./sidebar"
-import FileUploadComponent from "@/components/storage/fileuploader"
-import FileSelector from "@/components/storage/fileSelector"
 import { ButtonComponent, ButtonConfig, ButtonEditor } from "@/components/ui/editor/button"
 import Panel from "@/components/ui/editor/panel"
 import ColorPicker from "@/components/ui/editor/color-picker"
 import RichTextEditor from "@/components/ui/editor/rich-text-editor"
 import { RepeaterEditor } from "@/components/ui/editor/repeater"
+import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
 
-type HeaderType = {
+type ComponentType = {
     layout?: {
         id?: string,
         color?: string
@@ -25,7 +21,9 @@ type HeaderType = {
     }
 }
 
-export function Component({ config }: { config: HeaderType }) {
+
+
+export function Component({ config }: { config: ComponentType }) {
     return (
         <>
             <div className="sticky top-0 left-0 h-20 flex items-center justify-between gap-5  px-4 sm:px-10 md:px-20 bg-white border-b shadow"
@@ -33,10 +31,10 @@ export function Component({ config }: { config: HeaderType }) {
             >
                 <div className="flex gap-2 items-center">
                     <img src={config.content?.logo} />
-                    <div className="text-xl sm:text-2xl font-semibold font-raleway" dangerouslySetInnerHTML={{ __html: config.content?.title || "" }} />
+                    <div className="text-xl sm:text-2xl font-semibold font-raleway">{RenderHtml(config.content?.title)}</div>
                 </div>
-                <div className="hidden sm:flex gap-5">
-                    {config.content?.buttons?.map((b,index) =>
+                <div className="hidden sm:flex items-center gap-5">
+                    {config.content?.buttons?.map((b, index) =>
                         <ButtonComponent key={index} config={b} />
                     )}
                 </div>
@@ -46,14 +44,14 @@ export function Component({ config }: { config: HeaderType }) {
     )
 }
 
-export function Editor({ values, handleSubmit }: { values: HeaderType, handleSubmit: (data: HeaderType) => Promise<boolean> }) {
+export function Editor({ values, handleSubmit }: { values: ComponentType, handleSubmit: (data: ComponentType) => Promise<boolean> }) {
     return (
         <>
             <Panel title="Layout" defaultOpen={false}>
                 <Input value={values.layout?.id} onChange={(e) => handleSubmit({ layout: { id: e.target.value } })} placeholder="Component Id" />
                 <div className="flex gap-1">
-                    <ColorPicker icon={<Type />} color={values.layout?.color || "#000"} onChange={(v) => handleSubmit({ layout: { color: v } })} />
-                    <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor || "#fff"} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
+                    <ColorPicker icon={<Type />} color={values.layout?.color} onChange={(v) => handleSubmit({ layout: { color: v } })} />
+                    <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
                 </div>
             </Panel>
 
@@ -63,12 +61,12 @@ export function Editor({ values, handleSubmit }: { values: HeaderType, handleSub
                     value={values.content?.title ?? ''}
                     onChange={(v) => handleSubmit({ content: { title: v } })}
                 />
-                <hr/>
-                
+                <hr />
+
                 <RepeaterEditor<ButtonConfig>
                     label="Links"
                     value={values.content?.buttons || []}
-                    onChange={(buttons) => {console.log(buttons);handleSubmit({ content: { buttons } })}}
+                    onChange={(buttons) => { console.log(buttons); handleSubmit({ content: { buttons } }) }}
                     max={5}
                     createNewItem={() => ({ label: "Click Me", link: "#" })}
                     renderEditor={(button, onChange) => (
@@ -79,7 +77,6 @@ export function Editor({ values, handleSubmit }: { values: HeaderType, handleSub
                         />
                     )}
                 />
-
             </Panel>
         </>
     )

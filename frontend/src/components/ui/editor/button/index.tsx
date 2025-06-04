@@ -24,8 +24,11 @@ import {
 } from "@/components/ui/select";
 import { Button } from "../../button";
 import Link from "next/link";
-import { X } from "lucide-react";
+import { Brush, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ColorPicker from "../color-picker";
+import { useAtom, useAtomValue } from "jotai";
+import { websiteEditorAtom } from "@/lib/atoms";
 
 export function ButtonEditor({
   label,
@@ -43,7 +46,7 @@ export function ButtonEditor({
 
   return (
     <div>
-      {label&&<Label>{label}</Label>}
+      {label && <Label>{label}</Label>}
       <div className="space-y-3 border p-2 rounded-md mt-2">
         <RichTextEditor
           label="Label"
@@ -84,24 +87,11 @@ export function ButtonEditor({
               </SelectContent>
             </Select>
           </div>
+
           <div className="space-y-2">
             <Label>Bg Color</Label>
-            <div className="flex items-center">
-              <Input
-                value={value?.bgColor ?? ""}
-                onChange={(e) => update({ bgColor: e.target.value })}
-                placeholder="#000000"
-                type="color"
-                className="w-12"
-              />
-              {
-                value?.bgColor &&
-                <button
-                  className='w-4 h-5 cursor-pointer'
-                  title='Remove Text Color'
-                  onClick={() => update({ bgColor: undefined })}
-                ><X className='w-full h-full' /></button>
-              }
+            <div className="h-9 flex justify-center items-center">
+              <ColorPicker icon={<Brush />} color={value?.bgColor} onChange={(v) => update({ bgColor: v })} />
             </div>
           </div>
         </div>
@@ -145,38 +135,56 @@ export function ButtonEditor({
   );
 }
 
-export function ButtonComponent({ config,className }: { config?: ButtonConfig, className?:string }) {
+export function ButtonComponent({ config, className }: { config?: ButtonConfig, className?: string }) {
   const labelHTML = { __html: config?.label || "" };
+  const [websiteEditor,setWebsiteEditor] = useAtom(websiteEditorAtom)
 
   const renderButton = () => {
     const action = config?.action;
 
     if (action?.type === "link") {
       return (
-        <Button
-          variant={config?.variant}
-          size={config?.size || "default"}
+        <Link href={action.href || "#"}
+        onClick={(e) => {
+          const href = action?.href || "#";
+          const isInternalLink = href.startsWith("/") || (!href.startsWith("http://") && !href.startsWith("https://"));
+          if (websiteEditor && isInternalLink) {
+            e.preventDefault();
+            setWebsiteEditor((prev: any) => ({
+              ...prev,
+              activePage: href,
+              activeComponent: undefined
+            }));
+          }
+        }}
+        
           style={{ backgroundColor: config?.bgColor }}
-          className={cn("rounded-md",className)}
-          asChild
+          className={cn(
+            "inline-flex items-center text-center rounded bg-transparent text-black",
+            className,
+            config?.variant == 'link' && "hover:underline",
+            config?.size == 'sm' ? "h-8 px-3" :
+              config?.size == 'lg' ? "h-10 px-6" : "h-9 px-4"
+          )}
         >
-          <Link href={action.href || "#"}>
-            <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
-          </Link>
-        </Button>
+          <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
+        </Link>
       );
     }
 
     return (
-      <Button
-        variant={config?.variant}
-        size={config?.size || "default"}
-        style={{ backgroundColor: config?.bgColor }}
-        className={cn("rounded-md",className)}
-
-      >
-        <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
-      </Button>
+      <button
+          style={{ backgroundColor: config?.bgColor }}
+          className={cn(
+            "inline-flex items-center text-center rounded bg-transparent text-black cursor-pointer",
+            className,
+            config?.variant == 'link' && "hover:underline",
+            config?.size == 'sm' ? "h-8 px-3" :
+              config?.size == 'lg' ? "h-10 px-6" : "h-9 px-4"
+          )}
+        >
+          <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
+        </button>
     );
   };
 

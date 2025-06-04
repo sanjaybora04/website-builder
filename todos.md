@@ -32,3 +32,9 @@
 * allow user to use lucide icons in their website
 
 * take params to decide which actions to allow in button, allow all by default
+
+* add scroll padding to header according to the height of header
+
+* add none type to button which doesnt render anything
+
+* take object-cover/contain etc option in image

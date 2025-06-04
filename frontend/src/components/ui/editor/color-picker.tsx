@@ -17,7 +17,7 @@ export default function ColorPicker({
   color,
   onChange,
 }: ColorPickerProps) {
-  const [localColor, setLocalColor] = useState(color || "#000");
+  const [localColor, setLocalColor] = useState(color);
   const [debouncedColor] = useDebounce(localColor, 100);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function ColorPicker({
 
   useEffect(() => {
     if (color !== localColor) {
-      setLocalColor(color || "#000");
+      setLocalColor(color);
     }
   }, [color]);
 
@@ -40,7 +40,7 @@ export default function ColorPicker({
         title={label}
       >
         {icon}
-        <div className="w-full h-1" style={{ backgroundColor: localColor }} />
+        <div className="w-full h-1" style={{ backgroundColor: localColor||'#ff0000' }} />
         <input
           type="color"
           value={localColor}
@@ -54,7 +54,6 @@ export default function ColorPicker({
           className="w-4 h-5 cursor-pointer"
           title={`Remove ${label}`}
           onClick={() => {
-            setLocalColor("#000");
             onChange(undefined);
           }}
         >

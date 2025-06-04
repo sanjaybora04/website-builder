@@ -15,7 +15,7 @@ export default function Panel({ title, defaultOpen = true, children }: PanelProp
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex items-center cursor-pointer gap-2 sticky top-0 py-2 mb-2 border-b bg-accent w-full z-30">
+      <CollapsibleTrigger className="flex items-center cursor-pointer gap-2 sticky top-0 py-2 mb-2 border-y bg-accent w-full z-30">
         {title}
         <ChevronRight className={cn('w-4 h-4 duration-200', open ? "rotate-90" : "")} />
       </CollapsibleTrigger>
