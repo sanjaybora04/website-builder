@@ -5,7 +5,7 @@ import Panel from "../ui/editor/panel"
 import { Input } from "../ui/input"
 import ColorPicker from "../ui/editor/color-picker"
 import ImageInput from "../ui/editor/image-input"
-import RenderHtml from "../ui/editor/rich-text-editor/render-html"
+// import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 
 type ComponentType = {
     layout?: {

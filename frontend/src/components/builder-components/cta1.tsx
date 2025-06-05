@@ -2,7 +2,7 @@ import { Brush, Type } from "lucide-react"
 import { Input } from "../ui/input"
 import { useDebouncedCallback } from 'use-debounce'
 import RichTextEditor from "../ui/editor/rich-text-editor"
-import RenderHtml from "../ui/editor/rich-text-editor/render-html"
+// import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
 import ColorPicker from "../ui/editor/color-picker"
 import ImageInput from "../ui/editor/image-input"

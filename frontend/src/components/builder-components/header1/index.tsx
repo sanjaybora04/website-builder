@@ -6,7 +6,7 @@ import Panel from "@/components/ui/editor/panel"
 import ColorPicker from "@/components/ui/editor/color-picker"
 import RichTextEditor from "@/components/ui/editor/rich-text-editor"
 import { RepeaterEditor } from "@/components/ui/editor/repeater"
-import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
+// import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
 
 type ComponentType = {
     layout?: {
