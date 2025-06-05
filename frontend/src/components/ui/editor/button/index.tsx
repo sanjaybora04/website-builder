@@ -1,5 +1,23 @@
 'use client'
 
+import { Label } from "@/components/ui/label";
+import RichTextEditor from "@/components/ui/editor/rich-text-editor";
+import { LinkActionEditor } from "./link-action";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import Link from "next/link";
+import { Brush, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import ColorPicker from "../color-picker";
+import { useAtom, useAtomValue } from "jotai";
+import { websiteEditorAtom } from "@/lib/atoms";
+
+
 export type ButtonAction =
   | { type: "none" }
   | { type: "link"; href?: string }
@@ -12,25 +30,6 @@ export type ButtonConfig = {
   action?: ButtonAction;
 };
 
-
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import RichTextEditor from "@/components/ui/editor/rich-text-editor";
-import { LinkActionEditor } from "./link-action";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "../../button";
-import Link from "next/link";
-import { Brush, X } from "lucide-react";
-import { cn } from "@/lib/utils";
-import ColorPicker from "../color-picker";
-import { useAtom, useAtomValue } from "jotai";
-import { websiteEditorAtom } from "@/lib/atoms";
 
 export function ButtonEditor({
   label,

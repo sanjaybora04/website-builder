@@ -12,6 +12,7 @@ type ComponentType = {
         id?: string,
         color?: string
         backgroundColor?: string
+        backgroundImage?: string
     },
     content?: {
         title?: string,
@@ -22,17 +23,27 @@ type ComponentType = {
 }
 
 export function Component({ config }: { config: ComponentType }) {
+    const backgroundStyle = config.layout?.backgroundImage
+    ? {
+          backgroundImage: `url(${config.layout.backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+      }
+    : {
+          backgroundColor: config.layout?.backgroundColor,
+      };
     return (
         <div className="px-4 py-10 sm:px-10 md:px-20 flex flex-col sm:flex-row gap-5 sm:gap-10"
         id={config.layout?.id} 
-        style={{ backgroundColor: config.layout?.backgroundColor, color: config.layout?.color }}
+        style={{ ...backgroundStyle, color: config.layout?.color }}
         >
             <div className="sm:w-1/2 flex flex-col justify-center gap-5">
                 <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-raleway"><RenderHtml html={config.content?.title}/></div>
                 <div><RenderHtml html={config.content?.paragraph}/></div>
                 <ButtonComponent config={config.content?.button} />
             </div>
-            <img src={config.content?.image} className="sm:w-1/2 object-contain max-h-[50vh] sm:max-h-[90vh]" />
+            {config.content?.image&&<img src={config.content?.image} className="sm:w-1/2 object-contain max-h-[50vh] sm:max-h-[90vh]" />}
         </div>
     )
 }
@@ -47,6 +58,7 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
                     <ColorPicker icon={<Type />} color={values.layout?.color} onChange={(v) => handleSubmit({ layout: { color: v } })} />
                     <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
                 </div>
+                <ImageInput label="Background Image" value={values.layout?.backgroundImage} onChange={(v)=>handleSubmit({layout:{backgroundImage:v}})}/>
 
             </Panel>
 
