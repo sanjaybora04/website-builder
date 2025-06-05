@@ -1,3 +1,5 @@
+'use client'
+
 export type ButtonAction =
   | { type: "none" }
   | { type: "link"; href?: string }
