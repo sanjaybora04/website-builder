@@ -28,8 +28,8 @@ export function Component({ config }: { config: ComponentType }) {
         style={{ backgroundColor: config.layout?.backgroundColor, color: config.layout?.color }}
         >
             <div className="sm:w-1/2 flex flex-col justify-center gap-5">
-                <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-raleway">{RenderHtml(config.content?.title)}</div>
-                <div>{RenderHtml(config.content?.paragraph)}</div>
+                <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-raleway"><RenderHtml html={config.content?.title}/></div>
+                <div><RenderHtml html={config.content?.paragraph}/></div>
                 <ButtonComponent config={config.content?.button} />
             </div>
             <img src={config.content?.image} className="sm:w-1/2 object-contain max-h-[50vh] sm:max-h-[90vh]" />

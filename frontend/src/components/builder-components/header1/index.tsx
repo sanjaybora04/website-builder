@@ -31,7 +31,7 @@ export function Component({ config }: { config: ComponentType }) {
             >
                 <div className="flex gap-2 items-center">
                     <img src={config.content?.logo} />
-                    <div className="text-xl sm:text-2xl font-semibold font-raleway">{RenderHtml(config.content?.title)}</div>
+                    <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title}/></div>
                 </div>
                 <div className="hidden sm:flex items-center gap-5">
                     {config.content?.buttons?.map((b, index) =>

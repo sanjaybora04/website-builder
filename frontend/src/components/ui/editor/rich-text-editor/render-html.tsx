@@ -4,7 +4,7 @@ import parse, { domToReact, Element as DOMNode } from 'html-react-parser'
 import { useAtom } from 'jotai'
 import Link from 'next/link'
 
-export default function RenderHtml(html?: string) {
+export default function  RenderHtml({html}:{html?:string}) {
   const [websiteEditor,setWebsiteEditor] = useAtom(websiteEditorAtom)
   return parse(html||'', {
     replace: (domNode) => {
