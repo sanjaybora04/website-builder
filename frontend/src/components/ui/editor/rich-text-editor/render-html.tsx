@@ -15,7 +15,7 @@ export default function RenderHtml(html?: string) {
         return (
           <Link href={href}
           onClick={(e) => {
-            const isInternalLink = href.startsWith("/") || (!href.startsWith("http://") && !href.startsWith("https://"));
+            const isInternalLink = href?.startsWith("/") || (!href?.startsWith("http://") && !href?.startsWith("https://"));
             if (websiteEditor && isInternalLink) {
               e.preventDefault();
               setWebsiteEditor((prev: any) => ({
