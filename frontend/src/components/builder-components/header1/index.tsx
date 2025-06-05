@@ -7,8 +7,9 @@ import ColorPicker from "@/components/ui/editor/color-picker"
 import RichTextEditor from "@/components/ui/editor/rich-text-editor"
 import { RepeaterEditor } from "@/components/ui/editor/repeater"
 import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
+import { layoutStyleGenerator } from "@/lib/utils"
 
-type ComponentType = {
+export type ComponentType = {
     layout?: {
         id?: string,
         color?: string
@@ -27,7 +28,7 @@ export function Component({ config }: { config: ComponentType }) {
     return (
         <>
             <div className="sticky top-0 left-0 h-20 flex items-center justify-between gap-5  px-4 sm:px-10 md:px-20 bg-white border-b shadow"
-                style={{ color: config.layout?.color, backgroundColor: config.layout?.backgroundColor }}
+                style={layoutStyleGenerator(config.layout)}
             >
                 <div className="flex gap-2 items-center">
                     <img src={config.content?.logo} />
@@ -38,7 +39,7 @@ export function Component({ config }: { config: ComponentType }) {
                         <ButtonComponent key={index} config={b} />
                     )}
                 </div>
-                {config.content?.buttons && <Sidebar links={config.content?.buttons} />}
+                {config.content?.buttons && <Sidebar config={config} />}
             </div>
         </>
     )

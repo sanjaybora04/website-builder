@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { ChevronRightIcon, Menu as MenuIcon } from 'lucide-react';
-import Routes from '@/lib/routes';
+import { Menu as MenuIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { ButtonComponent, ButtonConfig } from '@/components/ui/editor/button';
+import { ButtonComponent } from '@/components/ui/editor/button';
+import { ComponentType } from '.';
+import { layoutStyleGenerator } from '@/lib/utils';
 
-export default function MobileNav({ links }: { links:ButtonConfig[]}) {
+export default function MobileNav({ config }: { config:ComponentType}) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname()
 
@@ -26,9 +26,9 @@ export default function MobileNav({ links }: { links:ButtonConfig[]}) {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="left">
+            <SheetContent side="left" style={layoutStyleGenerator(config.layout)}>
                 <div className="space-y-3 mt-16 px-4">
-                    {links.map((l,index)=>
+                    {config.content?.buttons?.map((l,index)=>
                     <ButtonComponent key={index} config={l} className=" w-full"/>
                     )}
                 </div>

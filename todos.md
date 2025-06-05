@@ -17,17 +17,9 @@
 
 * allow choosing image from unsplash, provide required width and height in each component editor and apply transformations according to that
 
-* give id to each component, allow editing component name(but user should still be able to see the component type)
-
-* allow gif and ico images
-
-* use a common update function in builder editor components and apply debouncing
-
 * show loader on navigation
 
 * apply caching and revalidation, make sure its not caching one response for all websites and routes
-
-* override the rich text link
 
 * allow user to use lucide icons in their website
 
@@ -35,6 +27,6 @@
 
 * add scroll padding to header according to the height of header
 
-* add none type to button which doesnt render anything
+* in button take variant and color as input like outline,default,link, none, etc
 
-* take object-cover/contain etc option in image
+* if links contain # then editor page redirect isn't working

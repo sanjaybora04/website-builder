@@ -6,12 +6,14 @@ import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
 import ColorPicker from "../ui/editor/color-picker"
 import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
+import { layoutStyleGenerator } from "@/lib/utils"
 
 type TestType = {
     layout?: {
         id?: string,
         color?: string
         backgroundColor?: string
+        backgroundImage?: ImageInputValue
     },
     content?: {
         title?: string,
@@ -26,16 +28,16 @@ export function Component({ config }: { config: TestType }) {
     return (
         <div className="px-4 py-10 sm:px-10 md:px-20"
             id={config.layout?.id}
-            style={{ backgroundColor: config.layout?.backgroundColor, color: config.layout?.color }}
+            style={layoutStyleGenerator(config.layout)}
         >
             <div>
-                <div className="text-2xl sm:text-3xl font-semibold font-raleway" ><RenderHtml html={config.content?.title}/></div>
-                <div className="mt-2"><RenderHtml html={config.content?.paragraph}/></div>
+                <div className="text-2xl sm:text-3xl font-semibold font-raleway" ><RenderHtml html={config.content?.title} /></div>
+                <div className="mt-2"><RenderHtml html={config.content?.paragraph} /></div>
             </div>
             <div className="flex flex-col sm:flex-row gap-5 mt-5">
-                <ImageComponent config={config.content?.image1} className="w-1/3"/>
-                <ImageComponent config={config.content?.image2} className="w-1/3"/>
-                <ImageComponent config={config.content?.image3} className="w-1/3"/>
+                <ImageComponent config={config.content?.image1} className="w-1/3" />
+                <ImageComponent config={config.content?.image2} className="w-1/3" />
+                <ImageComponent config={config.content?.image3} className="w-1/3" />
             </div>
         </div>
     )
@@ -54,6 +56,8 @@ export function Editor({ values, handleSubmit }: { values: TestType, handleSubmi
                     <ColorPicker icon={<Type />} color={values.layout?.color} onChange={(v) => handleSubmit({ layout: { color: v } })} />
                     <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
                 </div>
+                <ImageInput label="Background Image" value={values.layout?.backgroundImage} onChange={(v) => handleSubmit({ layout: { backgroundImage: v } })} />
+
             </Panel>
 
             <Panel title="Content">

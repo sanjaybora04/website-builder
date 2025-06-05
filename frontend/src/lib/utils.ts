@@ -1,4 +1,6 @@
+import { ImageInputValue } from "@/components/ui/editor/image-input"
 import { clsx, type ClassValue } from "clsx"
+import { CSSProperties } from "react"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -53,4 +55,33 @@ export function deepMergeWithDeletion(target: any, source: any): any {
   }
 
   return output
+}
+
+/**
+ * Generate Layout style for components
+ * @returns 
+ */
+export function layoutStyleGenerator(layout:any){
+  let style: CSSProperties = {};
+
+  if (layout?.backgroundImage?.url) {
+    style = {
+      backgroundImage: `url(${layout?.backgroundImage.url})`,
+      backgroundSize: layout?.backgroundImage.objectFit || 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    };
+  } else if (layout?.backgroundColor) {
+    style = {
+      backgroundColor:layout.backgroundColor,
+    };
+  } else {
+    style.background = "none";
+  }
+
+  if (layout?.color) {
+    style.color = layout?.color;
+  }
+
+  return style;
 }
