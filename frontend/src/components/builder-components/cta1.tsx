@@ -29,8 +29,8 @@ export function Component({ config }: { config: TestType }) {
             style={{ backgroundColor: config.layout?.backgroundColor, color: config.layout?.color }}
         >
             <div>
-                <div className="text-2xl sm:text-3xl font-semibold font-raleway" ><RenderHtml html={config.content?.title}/></div>
-                <div className="mt-2"><RenderHtml html={config.content?.paragraph}/></div>
+                {/* <div className="text-2xl sm:text-3xl font-semibold font-raleway" ><RenderHtml html={config.content?.title}/></div> */}
+                {/* <div className="mt-2"><RenderHtml html={config.content?.paragraph}/></div> */}
             </div>
             <div className="flex flex-col sm:flex-row gap-5 mt-5">
                 <img src={config.content?.image1} className="sm:w-1/3 object-cover" />
