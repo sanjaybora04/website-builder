@@ -4,7 +4,7 @@ import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button
 import Panel from "../ui/editor/panel"
 import { Input } from "../ui/input"
 import ColorPicker from "../ui/editor/color-picker"
-import ImageInput from "../ui/editor/image-input"
+import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 
 type ComponentType = {
@@ -12,21 +12,21 @@ type ComponentType = {
         id?: string,
         color?: string
         backgroundColor?: string
-        backgroundImage?: string
+        backgroundImage?: ImageInputValue
     },
     content?: {
         title?: string,
         paragraph?: string,
         button?: ButtonConfig,
-        image?: string
+        image?: ImageInputValue
     }
 }
 
 export function Component({ config }: { config: ComponentType }) {
-    const backgroundStyle = config.layout?.backgroundImage
+    const backgroundStyle = config.layout?.backgroundImage?.url
     ? {
-          backgroundImage: `url(${config.layout.backgroundImage})`,
-          backgroundSize: 'cover',
+          backgroundImage: `url(${config.layout.backgroundImage.url})`,
+          backgroundSize: config.layout.backgroundImage.objectFit,
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
       }
@@ -43,7 +43,7 @@ export function Component({ config }: { config: ComponentType }) {
                 <div><RenderHtml html={config.content?.paragraph}/></div>
                 <ButtonComponent config={config.content?.button} />
             </div>
-            {config.content?.image&&<img src={config.content?.image} className="sm:w-1/2 object-contain max-h-[50vh] sm:max-h-[90vh]" />}
+            {config.content?.image&&<ImageComponent config={config.content?.image} className="sm:w-1/2 max-h-[50vh] sm:max-h-[90vh]" />}
         </div>
     )
 }

@@ -5,7 +5,7 @@ import RichTextEditor from "../ui/editor/rich-text-editor"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
 import ColorPicker from "../ui/editor/color-picker"
-import ImageInput from "../ui/editor/image-input"
+import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
 
 type TestType = {
     layout?: {
@@ -16,9 +16,9 @@ type TestType = {
     content?: {
         title?: string,
         paragraph?: string,
-        image1?: string,
-        image2?: string,
-        image3?: string
+        image1?: ImageInputValue,
+        image2?: ImageInputValue,
+        image3?: ImageInputValue
     }
 }
 
@@ -33,9 +33,9 @@ export function Component({ config }: { config: TestType }) {
                 <div className="mt-2"><RenderHtml html={config.content?.paragraph}/></div>
             </div>
             <div className="flex flex-col sm:flex-row gap-5 mt-5">
-                <img src={config.content?.image1} className="sm:w-1/3 object-cover" />
-                <img src={config.content?.image2} className="sm:w-1/3 object-cover" />
-                <img src={config.content?.image3} className="sm:w-1/3 object-cover" />
+                <ImageComponent config={config.content?.image1} className="w-1/3"/>
+                <ImageComponent config={config.content?.image2} className="w-1/3"/>
+                <ImageComponent config={config.content?.image3} className="w-1/3"/>
             </div>
         </div>
     )
