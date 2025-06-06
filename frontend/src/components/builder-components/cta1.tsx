@@ -46,8 +46,8 @@ export function Component({ config }: { config: ComponentType }) {
                 <div className="mt-2"><RenderHtml html={config.content?.paragraph} /></div>
             </div>
             <div className="flex flex-col md:flex-row justify-center items-center gap-5 mt-5">
-                {config.content?.cards?.map(c=>
-                    <div className="w-full max-w-96 sm:w-96 border rounded shadow p-4" style={{backgroundColor:config.layout?.card?.backgroundColor}}>
+                {config.content?.cards?.map((c,index)=>
+                    <div key={index} className="w-full max-w-96 sm:w-96 border rounded shadow p-4" style={{backgroundColor:config.layout?.card?.backgroundColor}}>
                         <ImageComponent config={c.image} className="aspect-video w-full"/>
                         <div className="mt-2 text-lg sm:text-xl font-semibold"><RenderHtml html={c.title}/></div>
                         <div className="mt-2"><RenderHtml html={c.description}/></div>
