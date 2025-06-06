@@ -22,7 +22,7 @@ export default function FileSelector({ onSelect }: { onSelect?: any }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>Select</Button>
+                <Button size='sm'>Select</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

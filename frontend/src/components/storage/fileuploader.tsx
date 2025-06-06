@@ -86,7 +86,7 @@ export default function FileUploadComponent({onUpload}:{onUpload?:any}){
                 disabled={uploading || compressing}
                 className="hidden"
             />
-            <label htmlFor="fileupload" className={buttonVariants()}>
+            <label htmlFor="fileupload" className={buttonVariants({size:'sm'})}>
                 <Upload className="mr-1" />
                 Upload
             </label>

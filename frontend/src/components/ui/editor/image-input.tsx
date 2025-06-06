@@ -52,7 +52,7 @@ export default function ImageInput({ value, onChange, label = "Image" }: ImageIn
               value={value.objectFit || 'none'}
               onValueChange={(val) => handleUpdate({ objectFit: val as ImageInputValue["objectFit"] })}
             >
-              <SelectTrigger className='w-1/2'>
+              <SelectTrigger className='w-1/2 bg-background'>
                 <SelectValue placeholder="Select object fit" />
               </SelectTrigger>
               <SelectContent>
@@ -76,7 +76,7 @@ export default function ImageInput({ value, onChange, label = "Image" }: ImageIn
 }
 
 
-export function ImageComponent({config,className}:{config?:ImageInputValue,className:string}){
+export function ImageComponent({config,className}:{config?:ImageInputValue,className?:string}){
   if(config?.url)return <img src={config?.url} alt={config?.alt} style={{objectFit:config?.objectFit}} className={className}/>
   return <></>
 }

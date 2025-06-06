@@ -7,24 +7,35 @@ import Panel from "../ui/editor/panel"
 import ColorPicker from "../ui/editor/color-picker"
 import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
 import { layoutStyleGenerator } from "@/lib/utils"
+import { RepeaterEditor } from "../ui/editor/repeater"
+import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button"
+import { Label } from "../ui/label"
 
-type TestType = {
+type cardType = {
+    image?: ImageInputValue,
+    title?: string,
+    description?: string,
+    button?: ButtonConfig
+}
+
+type ComponentType = {
     layout?: {
         id?: string,
         color?: string
         backgroundColor?: string
         backgroundImage?: ImageInputValue
+        card?:{
+            backgroundColor?:string
+        }
     },
     content?: {
         title?: string,
         paragraph?: string,
-        image1?: ImageInputValue,
-        image2?: ImageInputValue,
-        image3?: ImageInputValue
+        cards?: cardType[]
     }
 }
 
-export function Component({ config }: { config: TestType }) {
+export function Component({ config }: { config: ComponentType }) {
     return (
         <div className="px-4 py-10 sm:px-10 md:px-20"
             id={config.layout?.id}
@@ -34,20 +45,21 @@ export function Component({ config }: { config: TestType }) {
                 <div className="text-2xl sm:text-3xl font-semibold font-raleway" ><RenderHtml html={config.content?.title} /></div>
                 <div className="mt-2"><RenderHtml html={config.content?.paragraph} /></div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-5 mt-5">
-                <ImageComponent config={config.content?.image1} className="w-1/3" />
-                <ImageComponent config={config.content?.image2} className="w-1/3" />
-                <ImageComponent config={config.content?.image3} className="w-1/3" />
+            <div className="flex flex-col md:flex-row justify-center items-center gap-5 mt-5">
+                {config.content?.cards?.map(c=>
+                    <div className="w-full max-w-96 sm:w-96 border rounded shadow p-4" style={{backgroundColor:config.layout?.card?.backgroundColor}}>
+                        <ImageComponent config={c.image} className="aspect-video w-full"/>
+                        <div className="mt-2 text-lg sm:text-xl font-semibold"><RenderHtml html={c.title}/></div>
+                        <div className="mt-2"><RenderHtml html={c.description}/></div>
+                        <ButtonComponent config={c.button} className="mt-2"/>
+                    </div>
+                )}
             </div>
         </div>
     )
 }
 
-export function Editor({ values, handleSubmit }: { values: TestType, handleSubmit: (data: TestType) => Promise<boolean> }) {
-    const debouncedUpdate = useDebouncedCallback((partialUpdate: Partial<TestType>) => {
-        handleSubmit({ ...values, ...partialUpdate })
-    }, 200) // 200ms debounce delay
-
+export function Editor({ values, handleSubmit }: { values: ComponentType, handleSubmit: (data: ComponentType) => Promise<boolean> }) {
     return (
         <>
             <Panel title="Layout" defaultOpen={false}>
@@ -57,13 +69,19 @@ export function Editor({ values, handleSubmit }: { values: TestType, handleSubmi
                     <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
                 </div>
                 <ImageInput label="Background Image" value={values.layout?.backgroundImage} onChange={(v) => handleSubmit({ layout: { backgroundImage: v } })} />
+                
+                <hr/>
+
+                <Label>Card</Label>
+                <ColorPicker icon={<Brush />} color={values.layout?.card?.backgroundColor} onChange={(v) => handleSubmit({ layout: {card:{ backgroundColor: v }} })} />
+                <hr/>
 
             </Panel>
 
             <Panel title="Content">
                 <RichTextEditor
                     label="Title"
-                    value={values.content?.title ?? ''}
+                    value={values.content?.title}
                     onChange={(v) => handleSubmit({ content: { title: v } })}
                     showAlignment
                     showBackgroundColor
@@ -73,7 +91,7 @@ export function Editor({ values, handleSubmit }: { values: TestType, handleSubmi
 
                 <RichTextEditor
                     label="Paragraph"
-                    value={values.content?.paragraph ?? ''}
+                    value={values.content?.paragraph}
                     onChange={(v) => handleSubmit({ content: { paragraph: v } })}
                     showAlignment
                     showBackgroundColor
@@ -82,9 +100,39 @@ export function Editor({ values, handleSubmit }: { values: TestType, handleSubmi
                     showList
                 />
 
-                <ImageInput label="Image1" value={values.content?.image1} onChange={(v) => handleSubmit({ content: { image1: v } })} />
-                <ImageInput label="Image2" value={values.content?.image2} onChange={(v) => handleSubmit({ content: { image2: v } })} />
-                <ImageInput label="Image3" value={values.content?.image3} onChange={(v) => handleSubmit({ content: { image3: v } })} />
+                <RepeaterEditor<cardType>
+                    label="Cards"
+                    itemLabel="Card"
+                    value={values.content?.cards || []}
+                    onChange={(cards) => handleSubmit({ content: { cards } })}
+                    max={5}
+                    createNewItem={() => ({ title: "Title", description: "description", button: { label: "Clcik Me" } })}
+                    renderEditor={(card, onChange) => (
+                        <>
+                            <RichTextEditor
+                                label="Title"
+                                value={card.title}
+                                onChange={(v) => onChange({ title: v })}
+                                showAlignment
+                                showBackgroundColor
+                                showHeading
+                                showLink
+                            />
+                            <RichTextEditor
+                                label="Description"
+                                value={card.description}
+                                onChange={(v) => onChange({description:v})}
+                                showAlignment
+                                showBackgroundColor
+                                showHeading
+                                showLink
+                                showList
+                            />
+                            <ImageInput label="Image" value={card.image} onChange={(v)=>onChange({image:v})}/>
+                            <ButtonEditor label="Button" value={card.button} onChange={(v)=>onChange({button:v})}/>
+                        </>
+                    )}
+                />
             </Panel>
 
         </>

@@ -66,6 +66,7 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
 
                 <RepeaterEditor<ButtonConfig>
                     label="Links"
+                    itemLabel="Link"
                     value={values.content?.buttons || []}
                     onChange={(buttons) => { console.log(buttons); handleSubmit({ content: { buttons } }) }}
                     max={5}

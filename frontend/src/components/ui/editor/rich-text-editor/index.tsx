@@ -36,7 +36,7 @@ export default function RichTextEditor({
     showAlignment = false,
 }: {
     label?: string
-    value: string
+    value?: string
     onChange: (html: string) => void
     placeholder?: string
     showHeading?: boolean

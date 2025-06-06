@@ -11,25 +11,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Brush, X } from "lucide-react";
+import { Brush } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ColorPicker from "../color-picker";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { websiteEditorAtom } from "@/lib/atoms";
-
 
 export type ButtonAction =
   | { type: "none" }
-  | { type: "link"; href?: string }
+  | { type: "link"; href?: string };
 
 export type ButtonConfig = {
   label?: string;
   variant?: "default" | "link";
   size?: "sm" | "default" | "lg";
-  bgColor?: string;
+  color?: string;
   action?: ButtonAction;
 };
-
 
 export function ButtonEditor({
   label,
@@ -92,11 +90,10 @@ export function ButtonEditor({
           <div className="space-y-2">
             <Label>Bg Color</Label>
             <div className="h-9 flex justify-center items-center">
-              <ColorPicker icon={<Brush />} color={value?.bgColor} onChange={(v) => update({ bgColor: v })} />
+              <ColorPicker icon={<Brush />} color={value?.color} onChange={(v) => update({ color: v })} />
             </div>
           </div>
         </div>
-
 
         <div className="space-y-2">
           <Label>Action Type</Label>
@@ -105,22 +102,17 @@ export function ButtonEditor({
             onValueChange={(type: ButtonAction["type"]) => {
               if (type === "link") {
                 update({ action: { type, href: "" } });
-              }
-              // else if (type === "function") {
-              //   update({ action: { type } });
-              // } 
-              else {
+              } else {
                 update({ action: { type: "none" } });
               }
             }}
           >
-            <SelectTrigger>
+            <SelectTrigger className="bg-background">
               <SelectValue placeholder="Select action type" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">None</SelectItem>
               <SelectItem value="link">Link</SelectItem>
-              {/* <SelectItem value="function">Function</SelectItem> */}
             </SelectContent>
           </Select>
         </div>
@@ -136,36 +128,59 @@ export function ButtonEditor({
   );
 }
 
-export function ButtonComponent({ config, className }: { config?: ButtonConfig, className?: string }) {
+export function ButtonComponent({ config, className }: { config?: ButtonConfig; className?: string }) {
   const labelHTML = { __html: config?.label || "" };
-  const [websiteEditor,setWebsiteEditor] = useAtom(websiteEditorAtom)
+  const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom);
+
+  const variant = config?.variant || "default";
+  const size = config?.size || "default";
+  const color = config?.color;
+  const action = config?.action;
+
+  // Determine font size classes based on size
+  const fontSizeClass =
+    size === "sm" ? "text-sm" : size === "lg" ? "text-lg" : "text-base";
+
+  // Shared classes
+  const baseClasses = "inline-flex items-center text-center rounded cursor-pointer";
+
+  // For default variant, include height and padding
+  const defaultSizeClasses =
+    size === "sm"
+      ? "h-8 px-3"
+      : size === "lg"
+        ? "h-10 px-6"
+        : "h-9 px-4";
 
   const renderButton = () => {
-    const action = config?.action;
-
     if (action?.type === "link") {
       return (
-        <Link href={action.href || "#"}
-        onClick={(e) => {
-          const href = action?.href || "#";
-          const isInternalLink = href.startsWith("/") || (!href.startsWith("http://") && !href.startsWith("https://"));
-          if (websiteEditor && isInternalLink) {
-            e.preventDefault();
-            setWebsiteEditor((prev: any) => ({
-              ...prev,
-              activePage: href,
-              activeComponent: undefined
-            }));
-          }
-        }}
-        
-          style={{ backgroundColor: config?.bgColor }}
+        <Link
+          href={action.href || "#"}
+          onClick={(e) => {
+            const href = action?.href || "#";
+            const isInternalLink =
+              href.startsWith("/") ||
+              (!href.startsWith("http://") && !href.startsWith("https://"));
+            if (websiteEditor && isInternalLink) {
+              e.preventDefault();
+              setWebsiteEditor((prev: any) => ({
+                ...prev,
+                activePage: href,
+                activeComponent: undefined,
+              }));
+            }
+          }}
+          style={{ 
+            backgroundColor: variant!='link'?color:undefined,
+            color:variant=='link'?color:undefined 
+          }}
           className={cn(
-            "inline-flex items-center text-center rounded bg-transparent text-black",
-            className,
-            config?.variant == 'link' && "hover:underline",
-            config?.size == 'sm' ? "h-8 px-3" :
-              config?.size == 'lg' ? "h-10 px-6" : "h-9 px-4"
+            baseClasses,
+            fontSizeClass,
+            variant !== "link" && defaultSizeClasses,
+            variant == 'link' && "hover:underline",
+            className
           )}
         >
           <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
@@ -175,17 +190,20 @@ export function ButtonComponent({ config, className }: { config?: ButtonConfig, 
 
     return (
       <button
-          style={{ backgroundColor: config?.bgColor }}
-          className={cn(
-            "inline-flex items-center text-center rounded bg-transparent text-black cursor-pointer",
-            className,
-            config?.variant == 'link' && "hover:underline",
-            config?.size == 'sm' ? "h-8 px-3" :
-              config?.size == 'lg' ? "h-10 px-6" : "h-9 px-4"
-          )}
-        >
-          <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
-        </button>
+      style={{ 
+        backgroundColor: variant!='link'?color:undefined,
+        color:variant=='link'?color:undefined 
+      }}
+        className={cn(
+          baseClasses,
+          fontSizeClass,
+          variant !== "link" && defaultSizeClasses,
+          variant == 'link' && "hover:underline",
+          className
+        )}
+      >
+        <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
+      </button>
     );
   };
 
