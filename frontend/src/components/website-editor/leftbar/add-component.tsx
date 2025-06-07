@@ -1,5 +1,5 @@
 "use client";
-import { Plus } from "lucide-react";
+import { Plus, SquareArrowOutUpRight } from "lucide-react";
 import { useSetAtom } from "jotai";
 import { websiteEditorAtom } from "@/lib/atoms";
 import { v4 as uuidv4 } from 'uuid'
@@ -7,14 +7,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import builderComponents from "@/lib/builder-components";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TagInput } from "@/components/ui/tag";
+import Routes from "@/lib/routes";
+import { Button } from "@/components/ui/button";
 
 export default function AddComponent({ index }: { index: number }) {
     const setWebsiteEditor = useSetAtom(websiteEditorAtom);
     const [open, setOpen] = useState(false)
 
-    const [category, setCategory] = useState('all')
+    const [tags, setTags] = useState<any>([])
 
     function submit(config: any) {
         setWebsiteEditor((prev: any) => ({
@@ -54,34 +56,39 @@ export default function AddComponent({ index }: { index: number }) {
                     <DialogTitle>Select Component</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-5">
-                    <div className="flex items-center gap-2 justify-center">
-                        Category:
-                        <Select value={category} onValueChange={setCategory}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select Category" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All</SelectItem>
-                                {[...new Set(builderComponents.map(b=>b.category))].map(c=>
-                                <SelectItem key={c} value={c} className="capitalize">{c}</SelectItem>
-                                )}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <ScrollArea className="h-full overflow-auto" >
+                    <TagInput
+                        allTags={[...new Set(builderComponents.flatMap(b => b.tags))].map(t => ({ label: t, value: t }))}
+                        tags={tags}
+                        setTags={(v) => setTags(v)}
+                        className="w-80 mx-auto"
+                        placeholder="Filter by tags"
+                    />
+                    <ScrollArea className="h-[75vh] overflow-auto" >
                         <div className="flex flex-wrap gap-5 justify-center items-start h-full">
-                            {builderComponents.filter(f=>category=='all'||f.category==category).map(b =>
-                                <Card key={b.id} className="cursor-pointer w-80" onClick={() => submit({
-                                    dndId: uuidv4(),
-                                    id: b.id,
-                                    index,
-                                    name: b.name,
-                                    config: b.examples[0]
-                                })}>
+                            {builderComponents.map(c => {
+                                const matchCount = tags.filter((t: any) => c.tags.includes(t.value)).length
+                                return { ...c, matchCount };
+                            }).sort((a, b) => b.matchCount - a.matchCount).map(b =>
+                                <Card key={b.id} className="cursor-pointer w-80">
                                     <CardHeader>
                                         <CardTitle>{b.name}</CardTitle>
-                                        <CardDescription>{b.description}</CardDescription>
                                     </CardHeader>
+                                    <div className="relative">
+                                        <iframe src={Routes.previewComponent(b.id)} style={{ zoom: 0.249, width: '1280px', height: "720px" }} />
+                                        <a href={Routes.previewComponent(b.id)} target="_blank" className="absolute top-0 left=0 w-full h-full opacity-0 hover:opacity-100 duration-200 hover:bg-black/50 z-10 flex items-center justify-center">
+                                            <SquareArrowOutUpRight className="w-16 h-16" />
+                                        </a>
+                                    </div>
+                                    <Button onClick={() => submit({
+                                        dndId: uuidv4(),
+                                        id: b.id,
+                                        index,
+                                        name: b.name,
+                                        config: b.examples[0]
+                                    })}
+                                        className="mx-5"
+                                    >
+                                        Use</Button>
                                 </Card>
                             )}
                         </div>

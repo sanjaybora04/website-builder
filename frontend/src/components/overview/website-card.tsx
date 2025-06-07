@@ -45,10 +45,16 @@ export default function WebsiteCard({ website, loadWebsites }: { website: Websit
     async function exportWebsite() {
         const id = toast.loading('Exporting website...')
         try {
-            const res = await api.website.get(website.id!)  // Ensure this fetches full exportable data
-            const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' })
+            const res = await api.website.get(website.id!) // Fetch full exportable data
+    
+            // Remove `id` and `domain` from the data
+            const { id: _, domain, draftPages, ...cleanedData } = res.data
+    
+            const blob = new Blob([JSON.stringify(cleanedData, null, 2)], {
+                type: 'application/json',
+            })
             const url = URL.createObjectURL(blob)
-
+    
             const link = document.createElement('a')
             link.href = url
             link.download = `${website.name || 'website'}.json`
@@ -56,12 +62,13 @@ export default function WebsiteCard({ website, loadWebsites }: { website: Websit
             link.click()
             document.body.removeChild(link)
             URL.revokeObjectURL(url)
-
+    
             toast.success('Export complete', { id })
         } catch {
             toast.error('Failed to export website', { id })
         }
     }
+    
 
 
     return (

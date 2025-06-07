@@ -5,6 +5,7 @@ const Routes = {
     plan: '/plan',
     websiteEditor: (websiteId:string)=>`/website-editor/${websiteId}`,
     preview: '/preview',
+    previewComponent:(componentId:string)=>`/preview-component/${componentId}`,
     site: '/site',
     home: "/home",
     about: '/about',

@@ -31,12 +31,13 @@ export type WebsiteEditor = {
     activeComponent?: string, // index of currently active component
 }
 
+export type Tag = 'header'|'hero'|'cta'|'faq'|'reviews'|'footer'|'other'
+
 export type BuilderComponent= {
     id: string,
     name: string,
     description: string
-    category:'header'|'hero'|'cta'|'faq'|'reviews'|'footer'|'other',
-    keywords: string[],
+    tags:Tag[],
     configInput: any,
     component: any,
     examples: any[]

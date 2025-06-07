@@ -16,13 +16,12 @@ import { useEffect, useState } from "react"
 import api from "@/lib/api"
 import { toast } from "sonner"
 import WebsiteCard from "./website-card"
+import AddWebsite from "./add-website"
 
 const websitesAtom = atom<Website[]>()
 
 export default function Overview() {
     const [websites, setWebsites] = useAtom(websitesAtom)
-
-    const [addWebsiteFormOpen, setAddWebsiteFormOpen] = useState(false)
 
     async function loadWebsites() {
         const res = await api.website.getAll()
@@ -30,23 +29,7 @@ export default function Overview() {
     }
     useEffect(() => {
         loadWebsites()
-    }, [])
-
-    async function addWebsite(data: Website) {
-        const id = toast.loading('Creating Website...')
-        try {
-            await api.website.create(data)
-            loadWebsites()
-            setAddWebsiteFormOpen(false)
-            toast.success('Website created', { id })
-            return true
-        } catch {
-            toast.dismiss(id)
-            return false
-        }
-    }
-
-    
+    }, [])    
     return (
         <>
             <DashboardHeader />
@@ -56,17 +39,7 @@ export default function Overview() {
                     <div className="text-lg sm:text-xl font-raleway font-semibold">
                         Start Building Your Online Presence
                     </div>
-                    <Dialog open={addWebsiteFormOpen} onOpenChange={setAddWebsiteFormOpen}>
-                        <DialogTrigger asChild>
-                            <Button>
-                                <Plus />
-                                Add Website
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <WebsiteForm onSubmit={addWebsite} />
-                        </DialogContent>
-                    </Dialog>
+                    <AddWebsite loadWebsites={loadWebsites}/>
                 </div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 my-7">
                     {websites ? websites.map(w =>

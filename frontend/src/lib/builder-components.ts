@@ -3,11 +3,10 @@ import dynamic from "next/dynamic";
 
 const builderComponents: BuilderComponent[] = [
     {
-        id: 'header-1',
+        id: '1',
         name: "Basic Header",
         description: "Basic header component",
-        category: 'header',
-        keywords: [],
+        tags: ['header'],
         configInput: dynamic(() => import('@/components/builder-components/header1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/header1').then(mod => mod.Component)),
         examples: [
@@ -42,13 +41,12 @@ const builderComponents: BuilderComponent[] = [
         ]
     },
     {
-        id: 'cta-1',
-        name: "Basic CTA",
+        id: '2',
+        name: "Cards",
         description: "Basic Cta component",
-        category: 'cta',
-        keywords: [],
-        configInput: dynamic(() => import('@/components/builder-components/cta1').then(mod => mod.Editor)),
-        component: dynamic(() => import('@/components/builder-components/cta1').then(mod => mod.Component)),
+        tags:['cta'],
+        configInput: dynamic(() => import('@/components/builder-components/cards1').then(mod => mod.Editor)),
+        component: dynamic(() => import('@/components/builder-components/cards1').then(mod => mod.Component)),
         examples: [
             {
                 "layout": {
@@ -104,11 +102,10 @@ const builderComponents: BuilderComponent[] = [
         ]
     },
     {
-        id: 'hero-1',
+        id: '3',
         name: "Basic Hero",
         description: "Basic Hero component",
-        category: 'hero',
-        keywords: [],
+        tags:['hero'],
         configInput: dynamic(() => import('@/components/builder-components/hero1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/hero1').then(mod => mod.Component)),
         examples: [
@@ -140,11 +137,10 @@ const builderComponents: BuilderComponent[] = [
         ]
     },
     {
-        id: 'reviews-1',
+        id: '4',
         name: "Basic Reviews",
         description: "Customer testimonial section",
-        category: 'reviews',
-        keywords: [],
+        tags:['reviews'],
         configInput: dynamic(() => import('@/components/builder-components/reviews1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/reviews1').then(mod => mod.Component)),
         examples: [
@@ -168,11 +164,10 @@ const builderComponents: BuilderComponent[] = [
         ]
     },
     {
-        id: 'faq-1',
+        id: '5',
         name: "Basic FAQ",
         description: "A frequently asked questions section",
-        category: 'faq',
-        keywords: ['faq', 'questions', 'accordion'],
+        tags:['faq'],
         configInput: dynamic(() => import('@/components/builder-components/faq1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/faq1').then(mod => mod.Component)),
         examples: [
@@ -196,11 +191,10 @@ const builderComponents: BuilderComponent[] = [
         ]
     },
     {
-        id: 'footer-1',
+        id: '6',
         name: "Basic Footer",
         description: "Minimal footer with title, description, and links",
-        category: 'footer',
-        keywords: ['footer', 'links', 'bottom'],
+        tags:['footer'],
         configInput: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Component)),
         examples: [
