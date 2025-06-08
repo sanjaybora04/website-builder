@@ -1,3 +1,4 @@
+'use client'
 // components/testimonials.tsx
 
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
