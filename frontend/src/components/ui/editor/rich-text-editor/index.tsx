@@ -196,7 +196,7 @@ export default function RichTextEditor({
                 <div className='flex'>
                     <label className="cursor-pointer w-5 h-5 rounded relative flex flex-col items-center gap-1">
                         <Type />
-                        <div className="w-full h-1" style={{ backgroundColor: editor.getAttributes('textStyle')?.color || '#000' }} />
+                        <div className="w-full h-1" style={{ backgroundColor: editor.getAttributes('textStyle')?.color || '#ff0000' }} />
                         <input
                             type="color"
                             onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
@@ -218,7 +218,7 @@ export default function RichTextEditor({
                     <div className='flex'>
                         <label className="cursor-pointer w-5 h-5 rounded relative flex flex-col items-center gap-1">
                             <Brush />
-                            <div className="w-full h-1" style={{ backgroundColor: editor.getAttributes('highlight')?.color || '#fff' }} />
+                            <div className="w-full h-1" style={{ backgroundColor: editor.getAttributes('highlight')?.color || '#ff0000' }} />
                             <input
                                 type="color"
                                 onChange={(e) => editor.chain().focus().setHighlight({ color: e.target.value }).run()}

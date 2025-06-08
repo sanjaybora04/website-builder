@@ -1,104 +1,148 @@
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Trash2 } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { Brush, Type } from "lucide-react"
+import ColorPicker from "../ui/editor/color-picker"
+import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
+import Panel from "../ui/editor/panel"
+import RenderHtml from "../ui/editor/rich-text-editor/render-html"
+import RichTextEditor from "../ui/editor/rich-text-editor"
+import { RepeaterEditor } from "../ui/editor/repeater"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
 
-type Faq = {
-  question?: string;
-  answer?: string;
-};
-
-type FaqConfig = {
-  title?: string;
-  faqs?: Faq[];
-};
-
-// ✅ RENDER COMPONENT
-export function Component({ config }: { config: FaqConfig }) {
-  return (
-    <div className="px-4 py-10 sm:px-10 md:px-20 space-y-10">
-      {config.title && <h2 className="text-2xl sm:text-3xl font-semibold font-raleway text-center">{config.title}</h2>}
-      <Accordion type="single" collapsible className="space-y-2 max-w-5xl mx-auto">
-        {config.faqs?.map((faq, index) => (
-          <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-4 py-2">
-            <AccordionTrigger className="text-lg font-medium">{faq.question}</AccordionTrigger>
-            <AccordionContent className="text-gray-700">{faq.answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
-  );
+// types
+type FAQItem = {
+  question?: string
+  answer?: string
 }
 
-// ✅ EDITOR COMPONENT
+type ComponentType = {
+  container?: ContainerConfig,
+  accordion?: {
+      color?: string
+      backgroundColor?: string
+  },
+  content?: {
+      title?: string,
+      description?: string,
+      faqs?: FAQItem[]
+  }
+}
+
+// component
+export function Component({ config }: { config: ComponentType }) {
+  return (
+      <Container config={config.container}>
+          <div>
+              <div className="text-2xl sm:text-3xl font-semibold font-raleway">
+                  <RenderHtml html={config.content?.title} />
+              </div>
+              <div className="mt-2">
+                  <RenderHtml html={config.content?.description} />
+              </div>
+          </div>
+          <Accordion type="multiple" className="mt-6 w-full max-w-3xl mx-auto space-y-2">
+                {config.content?.faqs?.map((faq, index) => (
+                    <AccordionItem
+                        key={index}
+                        value={`faq-${index}`}
+                        className="border rounded-md shadow"
+                        style={{
+                            backgroundColor: config.accordion?.backgroundColor,
+                            color: config.accordion?.color,
+                        }}
+                    >
+                        <AccordionTrigger className="text-left font-medium text-lg px-4 py-2">
+                            <RenderHtml html={faq.question} />
+                        </AccordionTrigger>
+                        <AccordionContent className="px-4 pb-4 pt-1">
+                            <RenderHtml html={faq.answer} />
+                        </AccordionContent>
+                    </AccordionItem>
+                ))}
+            </Accordion>
+      </Container>
+  )
+}
+
+// editor
 export function Editor({
   values,
   handleSubmit,
 }: {
-  values: FaqConfig;
-  handleSubmit: (data: FaqConfig) => Promise<boolean>;
+  values: ComponentType
+  handleSubmit: (data: ComponentType) => Promise<boolean>
 }) {
-  const updateFaq = (index: number, updated: Faq) => {
-    const newFaqs = [...(values.faqs || [])];
-    newFaqs[index] = updated;
-    handleSubmit({ faqs: newFaqs });
-  };
-
-  const deleteFaq = (index: number) => {
-    const newFaqs = [...(values.faqs || [])];
-    newFaqs.splice(index, 1);
-    handleSubmit({ faqs: newFaqs });
-  };
-
   return (
-    <div className="space-y-4">
-      <Label>Title</Label>
-      <Input
-        value={values.title || ""}
-        onChange={(e) => handleSubmit({ title: e.target.value })}
-        placeholder="FAQ Section Title"
-      />
+      <>
+          <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} />
 
-      <div className="space-y-4">
-        {values.faqs?.map((faq, index) => (
-          <div key={index} className="border p-4 rounded relative space-y-2">
-            <Label>Question</Label>
-            <Input
-              value={faq.question || ""}
-              onChange={(e) =>
-                updateFaq(index, { ...faq, question: e.target.value })
-              }
-            />
-            <Label>Answer</Label>
-            <Textarea
-              value={faq.answer || ""}
-              onChange={(e) =>
-                updateFaq(index, { ...faq, answer: e.target.value })
-              }
-            />
-            <Button
-              size="icon"
-              variant="destructive"
-              className="absolute top-2 right-2"
-              onClick={() => deleteFaq(index)}
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          </div>
-        ))}
-      </div>
+          <Panel title="Accordion" defaultOpen={false}>
+            <div className="flex gap-1">
+              <ColorPicker
+                  icon={<Type />}
+                  color={values.accordion?.color}
+                  onChange={(v) => handleSubmit({ accordion: { color: v } })}
+                  />
+              <ColorPicker
+                  icon={<Brush />}
+                  color={values.accordion?.backgroundColor}
+                  onChange={(v) => handleSubmit({ accordion: { backgroundColor: v } })}
+                  />
+                  </div>
+          </Panel>
 
-      <Button
-        onClick={() =>
-          handleSubmit({
-            faqs: [...(values.faqs || []), { question: "", answer: "" }],
-          })
-        }
-      >
-        Add FAQ
-      </Button>
-    </div>
-  );
+          <Panel title="Content">
+              <RichTextEditor
+                  label="Title"
+                  value={values.content?.title}
+                  onChange={(v) => handleSubmit({ content: { title: v } })}
+                  showAlignment
+                  showBackgroundColor
+                  showHeading
+                  showLink
+              />
+              <RichTextEditor
+                  label="Description"
+                  value={values.content?.description}
+                  onChange={(v) => handleSubmit({ content: { description: v } })}
+                  showAlignment
+                  showBackgroundColor
+                  showHeading
+                  showLink
+              />
+              <RepeaterEditor<FAQItem>
+                  label="FAQs"
+                  itemLabel="FAQ"
+                  value={values.content?.faqs || []}
+                  onChange={(faqs) => handleSubmit({ content: { faqs } })}
+                  max={10}
+                  createNewItem={() => ({
+                      question: "What is your return policy?",
+                      answer: "You can return items within 30 days.",
+                  })}
+                  renderEditor={(faq, onChange) => (
+                      <>
+                          <RichTextEditor
+                              label="Question"
+                              value={faq.question}
+                              onChange={(v) => onChange({ question: v })}
+                              showAlignment
+                              showBackgroundColor
+                              showHeading
+                              showLink
+                          />
+                          <RichTextEditor
+                              label="Answer"
+                              value={faq.answer}
+                              onChange={(v) => onChange({ answer: v })}
+                              showAlignment
+                              showBackgroundColor
+                              showHeading
+                              showLink
+                              showList
+                          />
+                      </>
+                  )}
+              />
+          </Panel>
+      </>
+  )
 }

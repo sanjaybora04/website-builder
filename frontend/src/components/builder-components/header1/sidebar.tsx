@@ -26,7 +26,7 @@ export default function MobileNav({ config }: { config:ComponentType}) {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" style={layoutStyleGenerator(config.layout)}>
+            <SheetContent side="left" style={layoutStyleGenerator(config.container)}>
                 <div className="space-y-3 mt-16 px-4">
                     {config.content?.buttons?.map((l,index)=>
                     <ButtonComponent key={index} config={l} className=" w-full"/>

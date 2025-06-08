@@ -1,105 +1,145 @@
-import Link from "next/link";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Trash2 } from "lucide-react";
+import { Brush, Type } from "lucide-react"
+import ColorPicker from "../ui/editor/color-picker"
+import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
+import Panel from "../ui/editor/panel"
+import RenderHtml from "../ui/editor/rich-text-editor/render-html"
+import RichTextEditor from "../ui/editor/rich-text-editor"
+import { RepeaterEditor } from "../ui/editor/repeater"
 
-type FooterType = {
-    title?: string;
-    description?: string;
-    links?: {
-        label?: string;
-        href?: string;
-    }[];
-};
+type FooterLink = {
+    label?: string
+    href?: string
+}
 
-export function Component({ config }: { config: FooterType }) {
+type FooterGroup = {
+    title?: string
+    links?: FooterLink[]
+}
+
+type ComponentType = {
+    container?: ContainerConfig,
+    content?: {
+        brand?: string
+        groups?: FooterGroup[]
+        copyright?: string
+    }
+}
+
+
+export function Component({ config }: { config: ComponentType }) {
     return (
-        <footer className="bg-gray-900 text-white px-4 py-10 sm:px-10 md:px-20">
-            <div className="max-w-6xl mx-auto flex flex-col items-center gap-4">
-                {config.title && <h2 className="text-2xl font-bold">{config.title}</h2>}
-                {config.description && <p className="text-center text-gray-400 max-w-xl">{config.description}</p>}
-                {config.links && config.links.length > 0 && (
-                    <div className="flex flex-wrap gap-4 justify-center mt-4">
-                        {config.links.map((link, index) => (
-                            <Link
-                                key={index}
-                                href={link.href || "#"}
-                                className="text-blue-400 hover:underline"
-                            >
-                                {link.label}
-                            </Link>
+        <Container config={config.container}>
+            <footer className="w-full py-8">
+                <div className="max-w-7xl mx-auto px-4">
+                    {config.content?.brand && (
+                        <div className="text-xl font-semibold mb-4">
+                            <RenderHtml html={config.content.brand} />
+                        </div>
+                    )}
+
+                    <div className="flex flex-wrap gap-10 sm:gap-20">
+                        {config.content?.groups?.map((group, index) => (
+                            <div key={index}>
+                                <div className="font-bold mb-2">
+                                    <RenderHtml html={group.title} />
+                                </div>
+                                <ul className="space-y-1 text-sm">
+                                    {group.links?.map((link, idx) => (
+                                        <li key={idx}>
+                                            <a href={link.href} className="hover:underline" target="_blank" rel="noopener noreferrer">
+                                                {link.label}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         ))}
                     </div>
-                )}
-            </div>
-        </footer>
-    );
+
+                    {config.content?.copyright && (
+                        <div className="mt-8 text-xs text-muted-foreground text-center">
+                            <RenderHtml html={config.content?.copyright} />
+                        </div>
+                    )}
+                </div>
+            </footer>
+        </Container>
+    )
 }
 
 export function Editor({
     values,
     handleSubmit,
-}: {
-    values: FooterType;
-    handleSubmit: (data: FooterType) => Promise<boolean>;
-}) {
-    const updateLink = (index: number, key: "label" | "href", value: string) => {
-        const updatedLinks = [...(values.links || [])];
-        updatedLinks[index] = {
-            ...updatedLinks[index],
-            [key]: value,
-        };
-        handleSubmit({ links: updatedLinks });
-    };
-
-    const addLink = () => {
-        handleSubmit({ links: [...(values.links || []), { label: "", href: "" }] });
-    };
-
-    const removeLink = (index: number) => {
-        const updatedLinks = [...(values.links || [])];
-        updatedLinks.splice(index, 1);
-        handleSubmit({ links: updatedLinks });
-    };
-
+  }: {
+    values: ComponentType
+    handleSubmit: (data: ComponentType) => Promise<boolean>
+  }) {
     return (
-        <div className="space-y-2">
-            <Label>Title</Label>
-            <Input value={values.title} onChange={(e) => handleSubmit({ title: e.target.value })} />
-
-            <Label>Description</Label>
-            <Textarea
-                value={values.description}
-                onChange={(e) => handleSubmit({ description: e.target.value })}
-            />
-
-            <Label>Links</Label>
-            <div className="space-y-2">
-                {(values.links || []).map((link, index) => (
-                    <div key={index} className="flex gap-2 items-center">
-                        <Input
-                            placeholder="Label"
-                            value={link.label}
-                            onChange={(e) => updateLink(index, "label", e.target.value)}
-                        />
-                        <Input
-                            placeholder="Href"
-                            value={link.href}
-                            onChange={(e) => updateLink(index, "href", e.target.value)}
-                        />
-                        <Button
-                            variant="destructive"
-                            size="icon"
-                            onClick={() => removeLink(index)}
-                        >
-                            <Trash2 />
-                        </Button>
-                    </div>
-                ))}
-                <Button onClick={addLink}>+ Add Link</Button>
-            </div>
-        </div>
-    );
-}
+      <>
+        <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} />
+  
+        <Panel title="Content">
+          <RichTextEditor
+            label="Brand / Description"
+            value={values.content?.brand}
+            onChange={(v) => handleSubmit({ content: { brand: v } })}
+            showAlignment
+            showBackgroundColor
+            showHeading
+            showLink
+          />
+  
+          <RepeaterEditor<FooterGroup>
+            label="Link Groups"
+            itemLabel="Group"
+            value={values.content?.groups || []}
+            onChange={(groups) => handleSubmit({ content: { groups } })}
+            max={4}
+            createNewItem={() => ({ title: "Links", links: [] })}
+            renderEditor={(group, onChange) => (
+              <>
+                <RichTextEditor
+                  label="Group Title"
+                  value={group.title}
+                  onChange={(v) => onChange({ title: v })}
+                  showHeading
+                />
+                <RepeaterEditor<FooterLink>
+                  label="Links"
+                  itemLabel="Link"
+                  value={group.links || []}
+                  onChange={(links) => onChange({ links })}
+                  max={6}
+                  createNewItem={() => ({ label: "Home", href: "/" })}
+                  renderEditor={(link, onChange) => (
+                    <>
+                      <input
+                        className="input w-full"
+                        placeholder="Label"
+                        value={link.label || ""}
+                        onChange={(e) => onChange({ label: e.target.value })}
+                      />
+                      <input
+                        className="input w-full"
+                        placeholder="URL"
+                        value={link.href || ""}
+                        onChange={(e) => onChange({ href: e.target.value })}
+                      />
+                    </>
+                  )}
+                />
+              </>
+            )}
+          />
+  
+          <RichTextEditor
+            label="Copyright"
+            value={values.content?.copyright}
+            onChange={(v) => handleSubmit({ content: { copyright: v } })}
+            showAlignment
+            showLink
+          />
+        </Panel>
+      </>
+    )
+  }

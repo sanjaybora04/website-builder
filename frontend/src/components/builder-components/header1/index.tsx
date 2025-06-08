@@ -7,14 +7,10 @@ import ColorPicker from "@/components/ui/editor/color-picker"
 import RichTextEditor from "@/components/ui/editor/rich-text-editor"
 import { RepeaterEditor } from "@/components/ui/editor/repeater"
 import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
-import { layoutStyleGenerator } from "@/lib/utils"
+import { Container, ContainerConfig, ContainerPanel } from "@/components/ui/editor/container"
 
 export type ComponentType = {
-    layout?: {
-        id?: string,
-        color?: string
-        backgroundColor?: string
-    },
+    container?: ContainerConfig
     content?: {
         title?: string,
         logo?: string,
@@ -26,35 +22,28 @@ export type ComponentType = {
 
 export function Component({ config }: { config: ComponentType }) {
     return (
-        <>
-            <div className="sticky top-0 left-0 h-20 flex items-center justify-between gap-5  px-4 sm:px-10 md:px-20 bg-white border-b shadow"
-                style={layoutStyleGenerator(config.layout)}
-            >
-                <div className="flex gap-2 items-center">
-                    <img src={config.content?.logo} />
-                    <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title}/></div>
-                </div>
-                <div className="hidden sm:flex items-center gap-5">
-                    {config.content?.buttons?.map((b, index) =>
-                        <ButtonComponent key={index} config={b} />
-                    )}
-                </div>
-                {config.content?.buttons && <Sidebar config={config} />}
+        <Container 
+        config={config.container} 
+        className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 bg-white border-b shadow"
+        >
+            <div className="flex gap-2 items-center">
+                <img src={config.content?.logo} />
+                <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title} /></div>
             </div>
-        </>
+            <div className="hidden sm:flex items-center gap-5">
+                {config.content?.buttons?.map((b, index) =>
+                    <ButtonComponent key={index} config={b} />
+                )}
+            </div>
+            {config.content?.buttons && <Sidebar config={config} />}
+        </Container>
     )
 }
 
 export function Editor({ values, handleSubmit }: { values: ComponentType, handleSubmit: (data: ComponentType) => Promise<boolean> }) {
     return (
         <>
-            <Panel title="Layout" defaultOpen={false}>
-                <Input value={values.layout?.id} onChange={(e) => handleSubmit({ layout: { id: e.target.value } })} placeholder="Component Id" />
-                <div className="flex gap-1">
-                    <ColorPicker icon={<Type />} color={values.layout?.color} onChange={(v) => handleSubmit({ layout: { color: v } })} />
-                    <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
-                </div>
-            </Panel>
+            <ContainerPanel config={values.container} onChange={(v)=>handleSubmit({container:v})} enable={{backgroundImage:false}}/>
 
             <Panel title="Content" defaultOpen={true}>
                 <RichTextEditor

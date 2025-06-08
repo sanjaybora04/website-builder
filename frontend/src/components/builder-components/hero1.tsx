@@ -7,14 +7,10 @@ import ColorPicker from "../ui/editor/color-picker"
 import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import { layoutStyleGenerator } from "@/lib/utils"
+import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
 
 type ComponentType = {
-    layout?: {
-        id?: string,
-        color?: string
-        backgroundColor?: string
-        backgroundImage?: ImageInputValue
-    },
+    container?: ContainerConfig
     content?: {
         title?: string,
         paragraph?: string,
@@ -26,17 +22,14 @@ type ComponentType = {
 export function Component({ config }: { config: ComponentType }) {
 
     return (
-        <div className="px-4 py-10 sm:px-10 md:px-20 flex flex-col sm:flex-row gap-5 sm:gap-10"
-            id={config.layout?.id}
-            style={layoutStyleGenerator(config.layout)}
-        >
+        <Container config={config.container} className="flex flex-col sm:flex-row gap-5 sm:gap-10">
             <div className="sm:w-1/2 flex flex-col justify-center gap-5">
                 <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-raleway"><RenderHtml html={config.content?.title} /></div>
                 <div><RenderHtml html={config.content?.paragraph} /></div>
                 <ButtonComponent config={config.content?.button} />
             </div>
             {config.content?.image && <ImageComponent config={config.content?.image} className="sm:w-1/2 max-h-[50vh] sm:max-h-[90vh]" />}
-        </div>
+        </Container>
     )
 }
 
@@ -44,15 +37,7 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
 
     return (
         <>
-            <Panel title="Layout" defaultOpen={false}>
-                <Input value={values.layout?.id} onChange={(e) => handleSubmit({ layout: { id: e.target.value } })} placeholder="Component Id" />
-                <div className="flex gap-1">
-                    <ColorPicker icon={<Type />} color={values.layout?.color} onChange={(v) => handleSubmit({ layout: { color: v } })} />
-                    <ColorPicker icon={<Brush />} color={values.layout?.backgroundColor} onChange={(v) => handleSubmit({ layout: { backgroundColor: v } })} />
-                </div>
-                <ImageInput label="Background Image" value={values.layout?.backgroundImage} onChange={(v) => handleSubmit({ layout: { backgroundImage: v } })} />
-
-            </Panel>
+            <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} />
 
             <Panel title="Content">
                 <RichTextEditor

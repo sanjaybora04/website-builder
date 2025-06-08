@@ -138,21 +138,7 @@ const builderComponents: BuilderComponent[] = [
         component: dynamic(() => import('@/components/builder-components/reviews1').then(mod => mod.Component)),
         examples: [
             {
-                title: "What our customers say",
-                reviews: [
-                    {
-                        name: "Jane Doe",
-                        role: "CEO at Acme Inc",
-                        review: "This tool has been a game changer for our workflow.",
-                        avatar: `${process.env.NEXT_PUBLIC_BASE_URL}/images/user1.jpg`
-                    },
-                    {
-                        name: "John Smith",
-                        role: "Product Manager",
-                        review: "Absolutely love the speed and ease of use.",
-                        avatar: `${process.env.NEXT_PUBLIC_BASE_URL}/images/user2.jpg`
-                    }
-                ]
+                
             }
         ]
     },
@@ -164,21 +150,7 @@ const builderComponents: BuilderComponent[] = [
         component: dynamic(() => import('@/components/builder-components/faq1').then(mod => mod.Component)),
         examples: [
             {
-                title: "Frequently Asked Questions",
-                faqs: [
-                    {
-                        question: "What is SiteCraft?",
-                        answer: "SiteCraft is a simple and powerful website builder."
-                    },
-                    {
-                        question: "Is it free to use?",
-                        answer: "Yes, there's a generous free plan available."
-                    },
-                    {
-                        question: "Can I connect my own domain?",
-                        answer: "Yes, custom domain support is available in the premium plan."
-                    }
-                ]
+               
             }
         ]
     },
@@ -190,12 +162,7 @@ const builderComponents: BuilderComponent[] = [
         component: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Component)),
         examples: [
             {
-                title: "SiteCraft",
-                links: [
-                    { label: "About", href: "#" },
-                    { label: "Contact", href: "#" },
-                    { label: "Privacy", href: "#" }
-                ]
+
             }
         ]
     }

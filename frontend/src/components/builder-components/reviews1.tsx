@@ -1,115 +1,151 @@
-import { Input } from "../ui/input"
+// components/testimonials.tsx
+
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
+import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
+import RichTextEditor from "../ui/editor/rich-text-editor"
+import RenderHtml from "../ui/editor/rich-text-editor/render-html"
+import Panel from "../ui/editor/panel"
+import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
+import { RepeaterEditor } from "../ui/editor/repeater"
+import { Brush, Type } from "lucide-react"
+import ColorPicker from "../ui/editor/color-picker"
+import Autoplay from 'embla-carousel-autoplay'
+import { Checkbox } from "../ui/checkbox"
 import { Label } from "../ui/label"
-import { Textarea } from "../ui/textarea"
-import { Button } from "../ui/button"
-import { Trash2 } from "lucide-react"
 
-type Review = {
+type Testimonial = {
   name?: string
-  role?: string
-  review?: string
-  avatar?: string
+  position?: string
+  image?: ImageInputValue
+  quote?: string
 }
 
-type ReviewsConfig = {
-  title?: string
-  reviews?: Review[]
+type ComponentType = {
+  container?: ContainerConfig
+  carousel?: {
+    backgroundColor?: string
+    color?: string
+    autoplay?: boolean
+  }
+  content?: {
+    title?: string
+    paragraph?: string
+    testimonials?: Testimonial[]
+  }
 }
 
-// ✅ DISPLAY COMPONENT
-export function Component({ config }: { config: ReviewsConfig }) {
+export function Component({ config }: { config: ComponentType }) {
   return (
-    <div className="py-10 px-4 md:px-20 bg-gray-50">
-      {config.title && <h2 className="text-2xl sm:text-3xl font-semibold font-raleway text-center">{config.title}</h2>}
-      <div className="flex flex-col sm:flex-row justify-center gap-6 max-w-5xl mx-auto mt-10">
-        {config.reviews?.map((r, i) => (
-          <div key={i} className="bg-white p-6 rounded-lg shadow space-y-4">
-            <p className="text-gray-700 italic">&quot;{r.review}&quot;</p>
-            <div className="flex items-center gap-4">
-              {r.avatar && <img src={r.avatar} className="w-12 h-12 rounded-full object-cover" />}
-              <div>
-                <p className="font-semibold">{r.name}</p>
-                <p className="text-sm text-gray-500">{r.role}</p>
-              </div>
-            </div>
-          </div>
-        ))}
+    <Container config={config.container}>
+      <div className="text-center mb-6">
+        <div className="text-3xl font-semibold font-raleway">
+          <RenderHtml html={config.content?.title} />
+        </div>
+        <div className="mt-2"><RenderHtml html={config.content?.paragraph} /></div>
       </div>
-    </div>
+
+      <Carousel className="w-full"
+        plugins={config.carousel?.autoplay ? [Autoplay({ delay: 2000 })] : []}
+        opts={{ loop: true }}>
+        <CarouselContent className="-ml-5">
+          {config.content?.testimonials?.map((item, index) => (
+            <CarouselItem
+              key={index}
+              className="pl-5 basis-full sm:basis-1/2 lg:basis-1/3"
+            >
+              <div
+                className="p-6 h-full rounded shadow text-center border flex flex-col justify-between"
+                style={{ backgroundColor: config.carousel?.backgroundColor, color: config.carousel?.color }}
+              >
+                <ImageComponent
+                  config={item.image}
+                  className="w-16 h-16 mx-auto rounded-full object-cover mb-4"
+                />
+                <div className="text-lg italic mb-2">
+                  <RenderHtml html={item.quote} />
+                </div>
+                <div className="font-semibold">
+                  <RenderHtml html={item.name} />
+                </div>
+                {item.position && (
+                  <div className="text-sm">
+                    <RenderHtml html={item.position} />
+                  </div>
+                )}
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+    </Container>
   )
 }
 
-// ✅ EDITOR COMPONENT
-export function Editor({
-  values,
-  handleSubmit,
-}: {
-  values: ReviewsConfig
-  handleSubmit: (data: ReviewsConfig) => Promise<boolean>
-}) {
-  const updateReview = (index: number, updated: Review) => {
-    const updatedReviews = [...(values.reviews || [])]
-    updatedReviews[index] = updated
-    handleSubmit({ reviews: updatedReviews })
-  }
 
-  const deleteReview = (index: number) => {
-    const updatedReviews = [...(values.reviews || [])]
-    updatedReviews.splice(index, 1)
-    handleSubmit({ reviews: updatedReviews })
-  }
-
+export function Editor({ values, handleSubmit }: { values: ComponentType, handleSubmit: (data: ComponentType) => Promise<boolean> }) {
   return (
-    <div className="space-y-4">
-      <Label>Title</Label>
-      <Input
-        value={values.title || ""}
-        onChange={(e) => handleSubmit({ title: e.target.value })}
-        placeholder="Testimonials Section Title"
-      />
+    <>
+      <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} />
 
-      {values.reviews?.map((r, i) => (
-        <div key={i} className="border rounded p-4 relative space-y-2">
-          <Label>Name</Label>
-          <Input
-            value={r.name || ""}
-            onChange={(e) => updateReview(i, { ...r, name: e.target.value })}
-          />
-          <Label>Role</Label>
-          <Input
-            value={r.role || ""}
-            onChange={(e) => updateReview(i, { ...r, role: e.target.value })}
-          />
-          <Label>Review</Label>
-          <Textarea
-            value={r.review || ""}
-            onChange={(e) => updateReview(i, { ...r, review: e.target.value })}
-          />
-          <Label>Avatar URL</Label>
-          <Input
-            value={r.avatar || ""}
-            onChange={(e) => updateReview(i, { ...r, avatar: e.target.value })}
-          />
-          <Button
-            size="icon"
-            variant="destructive"
-            className="absolute top-2 right-2"
-            onClick={() => deleteReview(i)}
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
+      <Panel title="Carousel" defaultOpen={false}>
+        <div className="flex gap-1">
+          <ColorPicker icon={<Type />} color={values.carousel?.color} onChange={(v) => handleSubmit({ carousel: { color: v } })} />
+          <ColorPicker icon={<Brush />} color={values.carousel?.backgroundColor} onChange={(v) => handleSubmit({ carousel: { backgroundColor: v } })} />
         </div>
-      ))}
+        <div className="flex gap-2">
+          <Label>Autoplay</Label>
+          <Checkbox
+            id="autoplay"
+            checked={values.carousel?.autoplay ?? false}
+            onCheckedChange={(checked) =>
+              handleSubmit({ carousel: { autoplay: checked === true } })
+            }
+          />
+        </div>
+      </Panel>
 
-      <Button
-        onClick={() =>
-          handleSubmit({
-            reviews: [...(values.reviews || []), { name: "", review: "", role: "", avatar: "" }],
-          })
-        }
-      >
-        Add Review
-      </Button>
-    </div>
+      <Panel title="Content">
+        <RichTextEditor
+          label="Section Title"
+          value={values.content?.title}
+          onChange={(v) => handleSubmit({ content: { title: v } })}
+          showAlignment
+          showBackgroundColor
+          showHeading
+          showLink
+        />
+
+        <RichTextEditor
+          label="Paragraph"
+          value={values.content?.paragraph}
+          onChange={(v) => handleSubmit({ content: { paragraph: v } })}
+          showAlignment
+          showBackgroundColor
+          showHeading
+          showLink
+        />
+
+        <RepeaterEditor<Testimonial>
+          label="Testimonials"
+          itemLabel="Testimonial"
+          value={values.content?.testimonials || []}
+          onChange={(testimonials) => handleSubmit({ content: { testimonials } })}
+          max={10}
+          createNewItem={() => ({
+            name: "John Doe",
+            position: "CEO, Example Inc.",
+            quote: "This product has changed the way we work!",
+          })}
+          renderEditor={(testimonial, onChange) => (
+            <>
+              <RichTextEditor label="Quote" value={testimonial.quote} onChange={(v) => onChange({ quote: v })} />
+              <RichTextEditor label="Name" value={testimonial.name} onChange={(v) => onChange({ name: v })} />
+              <RichTextEditor label="Position" value={testimonial.position} onChange={(v) => onChange({ position: v })} />
+              <ImageInput label="Avatar" value={testimonial.image} onChange={(v) => onChange({ image: v })} />
+            </>
+          )}
+        />
+      </Panel>
+    </>
   )
 }
