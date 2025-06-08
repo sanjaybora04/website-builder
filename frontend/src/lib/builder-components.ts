@@ -4,8 +4,7 @@ import dynamic from "next/dynamic";
 const builderComponents: BuilderComponent[] = [
     {
         id: '1',
-        name: "Basic Header",
-        description: "Basic header component",
+        name: "Header",
         tags: ['header'],
         configInput: dynamic(() => import('@/components/builder-components/header1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/header1').then(mod => mod.Component)),
@@ -43,7 +42,6 @@ const builderComponents: BuilderComponent[] = [
     {
         id: '2',
         name: "Cards",
-        description: "Basic Cta component",
         tags:['cta'],
         configInput: dynamic(() => import('@/components/builder-components/cards1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/cards1').then(mod => mod.Component)),
@@ -67,7 +65,6 @@ const builderComponents: BuilderComponent[] = [
                         "label": "<p><u>Clcik Me</u><strong><u> →</u></strong></p>",
                         "variant": "link"
                       },
-                      "description": "description"
                     },
                     {
                       "image": {
@@ -79,7 +76,6 @@ const builderComponents: BuilderComponent[] = [
                         "label": "<p><u>Clcik Me</u><strong><u> →</u></strong></p>",
                         "variant": "link"
                       },
-                      "description": "description"
                     },
                     {
                       "image": {
@@ -92,7 +88,6 @@ const builderComponents: BuilderComponent[] = [
                         "label": "<p><u>Clcik Me</u><strong><u> →</u></strong></p>",
                         "variant": "link"
                       },
-                      "description": "description"
                     }
                   ],
                   "title": "<p style=\"text-align: center\">Why Choose Us?</p>",
@@ -103,8 +98,7 @@ const builderComponents: BuilderComponent[] = [
     },
     {
         id: '3',
-        name: "Basic Hero",
-        description: "Basic Hero component",
+        name: "Hero",
         tags:['hero'],
         configInput: dynamic(() => import('@/components/builder-components/hero1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/hero1').then(mod => mod.Component)),
@@ -138,8 +132,7 @@ const builderComponents: BuilderComponent[] = [
     },
     {
         id: '4',
-        name: "Basic Reviews",
-        description: "Customer testimonial section",
+        name: "Reviews",
         tags:['reviews'],
         configInput: dynamic(() => import('@/components/builder-components/reviews1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/reviews1').then(mod => mod.Component)),
@@ -165,8 +158,7 @@ const builderComponents: BuilderComponent[] = [
     },
     {
         id: '5',
-        name: "Basic FAQ",
-        description: "A frequently asked questions section",
+        name: "FAQ",
         tags:['faq'],
         configInput: dynamic(() => import('@/components/builder-components/faq1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/faq1').then(mod => mod.Component)),
@@ -192,15 +184,13 @@ const builderComponents: BuilderComponent[] = [
     },
     {
         id: '6',
-        name: "Basic Footer",
-        description: "Minimal footer with title, description, and links",
+        name: "Footer",
         tags:['footer'],
         configInput: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Component)),
         examples: [
             {
                 title: "SiteCraft",
-                description: "Crafting modern websites with simplicity and speed.",
                 links: [
                     { label: "About", href: "#" },
                     { label: "Contact", href: "#" },

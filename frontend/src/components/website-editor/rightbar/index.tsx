@@ -28,7 +28,6 @@ export default function EditorRightBar() {
                     <div className=" max-w-48 overflow-hidden text-ellipsis whitespace-nowrap">
                         {activeComponent?.name}
                     </div>
-                    <Edit className="w-5 h-5" />
                 </div>
                 <button className=' cursor-pointer' onClick={() => setWebsiteEditor((prev: any) => ({ ...prev, activeComponent: undefined }))}>
                     <X />

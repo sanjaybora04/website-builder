@@ -12,7 +12,7 @@ export default function MainHeader() {
     return (
         <header className="z-50 h-14 w-full sticky top-0 left-0 bg-background flex px-5 items-center justify-between">
             <Link href={Routes.overview} className="flex items-center gap-2 font-bold">
-                <Wrench />
+                <img src="/images/logo.png" className="h-6 w-6"/>
                 SiteCraft
             </Link>
             <div className="flex gap-5 text-sm items-center">

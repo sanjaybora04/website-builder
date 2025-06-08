@@ -36,7 +36,6 @@ export type Tag = 'header'|'hero'|'cta'|'faq'|'reviews'|'footer'|'other'
 export type BuilderComponent= {
     id: string,
     name: string,
-    description: string
     tags:Tag[],
     configInput: any,
     component: any,
