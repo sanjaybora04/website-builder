@@ -1,4 +1,4 @@
-import { Brush, Type } from "lucide-react"
+import { PaintBucket, Type } from "lucide-react"
 import RichTextEditor from "../ui/editor/rich-text-editor"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
@@ -55,8 +55,10 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
             <ContainerPanel config={values.container} onChange={(v)=>handleSubmit({container:v})}/>
 
             <Panel title="Card" defaultOpen={false}>
+                <div className="flex gap-1">
                 <ColorPicker icon={<Type />} color={values.card?.color} onChange={(v) => handleSubmit({  card: { color: v } })} />
-                <ColorPicker icon={<Brush />} color={values.card?.backgroundColor} onChange={(v) => handleSubmit({  card: { backgroundColor: v } })} />
+                <ColorPicker icon={<PaintBucket />} color={values.card?.backgroundColor} onChange={(v) => handleSubmit({  card: { backgroundColor: v } })} />
+                </div>
             </Panel>
 
             <Panel title="Content">

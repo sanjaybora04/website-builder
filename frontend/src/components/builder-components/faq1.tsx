@@ -1,4 +1,4 @@
-import { Brush, Type } from "lucide-react"
+import { PaintBucket, Type } from "lucide-react"
 import ColorPicker from "../ui/editor/color-picker"
 import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
 import Panel from "../ui/editor/panel"
@@ -82,7 +82,7 @@ export function Editor({
                   onChange={(v) => handleSubmit({ accordion: { color: v } })}
                   />
               <ColorPicker
-                  icon={<Brush />}
+                  icon={<PaintBucket />}
                   color={values.accordion?.backgroundColor}
                   onChange={(v) => handleSubmit({ accordion: { backgroundColor: v } })}
                   />

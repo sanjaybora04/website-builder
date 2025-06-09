@@ -1,5 +1,3 @@
-import { Brush, Type } from "lucide-react"
-import ColorPicker from "../ui/editor/color-picker"
 import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
 import Panel from "../ui/editor/panel"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"

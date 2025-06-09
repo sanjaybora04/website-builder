@@ -1,4 +1,4 @@
-import { Brush, Type } from "lucide-react"
+import { PaintBucket, Type } from "lucide-react"
 import { Input } from "../input"
 import ColorPicker from "./color-picker"
 import ImageInput, { ImageInputValue } from "./image-input"
@@ -57,7 +57,7 @@ export function ContainerPanel({ config,onChange, enable }: ContainerEditorProps
             <Input value={config?.id} onChange={(e) => onChange({ id: e.target.value })} placeholder="Component Id" />
             <div className="flex gap-1">
                 <ColorPicker icon={<Type />} color={config?.color} onChange={(v) => onChange({color: v })} />
-                <ColorPicker icon={<Brush />} color={config?.backgroundColor} onChange={(v) => onChange({ backgroundColor: v })} />
+                <ColorPicker icon={<PaintBucket />} color={config?.backgroundColor} onChange={(v) => onChange({ backgroundColor: v })} />
             </div>
             {enable?.backgroundImage!=false&&<ImageInput label="Background Image" value={config?.backgroundImage} onChange={(v) => onChange({ backgroundImage: v })} />}
             <hr />

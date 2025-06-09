@@ -13,8 +13,9 @@ import {
     Bold, Italic, Underline as UnderlineIcon,
     Link as LinkIcon, X,
     AlignLeft, AlignCenter, AlignRight,
-    Brush, Type,
-    List, ListOrdered
+     Type,
+    List, ListOrdered,
+    PaintBucket
 } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
@@ -217,7 +218,7 @@ export default function RichTextEditor({
                 {showBackgroundColor && (
                     <div className='flex'>
                         <label className="cursor-pointer w-5 h-5 rounded relative flex flex-col items-center gap-1">
-                            <Brush />
+                            <PaintBucket />
                             <div className="w-full h-1" style={{ backgroundColor: editor.getAttributes('highlight')?.color || '#ff0000' }} />
                             <input
                                 type="color"

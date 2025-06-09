@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Link from "next/link";
-import { Brush } from "lucide-react";
+import { PaintBucket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ColorPicker from "../color-picker";
 import { useAtom } from "jotai";
@@ -90,7 +90,7 @@ export function ButtonEditor({
           <div className="space-y-2">
             <Label>Bg Color</Label>
             <div className="h-9 flex justify-center items-center">
-              <ColorPicker icon={<Brush />} color={value?.color} onChange={(v) => update({ color: v })} />
+              <ColorPicker icon={<PaintBucket />} color={value?.color} onChange={(v) => update({ color: v })} />
             </div>
           </div>
         </div>

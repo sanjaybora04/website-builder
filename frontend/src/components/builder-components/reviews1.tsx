@@ -8,7 +8,7 @@ import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
 import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
 import { RepeaterEditor } from "../ui/editor/repeater"
-import { Brush, Type } from "lucide-react"
+import { PaintBucket, Type } from "lucide-react"
 import ColorPicker from "../ui/editor/color-picker"
 import Autoplay from 'embla-carousel-autoplay'
 import { Checkbox } from "../ui/checkbox"
@@ -91,7 +91,7 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
       <Panel title="Carousel" defaultOpen={false}>
         <div className="flex gap-1">
           <ColorPicker icon={<Type />} color={values.carousel?.color} onChange={(v) => handleSubmit({ carousel: { color: v } })} />
-          <ColorPicker icon={<Brush />} color={values.carousel?.backgroundColor} onChange={(v) => handleSubmit({ carousel: { backgroundColor: v } })} />
+          <ColorPicker icon={<PaintBucket />} color={values.carousel?.backgroundColor} onChange={(v) => handleSubmit({ carousel: { backgroundColor: v } })} />
         </div>
         <div className="flex gap-2">
           <Label>Autoplay</Label>

@@ -1,9 +1,7 @@
-import { Brush, Type } from "lucide-react"
+
 import RichTextEditor from "../ui/editor/rich-text-editor"
 import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button"
 import Panel from "../ui/editor/panel"
-import { Input } from "../ui/input"
-import ColorPicker from "../ui/editor/color-picker"
 import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import { layoutStyleGenerator } from "@/lib/utils"
