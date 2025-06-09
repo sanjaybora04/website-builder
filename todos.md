@@ -7,10 +7,6 @@
 
 * open homepage when user deletes page and deleted page was open
 
-* if user is in editor and clicks on link, it should change the activepage to requested one
-
-* add import export feature
-
 * dark mode switch not working properly
 
 * guided tour in website editor
@@ -26,7 +22,5 @@
 * take params to decide which actions to allow in button, allow all by default
 
 * add scroll padding to header according to the height of header
-
-* in button take variant and color as input like outline,default,link, none, etc
 
 * if links contain # then editor page redirect isn't working

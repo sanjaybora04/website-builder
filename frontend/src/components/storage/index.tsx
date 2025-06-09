@@ -1,14 +1,12 @@
 'use client'
 
-import { Trash, Trash2, Upload } from "lucide-react";
-import { Button } from "../ui/button";
+import { Trash2 } from "lucide-react";
 import { Input } from "../ui/input";
 import Stats from "./stats";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import FileUploader from "./fileuploader";
-import { toast } from "sonner";
-import FileSelector from "./fileSelector";
+import { toast } from "sonner"
 
 export default function Storage() {
     const [state, setState] = useState({

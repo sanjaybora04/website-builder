@@ -21,7 +21,7 @@ export function Component({ config }: { config: ComponentType }) {
     return (
         <Container 
         config={config.container} 
-        className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 bg-white border-b shadow"
+        className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 border-b shadow"
         >
             <div className="flex gap-2 items-center">
                 <img src={config.content?.logo} />

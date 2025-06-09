@@ -165,7 +165,19 @@ const builderComponents: BuilderComponent[] = [
 
             }
         ]
-    }
+    },
+    {
+      id: '7',
+      name: "Form",
+      tags:['other'],
+      configInput: dynamic(() => import('@/components/builder-components/form1').then(mod => mod.Editor)),
+      component: dynamic(() => import('@/components/builder-components/form1').then(mod => mod.Component)),
+      examples: [
+          {
+
+          }
+      ]
+  }
 
 ]
 

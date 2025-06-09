@@ -15,7 +15,8 @@ model User {
   websites     Website[]
   assets       Asset[]
   usedStorage  Int          @default(0) // in bytes
-  storageLimit Int          @default(1073741824) // e.g., 1 GB
+  storageLimit Int          @default(104857600) // e.g., 100 mb
+  folders      Folder[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -34,12 +35,28 @@ model Website {
   updatedAt     DateTime      @updatedAt
 }
 
+model Folder {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  parentId  String?  @db.Uuid
+  parent    Folder?  @relation("FolderParent", fields: [parentId], references: [id])
+  children  Folder[] @relation("FolderParent")
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  assets    Asset[]
+  createdAt DateTime @default(now())
+
+  @@unique([userId, parentId, name]) // Prevent duplicate folders in the same path
+}
+
 model Asset {
   key         String   @id
   userId      String   @db.Uuid
   user        User     @relation(fields: [userId], references: [id])
-  filename    String   // Original file name, optional but useful
-  size        Int      // In bytes
-  contentType String   // MIME type: image/png, video/mp4, etc.
+  folderId    String?  @db.Uuid
+  folder      Folder?  @relation(fields: [folderId], references: [id])
+  filename    String
+  size        Int
+  contentType String
   createdAt   DateTime @default(now())
 }
