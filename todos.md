@@ -24,3 +24,7 @@
 * add scroll padding to header according to the height of header
 
 * if links contain # then editor page redirect isn't working
+
+* modals dont close when user clicks on preview iframe
+
+* update debounce delay automatically based on time taken to update the data

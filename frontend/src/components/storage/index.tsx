@@ -1,33 +1,74 @@
 'use client'
 
-import { Trash2 } from "lucide-react";
+import { EllipsisVertical, FolderInput, Loader, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import { Input } from "../ui/input";
 import Stats from "./stats";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
-import FileUploader from "./fileuploader";
 import { toast } from "sonner"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import MoveToFolder from "./moveToFolder";
+import FolderCard from "./folderCard";
+import FileCard from "./fileCard";
+import StorageTopBar from "./storageTopBar";
 
 export default function Storage() {
-    const [state, setState] = useState({
-        usage: {
+    const [usage, setUsage] = useState({
+        loading: true,
+        data: {
             storageLimit: 1,
             usedStorage: 0
-        },
-        assets: []
+        }
     })
 
-    async function loadData() {
-        const res = await api.user.getAssets()
-        if (res.data) {
-            setState(res.data)
+    const [folderPath, setFolderPath] = useState<any>([])
+
+    const [data, setData] = useState({
+        folders: [],
+        assets: [],
+        loading: true
+    })
+
+    async function loadUsage() {
+        setUsage(prev => ({ ...prev, loading: true }))
+
+        const res = await api.user.getUsage()
+        if (res.status == 200) {
+            setUsage({
+                loading: false,
+                data: res.data
+            })
+        } else {
+            setUsage(prev => ({ ...prev, loading: false }))
         }
     }
+
+    async function loadData() {
+        setData(prev => ({ ...prev, loading: true }))
+
+        const assets = await api.user.getAssets(folderPath.length > 0 ? folderPath[folderPath.length - 1]?.id : '')
+        const folders = await api.user.getFolders(folderPath.length > 0 ? folderPath[folderPath.length - 1]?.id : '')
+
+        if (assets.status == 200 && folders.status == 200) {
+            setData({
+                loading: false,
+                assets: assets.data,
+                folders: folders.data
+            })
+        } else {
+            setData(prev => ({ ...prev, loading: false }))
+        }
+    }
+
     useEffect(() => {
         loadData()
+    }, [folderPath])
+
+    useEffect(() => {
+        loadUsage()
     }, [])
 
-    async function onDelete(key: string) {
+    async function onDeleteAsset(key: string) {
         const id = toast.loading('Deleting asset...')
         const res = await api.user.deleteAsset(key)
         if (res.status == 200) {
@@ -37,18 +78,68 @@ export default function Storage() {
             toast.dismiss(id)
         }
     }
+
+    async function onDeletefolder(folderId: string) {
+        const id = toast.loading('Deleting folder...')
+        const res = await api.user.deleteFolder(folderId)
+        if (res.status == 200) {
+            toast.success('Folder Deleted', { id })
+            setFolderPath((prev: any) => (prev.slice(0, -1)))
+        } else {
+            toast.dismiss(id)
+        }
+    }
+
     return (
         <div className="p-5 sm:px-10">
-            <Stats usage={state?.usage} />
-            <div className="flex gap-2">
-                <Input placeholder="search assets" />
-                <FileUploader />
-            </div>
+            {/* <Stats usage={usage.data} /> */}
+            <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={()=>loadData()} />
             <div className="flex flex-wrap justify-center gap-5 mt-10">
-                {state?.assets?.map((a: any, index: any) =>
-                    <div key={index} className="w-52 h-52 rounded overflow-hidden relative">
-                        <button onClick={() => onDelete(a.key)} className="absolute top-2 right-2 text-red-500 cursor-pointer"><Trash2 className="w-5 h-5" /></button>
-                        <img key={index} src={process.env.NEXT_PUBLIC_S3_URL+'/'+a.key} className="w-full h-full object-contain" />
+                {data.loading && <div className="w-full h-52 flex items-center justify-center"><Loader className="w-10 h-10 animate-spin text-primary" /></div>}
+                {!data.loading && data?.folders?.map((f: any, index: any) =>
+                    <div className="relative" key={index}
+                        onClick={() => {
+                            setFolderPath((prev: any) => ([...prev, f]))
+                        }}
+                    >
+                        <FolderCard folder={f} />
+                        <DropdownMenu>
+                            <DropdownMenuTrigger className="absolute top-2 right-2 text-primary bg-background/50 rounded p-1 cursor-pointer">
+                                <EllipsisVertical />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <MoveToFolder type="folder" id={f.id} onMove={() => loadData()}>
+                                    <DropdownMenuItem>
+                                        <FolderInput className="w-5 h-5 mr-2" />
+                                        Move
+                                    </DropdownMenuItem>
+                                </MoveToFolder>
+                                <DropdownMenuItem onClick={(e) => { onDeletefolder(f.id) }} className="text-red-500">
+                                    <Trash2 className="w-5 h-5 mr-2" />
+                                    Delete
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                )}
+                {!data.loading && data?.assets?.map((a: any, index: any) =>
+                    <div key={index} className="relative">
+                        <FileCard file={a}/>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger className="absolute top-2 right-2 text-primary bg-background/50 rounded p-1 cursor-pointer">
+                                <EllipsisVertical />
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem onClick={() => window.open(process.env.NEXT_PUBLIC_S3_URL + '/' + a.key, '_blank')}>
+                                    <SquareArrowOutUpRight className="w-5 h-5 mr-2" />
+                                    View
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onDeleteAsset(a.key)} className="text-red-500">
+                                    <Trash2 className="w-5 h-5 mr-2" />
+                                    Delete
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
                 )}
             </div>

@@ -54,7 +54,7 @@ export function RepeaterEditor<T>({
             <Label>{label}</Label>
             {value.map((item, index) => (
                 <Collapsible key={index}>
-                    <CollapsibleTrigger className="w-full flex justify-between items-center py-2 border-y">
+                    <CollapsibleTrigger className="w-full flex justify-between items-center p-2 rounded bg-primary/10 border-y">
                         <Label>{itemLabel} {index+1}</Label>
                         <Button
                             variant="destructive"

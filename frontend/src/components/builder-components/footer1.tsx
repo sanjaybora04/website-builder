@@ -3,6 +3,10 @@ import Panel from "../ui/editor/panel"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import RichTextEditor from "../ui/editor/rich-text-editor"
 import { RepeaterEditor } from "../ui/editor/repeater"
+import { Button } from "../ui/button"
+import { X } from "lucide-react"
+import { Input } from "../ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 type FooterLink = {
     label?: string
@@ -87,48 +91,83 @@ export function Editor({
             showLink
           />
   
-          <RepeaterEditor<FooterGroup>
-            label="Link Groups"
-            itemLabel="Group"
-            value={values.content?.groups || []}
-            onChange={(groups) => handleSubmit({ content: { groups } })}
-            max={4}
-            createNewItem={() => ({ title: "Links", links: [] })}
-            renderEditor={(group, onChange) => (
-              <>
-                <RichTextEditor
-                  label="Group Title"
-                  value={group.title}
-                  onChange={(v) => onChange({ title: v })}
-                  showHeading
-                />
-                <RepeaterEditor<FooterLink>
-                  label="Links"
-                  itemLabel="Link"
-                  value={group.links || []}
-                  onChange={(links) => onChange({ links })}
-                  max={6}
-                  createNewItem={() => ({ label: "Home", href: "/" })}
-                  renderEditor={(link, onChange) => (
-                    <>
-                      <input
-                        className="input w-full"
-                        placeholder="Label"
-                        value={link.label || ""}
-                        onChange={(e) => onChange({ label: e.target.value })}
-                      />
-                      <input
-                        className="input w-full"
-                        placeholder="URL"
-                        value={link.href || ""}
-                        onChange={(e) => onChange({ href: e.target.value })}
-                      />
-                    </>
-                  )}
-                />
-              </>
-            )}
-          />
+  <RepeaterEditor<FooterGroup>
+  label="Link Groups"
+  itemLabel="Group"
+  value={values.content?.groups || []}
+  onChange={(groups) => handleSubmit({ content: { groups } })}
+  max={4}
+  createNewItem={() => ({ title: "Links", links: [] })}
+  renderEditor={(group, onChange) => (
+    <div className="space-y-2">
+      <Input
+        placeholder="Group Title"
+        value={group.title || ""}
+        onChange={(e) => onChange({ title: e.target.value })}
+      />
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button className="w-full">
+            Links ({group.links?.length || 0})
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent className="w-96 max-w-full p-4 space-y-4">
+          <div className="text-sm font-medium">Links</div>
+
+          {(group.links || []).map((link, idx) => (
+            <div key={idx} className="flex gap-2 items-center">
+              <Input
+                placeholder="Label"
+                value={link.label || ""}
+                onChange={(e) => {
+                  const updated = [...(group.links || [])]
+                  updated[idx] = { ...link, label: e.target.value }
+                  onChange({ links: updated })
+                }}
+              />
+              <Input
+                placeholder="URL"
+                value={link.href || ""}
+                onChange={(e) => {
+                  const updated = [...(group.links || [])]
+                  updated[idx] = { ...link, href: e.target.value }
+                  onChange({ links: updated })
+                }}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  const updated = (group.links || []).filter((_, i) => i !== idx)
+                  onChange({ links: updated })
+                }}
+              >
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          ))}
+
+          {(!group.links || group.links.length < 6) && (
+            <Button
+              onClick={() => {
+                onChange({
+                  links: [...(group.links || []), { label: "", href: "" }],
+                })
+              }}
+              variant="outline"
+              size="sm"
+              className="w-full"
+            >
+              + Add Link
+            </Button>
+          )}
+        </PopoverContent>
+      </Popover>
+    </div>
+  )}
+/>
   
           <RichTextEditor
             label="Copyright"

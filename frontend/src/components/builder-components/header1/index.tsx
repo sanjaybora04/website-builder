@@ -27,7 +27,7 @@ export function Component({ config }: { config: ComponentType }) {
                 <img src={config.content?.logo} />
                 <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title} /></div>
             </div>
-            <div className="hidden sm:flex items-center gap-5">
+            <div className="hidden sm:flex items-center gap-5 sm:gap-7">
                 {config.content?.buttons?.map((b, index) =>
                     <ButtonComponent key={index} config={b} />
                 )}

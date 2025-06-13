@@ -37,7 +37,7 @@ apiClient.interceptors.response.use(
             else if (res?.info) toast.info(res.info);
             else toast.error(res?.message || error.message);
         }
-        return Promise.reject(error);
+        return error
     }
 );
 
@@ -45,10 +45,22 @@ apiClient.interceptors.response.use(
 const api = {
     user: {
         signin: async (token: any) => await apiClient.post('/user/signin', { token }),
-        getUploadUrl: async () => await apiClient.get('/user/storage/uploadurl'),
-        getAssets: async () => await apiClient.get('/user/storage/assets'),
-        addAsset: async(key:string)=> await apiClient.post('/user/storage/addasset', {key}),
-        deleteAsset: async (key: any) => await apiClient.post(`/user/storage/deleteasset`,{key}),
+        getUser: async () => await apiClient.get('/user'),
+        updateUser: async (data: object) => await apiClient.put('/user', data),
+
+        getUploadUrl: async () => await apiClient.get(`/user/storage/uploadurl`),
+        getUsage: async () => await apiClient.get('/user/storage/usage'),
+        getAssets: async (folderId:string) => await apiClient.get('/user/storage/assets?folderId=' + folderId),
+        addAsset: async(key:string,filename:string,parentId:string)=> await apiClient.post('/user/storage/assets/add', {key, filename, parentId}),
+        moveAsset: async (key: any, newKey: string) => await apiClient.post('/user/storage/assets/move', { key, newKey }),
+        renameAsset: async (key: any, newName: string) => await apiClient.post('/user/storage/assets/rename', { key, newName }),
+        deleteAsset: async (key: any) => await apiClient.post(`/user/storage/assets/delete`,{key}),
+
+        getFolders: async (folderId:string) => await apiClient.get('/user/storage/folder?folderId=' + folderId),
+        addFolder: async (name: string,parentId:string) => await apiClient.post('/user/storage/folder/add', { name,parentId }),
+        deleteFolder: async (folderId: string) => await apiClient.post('/user/storage/folder/delete', { folderId }),
+        moveFolder: async (folderId: string, newParentId: string) => await apiClient.post('/user/storage/folder/move', { folderId, newParentId }),
+        renameFolder: async (folderId: string, newName: string) => await apiClient.post('/user/storage/folder/rename', { folderId, newName }),
     },
     website: {
         get: async (websiteId: string) => await apiClient.get(`/website/${websiteId}`),

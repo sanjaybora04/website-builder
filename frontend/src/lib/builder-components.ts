@@ -137,9 +137,38 @@ const builderComponents: BuilderComponent[] = [
         configInput: dynamic(() => import('@/components/builder-components/reviews1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/reviews1').then(mod => mod.Component)),
         examples: [
-            {
-                
-            }
+          {
+            "content": {
+              "title": "<p>What Our Customers Say?</p>",
+              "paragraph": "<p style=\"text-align: center\">Hear the best reviews from our customers</p>",
+              "testimonials": [
+                {
+                  "name": "John Doe",
+                  "quote": "This product has changed the way we work!",
+                  "position": "CEO, Example Inc."
+                },
+                {
+                  "name": "John Doe",
+                  "quote": "This product has changed the way we work!",
+                  "position": "CEO, Example Inc."
+                },
+                {
+                  "name": "John Doe",
+                  "quote": "This product has changed the way we work!",
+                  "position": "CEO, Example Inc."
+                },
+                {
+                  "name": "John Doe",
+                  "quote": "This product has changed the way we work!",
+                  "position": "CEO, Example Inc."
+                }
+              ]
+            },
+            "carousel": {
+              "autoplay": true
+            },
+            "container": {}
+          }
         ]
     },
     {
@@ -149,9 +178,24 @@ const builderComponents: BuilderComponent[] = [
         configInput: dynamic(() => import('@/components/builder-components/faq1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/faq1').then(mod => mod.Component)),
         examples: [
-            {
-               
-            }
+          {
+            "content": {
+              "faqs": [
+                {
+                  "answer": "<p>You can return items within 30 days.</p>",
+                  "question": "What is your return policy?"
+                },
+                {
+                  "answer": "You can return items within 30 days.",
+                  "question": "What is your return policy?"
+                }
+              ],
+              "title": "<p style=\"text-align: center\">Frequently Asked Questions</p>",
+              "description": "<p style=\"text-align: center\">Answers to some of the frequentl asked questions by our customers</p>"
+            },
+            "accordion": {},
+            "container": {}
+          }
         ]
     },
     {

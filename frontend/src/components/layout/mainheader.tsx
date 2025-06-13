@@ -23,8 +23,8 @@ export default function MainHeader() {
                     <Link href={Routes.feedback} className="hover:underline font-semibold">Feedback</Link>
                     {/* <Link href={Routes.support} className="hover:underline font-semibold">Support</Link> */}
                 </div>
-                <Button size='icon' onClick={() => theme == 'dark' ? setTheme('light') : setTheme('dark')}>
-                    {theme == "dark" ? <Sun /> : <Moon />}
+                <Button size='icon' onClick={() => theme == 'light' ? setTheme('dark') : setTheme('light')}>
+                    {theme == "light" ? <Moon /> : <Sun />}
                 </Button>
                 <Signin />
                 <Drawer>

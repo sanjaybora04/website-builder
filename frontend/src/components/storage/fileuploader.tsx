@@ -6,7 +6,7 @@ import { buttonVariants } from '../ui/button';
 import { Loader, Upload } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-export default function FileUploadComponent({onUpload}:{onUpload?:any}){
+export default function FileUploader({onUpload,parentId}:{onUpload?:any,parentId:string}){
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [uploading, setUploading] = useState<boolean>(false);
     const [compressing, setCompressing] = useState<boolean>(false);
@@ -33,6 +33,7 @@ export default function FileUploadComponent({onUpload}:{onUpload?:any}){
         try {
             const isImage = file.type.startsWith('image/');
             const fileToUpload = isImage ? await compressImage(file) : file;
+            
             setCompressing(false);
 
             setUploading(true);
@@ -54,7 +55,7 @@ export default function FileUploadComponent({onUpload}:{onUpload?:any}){
 
             xhr.onload = async() => {
                 if (xhr.status === 200) {
-                    await api.user.addAsset(key)
+                    await api.user.addAsset(key,fileToUpload.name,parentId);
                     onUpload?.(process.env.NEXT_PUBLIC_S3_URL+'/'+key)
                     setUploadProgress(0);
                     setUploading(false);
@@ -86,9 +87,8 @@ export default function FileUploadComponent({onUpload}:{onUpload?:any}){
                 disabled={uploading || compressing}
                 className="hidden"
             />
-            <label htmlFor="fileupload" className={buttonVariants({size:'sm'})}>
+            <label htmlFor="fileupload" className={buttonVariants({size:'icon'})} title='Upload file'>
                 <Upload className="mr-1" />
-                Upload
             </label>
 
             {(compressing || uploading) && createPortal(

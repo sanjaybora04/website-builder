@@ -67,7 +67,36 @@ class User {
 
     }
 
+    async getUser(req: any, res: any) {
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.id },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                storageLimit: true,
+                usedStorage: true
+            }
+        })
+
+        if (!user) return res.status(404).json({ error: "User not found" })
+
+        return res.json(user)
+    }
+
+    async updateUser(req: any, res: any) {
+        const { name, email } = req.body;
+
+        const user = await prisma.user.update({
+            where: { id: req.user.id },
+            data: { name, email }
+        })
+
+        return res.json(user)
+    }
+
     getUploadUrl = async (req: any, res: any) => {
+        // Check if user exists and has not exceeded storage limit
         const user = await prisma.user.findUnique({ where: { id: req.user.id } })
         if (!user) return res.status(404).json({ error: "User not found" })
         if (user.usedStorage >= user.storageLimit) return res.status(413).json({ error: "You've reached your storage limit. Please delete files or upgrade your plan to continue uploading." })
@@ -77,36 +106,108 @@ class User {
         return res.json({ url: presignedUrl, key: process.env.MINIO_BUCKET + '/' + filepath });
     }
 
-    async addAsset(req:any,res:any){
-        const {key} = req.body
-        await prisma.user.update({where:{id:req.user.id},data:{
-            assets:{
-                upsert:{
-                    where:{key},
-                    create:{
-                        key,
-                        filename:'',
-                        size:0,
-                        contentType:''
-                    },
-                    update:{}
+    getUsage = async (req: any, res: any) => {
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.id },
+            select: {
+                storageLimit: true,
+                usedStorage: true
+            }
+        })
+        if (!user) return res.status(404).json({ error: "User not found" })
+        return res.json({
+            storageLimit: user.storageLimit,
+            usedStorage: user.usedStorage
+        })
+    }
+
+
+    async addAsset(req: any, res: any) {
+        const { key, filename, parentId } = req.body
+        await prisma.user.update({
+            where: { id: req.user.id }, data: {
+                assets: {
+                    upsert: {
+                        where: { key },
+                        create: {
+                            key,
+                            filename,
+                            size: 0,
+                            contentType: '',
+                            parentId: parentId || null,
+                        },
+                        update: {
+                            filename,
+                            parentId: parentId || null,
+                        }
+                    }
                 }
             }
-        }})
+        })
         res.end()
     }
-    
-    async getAssets(req: any, res: any) {
-        const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { assets: true } })
-        if (!user) return res.status(404).json({ error: "User not found" })
 
-        return res.json({
-            usage: {
-                storageLimit: user.storageLimit,
-                usedStorage: user.usedStorage
+    async getAssets(req: any, res: any) {
+        const { folderId } = req.query;
+
+        // Fetch assets based on the provided folderId
+        const assets = await prisma.asset.findMany({
+            where: {
+                userId: req.user.id,
+                parentId: folderId ? folderId as string : null
             },
-            assets: user.assets
-        })
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
+        if (!assets) {
+            return res.status(404).json({ error: "Assets not found or unauthorized" });
+        }
+
+        return res.json(assets);
+    }
+
+    moveAsset = async (req: any, res: any) => {
+        const { key, folderId } = req.body;
+
+        // Fetch the asset
+        const asset = await prisma.asset.findUnique({
+            where: { key }
+        });
+
+        if (!asset || asset.userId !== req.user.id) {
+            return res.status(404).json({ error: "Asset not found or unauthorized" });
+        }
+
+        // Update the asset's folderId
+        await prisma.asset.update({
+            where: { key },
+            data: { parentId:folderId }
+        });
+
+        return res.end();
+    }
+
+    renameAsset = async (req: any, res: any) => {
+        const { key, newName } = req.body;
+
+        // Fetch the asset
+        const asset = await prisma.asset.findUnique({
+            where: { key }
+        });
+
+        if (!asset || asset.userId !== req.user.id) {
+            return res.status(404).json({ error: "Asset not found or unauthorized" });
+        }
+
+        // Update the asset's filename
+        await prisma.asset.update({
+            where: { key },
+            data: { filename: newName }
+        });
+
+        return res.end();
     }
 
     deleteAsset = async (req: any, res: any) => {
@@ -146,7 +247,127 @@ class User {
         return res.end();
     }
 
+    async getFolders(req: any, res: any) {
+        const { folderId } = req.query;
 
+        // Fetch folders based on the provided folderId
+        const folders = await prisma.folder.findMany({
+            where: {
+                userId: req.user.id,
+                parentId: folderId ? folderId as string : null
+            },
+            include: {
+                parent: true
+            }
+        });
+
+        if (!folders) {
+            return res.status(404).json({ error: "Folders not found or unauthorized" });
+        }
+
+        return res.json(folders);
+    }
+
+    async addFolder(req: any, res: any) {
+        const { name, parentId } = req.body;
+
+        // Check if folder already exists
+        const existingFolder = await prisma.folder.findFirst({
+            where: {
+                userId: req.user.id,
+                name,
+                parentId: parentId || null
+            }
+        });
+        
+        if (existingFolder) {
+            return res.status(409).json({ error: "Folder already exists" });
+        }
+        
+        // Create new folder
+        await prisma.folder.create({
+            data: {
+                name,
+                userId: req.user.id,
+                parentId: parentId || null
+            }
+        });
+
+        return res.end();
+    }
+
+    async deleteFolder(req: any, res: any) {
+        const { folderId } = req.body;
+
+        // Check if folder exists
+        const folder = await prisma.folder.findUnique({
+            where: { id: folderId }
+        });
+
+        if (!folder || folder.userId !== req.user.id) {
+            return res.status(404).json({ error: "Folder not found or unauthorized" });
+        }
+
+        // Check if the folder has subfolders or assets
+        const subfolders = await prisma.folder.count({
+            where: { parentId: folderId }
+        });
+        const assets = await prisma.asset.count({
+            where: { parentId: folderId }
+        });
+        if (subfolders > 0 || assets > 0) {
+            return res.status(400).json({ error: "Folder is not empty. Please delete its contents first." });
+        }
+
+        // Delete the folder
+        await prisma.folder.delete({
+            where: { id: folderId }
+        });
+
+        return res.end();
+    }
+
+    async moveFolder(req: any, res: any) {
+        const { folderId, newParentId } = req.body;
+
+        // Check if folder exists
+        const folder = await prisma.folder.findUnique({
+            where: { id: folderId }
+        });
+
+        if (!folder || folder.userId !== req.user.id) {
+            return res.status(404).json({ error: "Folder not found or unauthorized" });
+        }
+
+        // Update the folder's parent ID
+        await prisma.folder.update({
+            where: { id: folderId },
+            data: { parentId: newParentId }
+        });
+
+        return res.end();
+    }
+
+    async renameFolder(req: any, res: any) {
+        const { folderId, newName } = req.body;
+
+        // Check if folder exists
+        const folder = await prisma.folder.findUnique({
+            where: { id: folderId }
+        });
+
+        if (!folder || folder.userId !== req.user.id) {
+            return res.status(404).json({ error: "Folder not found or unauthorized" });
+        }
+
+        // Update the folder's name
+        await prisma.folder.update({
+            where: { id: folderId },
+            data: { name: newName }
+        });
+
+        return res.end();
+    }
 }
 
 export default new User();

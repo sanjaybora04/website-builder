@@ -53,8 +53,8 @@ model Asset {
   key         String   @id
   userId      String   @db.Uuid
   user        User     @relation(fields: [userId], references: [id])
-  folderId    String?  @db.Uuid
-  folder      Folder?  @relation(fields: [folderId], references: [id])
+  parentId    String?  @db.Uuid
+  folder      Folder?  @relation(fields: [parentId], references: [id])
   filename    String
   size        Int
   contentType String

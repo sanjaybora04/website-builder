@@ -26,7 +26,6 @@ router.post('/minio', async (req, res) => {
                             contentType
                         },
                         update: {
-                            filename,
                             size,
                             contentType
                         }

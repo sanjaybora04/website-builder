@@ -18,7 +18,7 @@ export default function ColorPicker({
   onChange,
 }: ColorPickerProps) {
   const [localColor, setLocalColor] = useState(color);
-  const [debouncedColor] = useDebounce(localColor, 50);
+  const [debouncedColor] = useDebounce(localColor, Number(process.env.NEXT_PUBLIC_DEBOUNCE_DELAY));
 
   useEffect(() => {
     // Only call onChange if it's actually different
