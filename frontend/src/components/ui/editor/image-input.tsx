@@ -1,6 +1,5 @@
 import { Trash2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import FileUploadComponent from '@/components/storage/fileuploader';
 import FileSelector from '@/components/storage/fileSelector';
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -67,7 +66,6 @@ export default function ImageInput({ value, onChange, label = "Image" }: ImageIn
         </div>
       ) : (
         <div className="flex gap-2">
-          <FileUploadComponent onUpload={(url: string) => onChange({ url })} />
           <FileSelector onSelect={(url: string) => onChange({ url })} />
         </div>
       )}

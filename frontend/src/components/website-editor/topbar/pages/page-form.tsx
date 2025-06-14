@@ -129,7 +129,6 @@ export default function PageForm({ data, onSubmit }: { data?: Page, onSubmit: (v
                                         ><Trash2 /></Button>
                                     </div> :
                                     <div className="flex items-center gap-2">
-                                        <FileUploadComponent onUpload={(url: string) => field.onChange(url)} />
                                         <FileSelector onSelect={(url: string) => field.onChange(url)} />
                                     </div>
                                 }

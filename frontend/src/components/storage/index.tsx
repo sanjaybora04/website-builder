@@ -1,6 +1,6 @@
 'use client'
 
-import { EllipsisVertical, FolderInput, Loader, SquareArrowOutUpRight, Trash2 } from "lucide-react";
+import { Edit, EllipsisVertical, FolderInput, Loader, SquareArrowOutUpRight, Trash2 } from "lucide-react";
 import { Input } from "../ui/input";
 import Stats from "./stats";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import MoveToFolder from "./moveToFolder";
 import FolderCard from "./folderCard";
 import FileCard from "./fileCard";
 import StorageTopBar from "./storageTopBar";
+import Rename from "./rename";
 
 export default function Storage() {
     const [usage, setUsage] = useState({
@@ -93,21 +94,29 @@ export default function Storage() {
     return (
         <div className="p-5 sm:px-10">
             {/* <Stats usage={usage.data} /> */}
-            <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={()=>loadData()} />
-            <div className="flex flex-wrap justify-center gap-5 mt-10">
+            <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={() => loadData()} />
+            <div className="flex flex-wrap gap-5 mt-10">
                 {data.loading && <div className="w-full h-52 flex items-center justify-center"><Loader className="w-10 h-10 animate-spin text-primary" /></div>}
                 {!data.loading && data?.folders?.map((f: any, index: any) =>
-                    <div className="relative" key={index}
-                        onClick={() => {
-                            setFolderPath((prev: any) => ([...prev, f]))
-                        }}
-                    >
-                        <FolderCard folder={f} />
+                    <div className="relative" key={index}>
+                        <button
+                            onClick={() => {
+                                setFolderPath((prev: any) => ([...prev, f]))
+                            }}
+                        >
+                            <FolderCard folder={f} />
+                        </button>
                         <DropdownMenu>
                             <DropdownMenuTrigger className="absolute top-2 right-2 text-primary bg-background/50 rounded p-1 cursor-pointer">
                                 <EllipsisVertical />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
+                                <Rename type="folder" id={f.id} onRename={() => loadData()}>
+                                    <DropdownMenuItem>
+                                        <Edit className="w-5 h-5 mr-2" />
+                                        Rename
+                                    </DropdownMenuItem>
+                                </Rename>
                                 <MoveToFolder type="folder" id={f.id} onMove={() => loadData()}>
                                     <DropdownMenuItem>
                                         <FolderInput className="w-5 h-5 mr-2" />
@@ -124,7 +133,7 @@ export default function Storage() {
                 )}
                 {!data.loading && data?.assets?.map((a: any, index: any) =>
                     <div key={index} className="relative">
-                        <FileCard file={a}/>
+                        <FileCard file={a} />
                         <DropdownMenu>
                             <DropdownMenuTrigger className="absolute top-2 right-2 text-primary bg-background/50 rounded p-1 cursor-pointer">
                                 <EllipsisVertical />
@@ -134,6 +143,18 @@ export default function Storage() {
                                     <SquareArrowOutUpRight className="w-5 h-5 mr-2" />
                                     View
                                 </DropdownMenuItem>
+                                <Rename type="asset" id={a.key} onRename={() => loadData()}>
+                                    <DropdownMenuItem>
+                                        <Edit className="w-5 h-5 mr-2" />
+                                        Rename
+                                    </DropdownMenuItem>
+                                </Rename>
+                                <MoveToFolder type="asset" id={a.key} onMove={() => loadData()}>
+                                    <DropdownMenuItem>
+                                        <FolderInput className="w-5 h-5 mr-2" />
+                                        Move
+                                    </DropdownMenuItem>
+                                </MoveToFolder>
                                 <DropdownMenuItem onClick={() => onDeleteAsset(a.key)} className="text-red-500">
                                     <Trash2 className="w-5 h-5 mr-2" />
                                     Delete
