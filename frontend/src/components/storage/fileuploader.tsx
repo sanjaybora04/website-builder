@@ -6,7 +6,7 @@ import { buttonVariants } from '../ui/button';
 import { Loader, Upload } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-export default function FileUploader({onUpload,parentId}:{onUpload?:any,parentId:string}){
+export default function FileUploader({onUpload,parentId}:{onUpload?:any,parentId?:string}){
     const [uploadProgress, setUploadProgress] = useState<number>(0);
     const [uploading, setUploading] = useState<boolean>(false);
     const [compressing, setCompressing] = useState<boolean>(false);

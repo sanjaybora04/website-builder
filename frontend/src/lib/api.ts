@@ -50,8 +50,8 @@ const api = {
 
         getUploadUrl: async () => await apiClient.get(`/user/storage/uploadurl`),
         getUsage: async () => await apiClient.get('/user/storage/usage'),
-        getAssets: async (folderId:string) => await apiClient.get('/user/storage/assets?folderId=' + folderId),
-        addAsset: async(key:string,filename:string,parentId:string)=> await apiClient.post('/user/storage/assets/add', {key, filename, parentId}),
+        getAssets: async (folderId?:string) => await apiClient.get('/user/storage/assets?folderId=' + folderId),
+        addAsset: async(key:string,filename:string,parentId?:string)=> await apiClient.post('/user/storage/assets/add', {key, filename, parentId}),
         moveAsset: async (key: any, newKey: string) => await apiClient.post('/user/storage/assets/move', { key, newKey }),
         renameAsset: async (key: any, newName: string) => await apiClient.post('/user/storage/assets/rename', { key, newName }),
         deleteAsset: async (key: any) => await apiClient.post(`/user/storage/assets/delete`,{key}),
