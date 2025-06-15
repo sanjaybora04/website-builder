@@ -41,26 +41,10 @@ export default function Stats({ usage }: { usage: { storageLimit: number, usedSt
     const remaining = limit - used
     const percentUsed = ((used / limit) * 100).toFixed(1)
 
-    const chartData = [
-        { item: "used", value: parseFloat(percentUsed), fill: "var(--color-used)" },
-        { item: "remaining", value: 100 - parseFloat(percentUsed), fill: "var(--color-remaining)" },
-    ]
-
     return (
-        <div className="flex gap-5 items-center justify-center">
-            <ChartContainer
-                config={chartConfig}
-                className="aspect-square h-52"
-            >
-                <PieChart>
-                    <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent hideLabel />}
-                    />
-                    <Pie data={chartData} dataKey="value" nameKey="item" />
-                </PieChart>
-            </ChartContainer>
-            <div>
+        <div>
+            <div className="w-full h-2 rounded bg-muted-foreground"><div className="bg-blue-500 h-full rounded" style={{width:percentUsed+"%"}}/></div>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 justify-center my-3">
                 <div><b>Total Storage</b>: {formatBytes(limit, isGB)} {isGB ? 'GB' : 'MB'}</div>
                 <div>
                     <div className="w-3 h-3 inline-flex mr-2 rounded" style={{ background: chartConfig.used.color }} />

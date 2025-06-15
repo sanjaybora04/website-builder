@@ -93,7 +93,7 @@ export default function Storage() {
 
     return (
         <div className="p-5 sm:px-10">
-            {/* <Stats usage={usage.data} /> */}
+            <Stats usage={usage.data} />
             <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={() => loadData()} />
             <div className="flex flex-wrap gap-5 mt-10">
                 {data.loading && <div className="w-full h-52 flex items-center justify-center"><Loader className="w-10 h-10 animate-spin text-primary" /></div>}
