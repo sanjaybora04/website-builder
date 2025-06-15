@@ -33,10 +33,12 @@ export function ButtonEditor({
   label,
   value,
   onChange,
+  variables
 }: {
   label?: string;
   value?: ButtonConfig;
   onChange: (val: ButtonConfig) => void;
+  variables?: any[];
 }) {
   const update = (partial: Partial<ButtonConfig>) =>
     onChange({ ...value, ...partial });
@@ -121,6 +123,7 @@ export function ButtonEditor({
           <LinkActionEditor
             action={value?.action as Extract<ButtonAction, { type: "link" }>}
             onChange={(action) => update({ action })}
+            variables={variables}
           />
         )}
       </div>
@@ -128,7 +131,7 @@ export function ButtonEditor({
   );
 }
 
-export function ButtonComponent({ config, className }: { config?: ButtonConfig; className?: string }) {
+export function ButtonComponent({ config, className, variables }: { config?: ButtonConfig; className?: string; variables?: { label?: string, value?: string }[] }) {
   const labelHTML = { __html: config?.label || "" };
   const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom);
 
@@ -154,14 +157,23 @@ export function ButtonComponent({ config, className }: { config?: ButtonConfig; 
 
   const renderButton = () => {
     if (action?.type === "link") {
+      // Replace variables in the href if provided
+      let href = action.href || "#";
+      if (variables) {
+        href = href.replace(/{{(.*?)}}/g, (_, key) => {
+          const found = variables.find((v) => v.label === key.trim());
+          return found?.value || "";
+        });
+      }
+
+      const isInternalLink =
+        href.startsWith("/") ||
+        (!href.startsWith("http://") && !href.startsWith("https://"));
+
       return (
         <Link
-          href={action.href || "#"}
+          href={href}
           onClick={(e) => {
-            const href = action?.href || "#";
-            const isInternalLink =
-              href.startsWith("/") ||
-              (!href.startsWith("http://") && !href.startsWith("https://"));
             if (websiteEditor && isInternalLink) {
               e.preventDefault();
               setWebsiteEditor((prev: any) => ({
@@ -171,15 +183,15 @@ export function ButtonComponent({ config, className }: { config?: ButtonConfig; 
               }));
             }
           }}
-          style={{ 
-            backgroundColor: variant!='link'?color:undefined,
-            color:variant=='link'?color:undefined 
+          style={{
+            backgroundColor: variant !== "link" ? color : undefined,
+            color: variant === "link" ? color : undefined,
           }}
           className={cn(
             baseClasses,
             fontSizeClass,
             variant !== "link" && defaultSizeClasses,
-            variant == 'link' && "hover:underline",
+            variant === "link" && "hover:underline",
             className
           )}
         >
@@ -190,15 +202,15 @@ export function ButtonComponent({ config, className }: { config?: ButtonConfig; 
 
     return (
       <button
-      style={{ 
-        backgroundColor: variant!='link'?color:undefined,
-        color:variant=='link'?color:undefined 
-      }}
+        style={{
+          backgroundColor: variant !== "link" ? color : undefined,
+          color: variant === "link" ? color : undefined,
+        }}
         className={cn(
           baseClasses,
           fontSizeClass,
           variant !== "link" && defaultSizeClasses,
-          variant == 'link' && "hover:underline",
+          variant === "link" && "hover:underline",
           className
         )}
       >

@@ -1,3 +1,5 @@
+'use client'
+
 import RichTextEditor from "../ui/editor/rich-text-editor"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
@@ -6,6 +8,10 @@ import { RepeaterEditor } from "../ui/editor/repeater"
 import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
 import { cn } from "@/lib/utils"
 import { PaintBucket, Type } from "lucide-react"
+import DebouncedInput from "../ui/editor/input"
+import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button"
+import { Label } from "../ui/label"
+import { useState } from "react"
 
 type FormField = {
   label?: string
@@ -24,10 +30,22 @@ type FormComponentType = {
     title?: string
     description?: string
     fields?: FormField[]
+    submitButton?: ButtonConfig
   }
 }
 
 export function Component({ config }: { config: FormComponentType }) {
+  const [formValues, setFormValues] = useState<{ [key: string]: string }>({});
+
+  const handleChange = (name: string, value: string) => {
+    setFormValues((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const variables =
+    config.content?.fields?.map((f) => ({
+      label: f.name,
+      value: formValues[f.name||''] || "",
+    })) || [];
   return (
     <Container config={config.container}>
       <div style={{ color: config.styles?.textColor }}>
@@ -38,17 +56,22 @@ export function Component({ config }: { config: FormComponentType }) {
           <RenderHtml html={config.content?.description} />
         </div>
       </div>
-      <form className={cn("w-full max-w-xl space-y-4", ` p-4 rounded`)}
-        style={{backgroundColor:config.styles?.backgroundColor}}
+      <form
+        className={cn("w-full max-w-3xl space-y-4 mx-auto", `p-4 rounded`)}
+        style={{ backgroundColor: config.styles?.backgroundColor }}
       >
         {config.content?.fields?.map((field, i) => (
           <div key={i}>
-            <label className="block mb-1 font-medium">{field.label}</label>
+            {field.label && (
+              <Label className="mb-1"><RenderHtml html={field.label}/></Label>
+            )}
             {field.type === "textarea" ? (
               <textarea
                 name={field.name}
                 placeholder={field.placeholder}
                 className="w-full border rounded p-2"
+                value={formValues[field.name||''] || ""}
+                onChange={(e) => handleChange(field.name||'', e.target.value)}
               />
             ) : (
               <input
@@ -56,14 +79,19 @@ export function Component({ config }: { config: FormComponentType }) {
                 name={field.name}
                 placeholder={field.placeholder}
                 className="w-full border rounded p-2"
+                value={formValues[field.name||''] || ""}
+                onChange={(e) => handleChange(field.name||'', e.target.value)}
               />
             )}
           </div>
         ))}
-        <button type="submit" className="px-4 py-2 bg-black text-white rounded">Submit</button>
+        <ButtonComponent
+          config={config.content?.submitButton}
+          variables={variables}
+        />
       </form>
     </Container>
-  )
+  );
 }
 
 export function Editor({
@@ -106,7 +134,7 @@ export function Editor({
             label="Form Fields"
             itemLabel="Field"
             value={values.content?.fields || []}
-            onChange={(fields) => handleSubmit({ content: { ...values.content, fields } })}
+            onChange={(fields) => handleSubmit({ content: { fields } })}
             max={10}
             createNewItem={() => ({
               label: "Name",
@@ -119,18 +147,21 @@ export function Editor({
                 <RichTextEditor
                   label="Label"
                   value={field.label}
-                  onChange={(v) => onChange({ ...field, label: v })}
+                  onChange={(v) => onChange({ label: v })}
                 />
-                <RichTextEditor
-                  label="Name (Input name attribute)"
+
+                <Label className="mb-2">Name (Input name attribute)</Label>
+                <DebouncedInput
                   value={field.name}
-                  onChange={(v) => onChange({ ...field, name: v })}
+                  onChange={(e) => onChange({ name: e.target.value })}
                 />
-                <RichTextEditor
-                  label="Placeholder"
+
+                <Label className="mb-2">Placeholder</Label>
+                <DebouncedInput
                   value={field.placeholder}
-                  onChange={(v) => onChange({ ...field, placeholder: v })}
+                  onChange={(e) => onChange({ placeholder: e.target.value })}
                 />
+
                 <select
                   className="w-full border p-2 rounded mt-2"
                   value={field.type}
@@ -142,6 +173,13 @@ export function Editor({
                 </select>
               </>
             )}
+          />
+
+          <ButtonEditor
+            label="Submit Button"
+            value={values.content?.submitButton}
+            onChange={(v) => handleSubmit({ content: { submitButton: v } })}
+            variables={values.content?.fields?.map(field => field.name) || []} // Use field names as variables
           />
         </Panel>
       </>
