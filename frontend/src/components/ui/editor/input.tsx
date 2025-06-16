@@ -1,3 +1,4 @@
+'use client'
 import { cn } from "@/lib/utils";
 import { useEffect, useState, forwardRef } from "react";
 import { useDebounce } from "use-debounce";
