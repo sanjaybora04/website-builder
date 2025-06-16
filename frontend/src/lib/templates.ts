@@ -27,11 +27,11 @@ export const templates:Template[] = [
         name: "Startup",
         website:{
           "name": "Startup Template",
-          "favicon": "https://sitecraft.sanjaybora.in/images/logo.png",
+          "favicon": "https://sitecraft.sanjaybora.in/images/logo.svg",
           "pages": [
             {
               "path": "/",
-              "image": "http://localhost:3000/images/test.svg",
+              "image": "https://sitecraft.sanjaybora.in/images/test.svg",
               "title": "HomePage",
               "components": [
                 {
@@ -44,24 +44,37 @@ export const templates:Template[] = [
                       "backgroundColor": "#ffffff"
                     },
                     "content": {
+                      "logo": {
+                        "url": "https://sitecraft.sanjaybora.in/images/logo.svg",
+                        "objectFit": "cover"
+                      },
                       "title": "<p>SiteCraft</p>",
                       "buttons": [
                         {
                           "link": "#",
                           "size": "default",
                           "label": "<p>Home</p>",
-                          "variant": "default"
+                          "action": {
+                            "href": "",
+                            "type": "none"
+                          },
+                          "variant": "link"
                         },
                         {
                           "link": "#",
                           "size": "sm",
                           "label": "<p>About Us</p>",
-                          "variant": "default"
+                          "action": {
+                            "href": "/about",
+                            "type": "link"
+                          },
+                          "variant": "link"
                         },
                         {
                           "link": "#",
                           "size": "sm",
-                          "label": "<p>Contact Us</p>",
+                          "color": "#ef5252",
+                          "label": "<p><span style=\"color: #ffffff\">Contact Us</span></p>",
                           "variant": "default"
                         }
                       ]
@@ -92,13 +105,14 @@ export const templates:Template[] = [
                         "color": "#ef5252",
                         "label": "<p><span style=\"color: #ffffff\"><strong>Get Started →</strong></span></p>",
                         "action": {
-                          "href": "#",
-                          "type": "none"
+                          "href": "#contact",
+                          "type": "link"
                         },
                         "variant": "default"
                       },
                       "paragraph": "<p><br>Lorem ipsum dolor sit amet consectetur <span style=\"color: rgb(255, 114, 94)\"><u>adipisicing</u></span> elit. Ex optio unde consequatur qui esse vitae illo doloremque perspiciatis quae porro impedit<br><br></p><ul style=\"list-style-type: disc; padding-left: 1.25rem; margin-bottom: 0.5rem;\"><li style=\"margin-bottom: 0.25rem;\"><p>hello how are you</p></li><li style=\"margin-bottom: 0.25rem;\"><p>hello i am good how are you</p></li></ul>"
-                    }
+                    },
+                    "container": {}
                   }
                 },
                 {
@@ -156,13 +170,48 @@ export const templates:Template[] = [
                   }
                 },
                 {
-                  "id": "4",
-                  "name": "Reviews",
-                  "dndId": "3d35c4cf-6d27-434d-95d6-5c531215b846",
+                  "id": "8",
+                  "name": "Icons",
+                  "dndId": "c7a4175a-89cf-4fb9-824b-8f6960b714b2",
                   "index": 3,
                   "config": {
                     "content": {
-                      "title": "<p>What Our Customers Say?</p>",
+                      "cards": [
+                        {
+                          "icon": {
+                            "url": "https://sitecraft.sanjaybora.in/images/logo.svg"
+                          },
+                          "title": "Feature title",
+                          "paragraph": "Short description"
+                        },
+                        {
+                          "icon": {
+                            "url": "https://sitecraft.sanjaybora.in/images/logo.svg"
+                          },
+                          "title": "Feature title",
+                          "paragraph": "Short description"
+                        },
+                        {
+                          "icon": {
+                            "url": "https://sitecraft.sanjaybora.in/images/logo.svg"
+                          },
+                          "title": "Feature title",
+                          "paragraph": "Short description"
+                        }
+                      ],
+                      "title": "<p>Features</p>",
+                      "paragraph": "<p>Features we offer</p>"
+                    }
+                  }
+                },
+                {
+                  "id": "4",
+                  "name": "Reviews",
+                  "dndId": "3d35c4cf-6d27-434d-95d6-5c531215b846",
+                  "index": 4,
+                  "config": {
+                    "content": {
+                      "title": "<p style=\"text-align: center\">What Our Customers Say?</p>",
                       "paragraph": "<p style=\"text-align: center\">Hear the best reviews from our customers</p>",
                       "testimonials": [
                         {
@@ -197,7 +246,7 @@ export const templates:Template[] = [
                   "id": "5",
                   "name": "FAQ",
                   "dndId": "165b81cf-eb50-4d0b-b2d8-7c29511933ec",
-                  "index": 4,
+                  "index": 5,
                   "config": {
                     "content": {
                       "faqs": [
@@ -211,46 +260,79 @@ export const templates:Template[] = [
                         }
                       ],
                       "title": "<p style=\"text-align: center\">Frequently Asked Questions</p>",
-                      "description": "<p style=\"text-align: center\">Answers to some of the frequentl asked questions by our customers</p>"
+                      "paragraph": "<p style=\"text-align: center\">Answers to some of the frequentl asked questions by our customers</p>"
                     },
                     "accordion": {},
                     "container": {}
                   }
                 },
                 {
+                  "id": "7",
+                  "name": "Form",
+                  "dndId": "dac3e0cb-60ec-41a4-a3a8-bfb5884fb061",
+                  "index": 6,
+                  "config": {
+                    "content": {
+                      "title": "<p style=\"text-align: center\">Contact Us</p>",
+                      "fields": [
+                        {
+                          "name": "name",
+                          "type": "text",
+                          "label": "<p>Name</p>",
+                          "placeholder": "Enter your name"
+                        },
+                        {
+                          "name": "phone",
+                          "type": "number",
+                          "label": "<p>Phone</p>",
+                          "placeholder": "Enter your Phone Number"
+                        },
+                        {
+                          "name": "message",
+                          "type": "textarea",
+                          "label": "<p>Message</p>",
+                          "placeholder": "Enter your message"
+                        }
+                      ],
+                      "submitButton": {
+                        "color": "#ef5252",
+                        "label": "<p><span style=\"color: rgb(255, 255, 255)\">Submit</span></p>",
+                        "action": {
+                          "href": "https://wa.me/919548983448?text=name%3D{{name}}%0Aphone%3D{{phone}}%0Amessage%3D{{message}}",
+                          "type": "link"
+                        }
+                      }
+                    },
+                    "container": {
+                      "id": "contact"
+                    }
+                  }
+                },
+                {
                   "id": "6",
                   "name": "Footer",
-                  "dndId": "675d56a6-a9af-4f62-af01-5d9265f46242",
-                  "index": 5,
+                  "dndId": "a99c9004-3608-4875-b000-dde4a61ceb18",
+                  "index": 7,
                   "config": {
-                    "style": {
-                      "backgroundColor": "#f5f5f5"
-                    },
                     "content": {
-                      "brand": "<p>SiteCraft</p>",
+                      "logo": {
+                        "url": "https://s3.sanjaybora.in/sitecraft/6b027439-4921-424e-aa0c-d70ebe32a05d/0faf91bf-2f5c-4e13-a2f4-111b66061cd4"
+                      },
+                      "title": "<p>SiteCraft</p>",
                       "groups": [
                         {
                           "links": [
                             {
-                              "href": "/sdf",
+                              "href": "#",
                               "label": "Home"
                             },
                             {
-                              "href": "/",
-                              "label": "Home"
-                            }
-                          ],
-                          "title": "<p>Links</p>"
-                        },
-                        {
-                          "links": [
-                            {
-                              "href": "/",
-                              "label": "Home"
+                              "href": "#",
+                              "label": "About"
                             },
                             {
-                              "href": "/",
-                              "label": "Home"
+                              "href": "#",
+                              "label": "Contact Us"
                             }
                           ],
                           "title": "Links"
@@ -258,18 +340,25 @@ export const templates:Template[] = [
                         {
                           "links": [
                             {
-                              "href": "/",
-                              "label": "Home"
+                              "href": "mailto:contact@example.com",
+                              "label": "contact@example.com"
                             },
                             {
-                              "href": "/",
-                              "label": "Home"
+                              "href": "tel:+91 92342345",
+                              "label": "+91 92342345"
                             }
                           ],
-                          "title": "Links"
+                          "title": "Contact Us"
                         }
                       ],
-                      "copyright": "<p>Sitecraft</p>"
+                      "socials": {
+                        "color": "#ffffff",
+                        "github": "https://github.com/sanjaybora04",
+                        "youtube": "https://www.youtube.com/@sanjaybora04",
+                        "linkedin": "https://www.linkedin.com/in/sanjaybora04/"
+                      },
+                      "copyright": "<p><span style=\"color: #bdbdbd\">Copyright@SiteCraft | All Rights Reserved</span></p>",
+                      "paragraph": "<p>This is SiteCraft</p>"
                     },
                     "container": {
                       "color": "#ffffff",

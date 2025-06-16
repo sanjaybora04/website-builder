@@ -205,9 +205,58 @@ const builderComponents: BuilderComponent[] = [
         configInput: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Editor)),
         component: dynamic(() => import('@/components/builder-components/footer1').then(mod => mod.Component)),
         examples: [
-            {
-
+          {
+            "content": {
+              "logo": {
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo.svg`,
+              },
+              "title": "<p>SiteCraft</p>",
+              "groups": [
+                {
+                  "links": [
+                    {
+                      "href": "#",
+                      "label": "Home"
+                    },
+                    {
+                      "href": "#",
+                      "label": "About"
+                    },
+                    {
+                      "href": "#",
+                      "label": "Contact Us"
+                    }
+                  ],
+                  "title": "Links"
+                },
+                {
+                  "links": [
+                    {
+                      "href": "mailto:contact@example.com",
+                      "label": "contact@example.com"
+                    },
+                    {
+                      "href": "tel:+91 92342345",
+                      "label": "+91 92342345"
+                    }
+                  ],
+                  "title": "Contact Us"
+                }
+              ],
+              "socials": {
+                "color": "#ffffff",
+                "github": "https://github.com/sanjaybora04",
+                "youtube": "https://www.youtube.com/@sanjaybora04",
+                "linkedin": "https://www.linkedin.com/in/sanjaybora04/"
+              },
+              "copyright": "<p><span style=\"color: #bdbdbd\">Copyright@SiteCraft | All Rights Reserved</span></p>",
+              "paragraph": "<p>This is SiteCraft</p>"
+            },
+            "container": {
+              "color": "#ffffff",
+              "backgroundColor": "#000000"
             }
+          }
         ]
     },
     {
@@ -217,11 +266,82 @@ const builderComponents: BuilderComponent[] = [
       configInput: dynamic(() => import('@/components/builder-components/form1').then(mod => mod.Editor)),
       component: dynamic(() => import('@/components/builder-components/form1').then(mod => mod.Component)),
       examples: [
-          {
-
+        {
+          "content": {
+            "title": "<p style=\"text-align: center\">Contact Us</p>",
+            "fields": [
+              {
+                "name": "name",
+                "type": "text",
+                "label": "<p>Name</p>",
+                "placeholder": "Enter your name"
+              },
+              {
+                "name": "phone",
+                "type": "number",
+                "label": "<p>Phone</p>",
+                "placeholder": "Enter your Phone Number"
+              },
+              {
+                "name": "message",
+                "type": "textarea",
+                "label": "<p>Message</p>",
+                "placeholder": "Enter your message"
+              }
+            ],
+            "submitButton": {
+              "color": "#ef5252",
+              "label": "<p><span style=\"color: rgb(255, 255, 255)\">Submit</span></p>",
+              "action": {
+                "href": "https://wa.me/919548983448?text=name%3D{{name}}%0Aphone%3D{{phone}}%0Amessage%3D{{message}}",
+                "type": "link"
+              }
+            }
+          },
+          "container": {
+            "id": "contact"
           }
+        }
       ]
-  }
+  },
+  {
+    id: '8',
+    name: "Icons",
+    tags:['other'],
+    configInput: dynamic(() => import('@/components/builder-components/icons1').then(mod => mod.Editor)),
+    component: dynamic(() => import('@/components/builder-components/icons1').then(mod => mod.Component)),
+    examples: [
+      {
+        "content": {
+          "cards": [
+            {
+              "icon": {
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo.svg`
+              },
+              "title": "Feature title",
+              "paragraph": "Short description"
+            },
+            {
+              "icon": {
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo.svg`
+              },
+              "title": "Feature title",
+              "paragraph": "Short description"
+            },
+            {
+              "icon": {
+                "url": `${process.env.NEXT_PUBLIC_BASE_URL}/images/logo.svg`
+              },
+              "title": "Feature title",
+              "paragraph": "Short description"
+            }
+          ],
+          "title": "<p>Features</p>",
+          "paragraph": "<p>Features we offer</p>"
+        }
+      }
+    ]
+}
 
 ]
 
