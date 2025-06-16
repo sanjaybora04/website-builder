@@ -4,7 +4,6 @@ import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button
 import Panel from "../ui/editor/panel"
 import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
-import { layoutStyleGenerator } from "@/lib/utils"
 import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
 
 type ComponentType = {

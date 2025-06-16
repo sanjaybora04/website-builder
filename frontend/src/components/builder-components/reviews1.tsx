@@ -38,14 +38,16 @@ type ComponentType = {
 export function Component({ config }: { config: ComponentType }) {
   return (
     <Container config={config.container}>
-      <div className="text-center mb-6">
-        <div className="text-3xl font-semibold font-raleway">
+      <div>
+        <div className="text-2xl sm:text-3xl font-semibold font-raleway">
           <RenderHtml html={config.content?.title} />
         </div>
-        <div className="mt-2"><RenderHtml html={config.content?.paragraph} /></div>
+        <div className="mt-2">
+          <RenderHtml html={config.content?.paragraph} />
+        </div>
       </div>
 
-      <Carousel className="w-full"
+      <Carousel className="w-full mt-5"
         plugins={config.carousel?.autoplay ? [Autoplay({ delay: 2000 })] : []}
         opts={{ loop: true }}>
         <CarouselContent className="-ml-5">

@@ -21,7 +21,7 @@ type ComponentType = {
   },
   content?: {
       title?: string,
-      description?: string,
+      paragraph?: string,
       faqs?: FAQItem[]
   }
 }
@@ -35,7 +35,7 @@ export function Component({ config }: { config: ComponentType }) {
                   <RenderHtml html={config.content?.title} />
               </div>
               <div className="mt-2">
-                  <RenderHtml html={config.content?.description} />
+                  <RenderHtml html={config.content?.paragraph} />
               </div>
           </div>
           <Accordion type="multiple" className="mt-6 w-full max-w-3xl mx-auto space-y-2">
@@ -101,8 +101,8 @@ export function Editor({
               />
               <RichTextEditor
                   label="Description"
-                  value={values.content?.description}
-                  onChange={(v) => handleSubmit({ content: { description: v } })}
+                  value={values.content?.paragraph}
+                  onChange={(v) => handleSubmit({ content: { paragraph: v } })}
                   showAlignment
                   showBackgroundColor
                   showHeading

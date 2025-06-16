@@ -11,7 +11,7 @@ import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/contain
 type cardType = {
     image?: ImageInputValue,
     title?: string,
-    description?: string,
+    paragraph?: string,
     button?: ButtonConfig
 }
 
@@ -40,7 +40,7 @@ export function Component({ config }: { config: ComponentType }) {
                     <div key={index} className="w-full max-w-96 sm:w-96 border rounded shadow p-4" style={{ backgroundColor: config.card?.backgroundColor,color:config.card?.color }}>
                         <ImageComponent config={c.image} className="aspect-video w-full" />
                         <div className="mt-2 text-lg sm:text-xl font-semibold"><RenderHtml html={c.title} /></div>
-                        <div className="mt-2"><RenderHtml html={c.description} /></div>
+                        <div className="mt-2"><RenderHtml html={c.paragraph} /></div>
                         <ButtonComponent config={c.button} className="mt-2" />
                     </div>
                 )}
@@ -102,9 +102,9 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
                                 showLink
                             />
                             <RichTextEditor
-                                label="Description"
-                                value={card.description}
-                                onChange={(v) => onChange({ description: v })}
+                                label="Paragraph"
+                                value={card.paragraph}
+                                onChange={(v) => onChange({ paragraph: v })}
                                 showAlignment
                                 showBackgroundColor
                                 showHeading

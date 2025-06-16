@@ -5,12 +5,13 @@ import RichTextEditor from "@/components/ui/editor/rich-text-editor"
 import { RepeaterEditor } from "@/components/ui/editor/repeater"
 import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
 import { Container, ContainerConfig, ContainerPanel } from "@/components/ui/editor/container"
+import ImageInput, { ImageComponent, ImageInputValue } from "@/components/ui/editor/image-input"
 
 export type ComponentType = {
     container?: ContainerConfig
     content?: {
         title?: string,
-        logo?: string,
+        logo?: ImageInputValue,
         buttons?: ButtonConfig[]
     }
 }
@@ -19,12 +20,12 @@ export type ComponentType = {
 
 export function Component({ config }: { config: ComponentType }) {
     return (
-        <Container 
-        config={config.container} 
-        className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 border-b shadow"
+        <Container
+            config={config.container}
+            className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 border-b shadow"
         >
-            <div className="flex gap-2 items-center">
-                <img src={config.content?.logo} />
+            <div className="flex gap-3 items-center">
+                <ImageComponent config={config.content?.logo} className="w-10 h-10 object-cover" />
                 <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title} /></div>
             </div>
             <div className="hidden sm:flex items-center gap-5 sm:gap-7">
@@ -40,9 +41,15 @@ export function Component({ config }: { config: ComponentType }) {
 export function Editor({ values, handleSubmit }: { values: ComponentType, handleSubmit: (data: ComponentType) => Promise<boolean> }) {
     return (
         <>
-            <ContainerPanel config={values.container} onChange={(v)=>handleSubmit({container:v})} enable={{backgroundImage:false}}/>
+            <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} enable={{ backgroundImage: false }} />
 
             <Panel title="Content" defaultOpen={true}>
+                <ImageInput
+                    label="Logo"
+                    value={values.content?.logo}
+                    onChange={(logo) => handleSubmit({ content: { logo } })}
+                />
+
                 <RichTextEditor
                     label="Title"
                     value={values.content?.title ?? ''}

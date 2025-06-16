@@ -191,7 +191,7 @@ const builderComponents: BuilderComponent[] = [
                 }
               ],
               "title": "<p style=\"text-align: center\">Frequently Asked Questions</p>",
-              "description": "<p style=\"text-align: center\">Answers to some of the frequentl asked questions by our customers</p>"
+              "paragraph": "<p style=\"text-align: center\">Answers to some of the frequentl asked questions by our customers</p>"
             },
             "accordion": {},
             "container": {}

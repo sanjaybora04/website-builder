@@ -7,7 +7,7 @@ import { Menu as MenuIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ButtonComponent } from '@/components/ui/editor/button';
 import { ComponentType } from '.';
-import { layoutStyleGenerator } from '@/lib/utils';
+import { Container } from '@/components/ui/editor/container';
 
 export default function MobileNav({ config }: { config:ComponentType}) {
     const [open, setOpen] = useState(false);
@@ -26,12 +26,14 @@ export default function MobileNav({ config }: { config:ComponentType}) {
                 </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" style={layoutStyleGenerator(config.container)}>
+            <SheetContent side="left" className='bg-transparent'>
+                <Container config={config.container} className='!py-0 h-full'>
                 <div className="space-y-3 mt-16 px-4">
                     {config.content?.buttons?.map((l,index)=>
                     <ButtonComponent key={index} config={l} className=" w-full"/>
                     )}
                 </div>
+                </Container>
             </SheetContent>
 
         </Sheet >
