@@ -341,6 +341,16 @@ const builderComponents: BuilderComponent[] = [
         }
       }
     ]
+},
+{
+  id: '9',
+  name: "Gallery",
+  tags:['other'],
+  configInput: dynamic(() => import('@/components/builder-components/gallery1').then(mod => mod.Editor)),
+  component: dynamic(() => import('@/components/builder-components/gallery1').then(mod => mod.Component)),
+  examples: [
+    {}
+  ]
 }
 
 ]

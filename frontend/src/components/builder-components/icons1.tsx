@@ -1,14 +1,12 @@
 import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container";
-
-import * as LucideIcons from "lucide-react";
 import RenderHtml from "../ui/editor/rich-text-editor/render-html";
 import Panel from "../ui/editor/panel";
 import RichTextEditor from "../ui/editor/rich-text-editor";
 import { RepeaterEditor } from "../ui/editor/repeater";
-import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input";
+import {MediaInput, MediaComponent, MediaConfig } from "../ui/editor/media-input";
 
 type Card = {
-    icon?: ImageInputValue; // Lucide icon name
+    icon?: MediaConfig; // Lucide icon name
     title?: string;
     paragraph?: string;
 };
@@ -39,7 +37,7 @@ export function Component({ config }: { config: ComponentType }) {
                 {config.content?.cards?.map((c, index) => {
                     return (
                         <div key={index} className="p-4 rounded text-center">
-                            <ImageComponent config={c.icon} className="w-10 h-10 mx-auto mb-3" />
+                            <MediaComponent config={c.icon} imageClassname="w-14 h-14 mx-auto mb-3" />
                             <div className="text-lg font-semibold">
                                 <RenderHtml html={c.title} />
                             </div>
@@ -80,15 +78,15 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
                 />
 
                 <RepeaterEditor<Card>
-                    label="Features"
-                    itemLabel="Feature"
+                    label="Items"
+                    itemLabel="Item"
                     value={values.content?.cards || []}
                     onChange={(cards) => handleSubmit({ content: { cards } })}
                     max={6}
                     createNewItem={() => ({ title: "Feature title", paragraph: "Short description" })}
                     renderEditor={(feature, onChange) => (
                         <>
-                            <ImageInput
+                            <MediaInput
                                 label="Icon"
                                 value={feature.icon}
                                 onChange={(icon) => onChange({ icon })}

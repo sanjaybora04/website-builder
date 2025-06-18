@@ -201,6 +201,18 @@ class User {
             return res.status(404).json({ error: "Asset not found or unauthorized" });
         }
 
+        // Check if a file with the same name exists in the same folder
+        const existingAsset = await prisma.asset.findFirst({
+            where: {
+                userId: req.user.id,
+                filename: newName,
+                parentId: asset.parentId
+            }
+        });
+        if (existingAsset) {
+            return res.status(409).json({ error: "A file with the same name already exists in this folder" });
+        }
+
         // Update the asset's filename
         await prisma.asset.update({
             where: { key },
@@ -339,6 +351,19 @@ class User {
             return res.status(404).json({ error: "Folder not found or unauthorized" });
         }
 
+        // check if folder with the same name exists in the new parent folder
+        const existingFolder = await prisma.folder.findFirst({
+            where: {
+                userId: req.user.id,
+                name: folder.name,
+                parentId: newParentId || null
+            }
+        });
+        if (existingFolder) {
+            return res.status(409).json({ error: "A folder with the same name already exists in the target location" });
+        }
+
+
         // Update the folder's parent ID
         await prisma.folder.update({
             where: { id: folderId },
@@ -358,6 +383,18 @@ class User {
 
         if (!folder || folder.userId !== req.user.id) {
             return res.status(404).json({ error: "Folder not found or unauthorized" });
+        }
+
+        // Check if a folder with the same name exists in the same parent folder
+        const existingFolder = await prisma.folder.findFirst({
+            where: {
+                userId: req.user.id,
+                name: newName,
+                parentId: folder.parentId
+            }
+        });
+        if (existingFolder) {
+            return res.status(409).json({ error: "A folder with the same name already exists in this location" });
         }
 
         // Update the folder's name

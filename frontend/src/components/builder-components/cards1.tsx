@@ -3,13 +3,13 @@ import RichTextEditor from "../ui/editor/rich-text-editor"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
 import ColorPicker from "../ui/editor/color-picker"
-import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
+import { MediaInput, MediaComponent, MediaConfig } from "../ui/editor/media-input"
 import { RepeaterEditor } from "../ui/editor/repeater"
 import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button"
 import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
 
 type cardType = {
-    image?: ImageInputValue,
+    image?: MediaConfig,
     title?: string,
     paragraph?: string,
     button?: ButtonConfig
@@ -18,8 +18,8 @@ type cardType = {
 type ComponentType = {
     container?: ContainerConfig,
     card?: {
-        color?:string
-        backgroundColor?:string
+        color?: string
+        backgroundColor?: string
     },
     content?: {
         title?: string,
@@ -37,8 +37,11 @@ export function Component({ config }: { config: ComponentType }) {
             </div>
             <div className="flex flex-col md:flex-row justify-center items-center gap-5 mt-5">
                 {config.content?.cards?.map((c, index) =>
-                    <div key={index} className="w-full max-w-96 sm:w-96 border rounded shadow p-4" style={{ backgroundColor: config.card?.backgroundColor,color:config.card?.color }}>
-                        <ImageComponent config={c.image} className="aspect-video w-full" />
+                    <div key={index} className="w-full max-w-96 sm:w-96 border rounded shadow p-4" style={{ backgroundColor: config.card?.backgroundColor, color: config.card?.color }}>
+                        <MediaComponent config={c.image}
+                            imageClassname="aspect-video w-full"
+                            youtubeClassname="aspect-video w-full"
+                        />
                         <div className="mt-2 text-lg sm:text-xl font-semibold"><RenderHtml html={c.title} /></div>
                         <div className="mt-2"><RenderHtml html={c.paragraph} /></div>
                         <ButtonComponent config={c.button} className="mt-2" />
@@ -52,12 +55,12 @@ export function Component({ config }: { config: ComponentType }) {
 export function Editor({ values, handleSubmit }: { values: ComponentType, handleSubmit: (data: ComponentType) => Promise<boolean> }) {
     return (
         <>
-            <ContainerPanel config={values.container} onChange={(v)=>handleSubmit({container:v})}/>
+            <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} />
 
             <Panel title="Card" defaultOpen={false}>
                 <div className="flex gap-1">
-                <ColorPicker icon={<Type />} color={values.card?.color} onChange={(v) => handleSubmit({  card: { color: v } })} />
-                <ColorPicker icon={<PaintBucket />} color={values.card?.backgroundColor} onChange={(v) => handleSubmit({  card: { backgroundColor: v } })} />
+                    <ColorPicker icon={<Type />} color={values.card?.color} onChange={(v) => handleSubmit({ card: { color: v } })} />
+                    <ColorPicker icon={<PaintBucket />} color={values.card?.backgroundColor} onChange={(v) => handleSubmit({ card: { backgroundColor: v } })} />
                 </div>
             </Panel>
 
@@ -111,7 +114,7 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
                                 showLink
                                 showList
                             />
-                            <ImageInput label="Image" value={card.image} onChange={(v) => onChange({ image: v })} />
+                            <MediaInput label="Image" allowYouTube value={card.image} onChange={(v) => onChange({ image: v })} />
                             <ButtonEditor label="Button" value={card.button} onChange={(v) => onChange({ button: v })} />
                         </>
                     )}

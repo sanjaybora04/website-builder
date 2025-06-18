@@ -1,5 +1,6 @@
 "use client"
 
+import Branding from "@/components/builder-components/branding";
 import { websiteEditorAtom } from "@/lib/atoms"
 import builderComponents from "@/lib/builder-components";
 import { useAtomValue } from "jotai"

@@ -6,7 +6,7 @@ import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/contain
 import RichTextEditor from "../ui/editor/rich-text-editor"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import Panel from "../ui/editor/panel"
-import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
+import {MediaInput, MediaComponent, MediaConfig } from "../ui/editor/media-input"
 import { RepeaterEditor } from "../ui/editor/repeater"
 import { PaintBucket, Type } from "lucide-react"
 import ColorPicker from "../ui/editor/color-picker"
@@ -17,7 +17,7 @@ import { Label } from "../ui/label"
 type Testimonial = {
   name?: string
   position?: string
-  image?: ImageInputValue
+  image?: MediaConfig
   quote?: string
 }
 
@@ -60,9 +60,9 @@ export function Component({ config }: { config: ComponentType }) {
                 className="p-6 h-full rounded shadow text-center border flex flex-col justify-between"
                 style={{ backgroundColor: config.carousel?.backgroundColor, color: config.carousel?.color }}
               >
-                <ImageComponent
+                <MediaComponent
                   config={item.image}
-                  className="w-16 h-16 mx-auto rounded-full object-cover mb-4"
+                  imageClassname="w-16 h-16 mx-auto rounded-full object-cover mb-4"
                 />
                 <div className="text-lg italic mb-2">
                   <RenderHtml html={item.quote} />
@@ -129,8 +129,8 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
         />
 
         <RepeaterEditor<Testimonial>
-          label="Testimonials"
-          itemLabel="Testimonial"
+          label="Reviews"
+          itemLabel="Review"
           value={values.content?.testimonials || []}
           onChange={(testimonials) => handleSubmit({ content: { testimonials } })}
           max={10}
@@ -144,7 +144,7 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
               <RichTextEditor label="Quote" value={testimonial.quote} onChange={(v) => onChange({ quote: v })} />
               <RichTextEditor label="Name" value={testimonial.name} onChange={(v) => onChange({ name: v })} />
               <RichTextEditor label="Position" value={testimonial.position} onChange={(v) => onChange({ position: v })} />
-              <ImageInput label="Avatar" value={testimonial.image} onChange={(v) => onChange({ image: v })} />
+              <MediaInput label="Avatar" value={testimonial.image} onChange={(v) => onChange({ image: v })} />
             </>
           )}
         />

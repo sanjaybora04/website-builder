@@ -58,7 +58,7 @@ export default function SelectTemplate({ setStep, setData }: { setStep: any, set
                         }}
                     >
                         <img src={t.image} className="w-full object-cover"/>
-                        <div className="absolute w-full h-full top-0 left-0 z-10 opacity-0 hover:opacity-100 duration-200 hover:bg-black/50 flex items-center justify-center">
+                        <div className="absolute w-full h-full top-0 left-0 z-10 opacity-0 hover:opacity-100 duration-200 hover:bg-primary/80 text-primary-foreground font-bold flex items-center justify-center">
                             Use
                         </div>
                         {t.name}

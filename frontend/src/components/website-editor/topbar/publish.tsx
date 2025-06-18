@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import api from "@/lib/api";
 import { websiteEditorAtom } from "@/lib/atoms";
 import { useAtomValue, useSetAtom } from "jotai";
+import { Upload } from "lucide-react";
 import { toast } from "sonner";
 
 export function PublishWebsiteButton(){
@@ -18,6 +19,6 @@ export function PublishWebsiteButton(){
         
     }
     return (
-        <Button onClick={()=>publish()}>Publish</Button>
+        <Button onClick={()=>publish()}><Upload/>Publish</Button>
     )
 }

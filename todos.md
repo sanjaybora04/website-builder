@@ -28,3 +28,5 @@
 * modals dont close when user clicks on preview iframe
 
 * update debounce delay automatically based on time taken to update the data
+
+* open external links in new tab

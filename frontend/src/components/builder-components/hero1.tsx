@@ -2,7 +2,7 @@
 import RichTextEditor from "../ui/editor/rich-text-editor"
 import { ButtonComponent, ButtonConfig, ButtonEditor } from "../ui/editor/button"
 import Panel from "../ui/editor/panel"
-import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
+import {MediaInput,MediaComponent, MediaConfig } from "../ui/editor/media-input"
 import RenderHtml from "../ui/editor/rich-text-editor/render-html"
 import { Container, ContainerConfig, ContainerPanel } from "../ui/editor/container"
 
@@ -12,7 +12,7 @@ type ComponentType = {
         title?: string,
         paragraph?: string,
         button?: ButtonConfig,
-        image?: ImageInputValue
+        image?: MediaConfig
     }
 }
 
@@ -25,7 +25,10 @@ export function Component({ config }: { config: ComponentType }) {
                 <div><RenderHtml html={config.content?.paragraph} /></div>
                 <ButtonComponent config={config.content?.button} />
             </div>
-            {config.content?.image && <ImageComponent config={config.content?.image} className="sm:w-1/2 max-h-[50vh] sm:max-h-[90vh]" />}
+            {config.content?.image && <MediaComponent config={config.content?.image} 
+            imageClassname="sm:w-1/2 max-h-[50vh] sm:max-h-[90vh]"
+            youtubeClassname="sm:w-1/2 max-h-[50vh] sm:max-h-[90vh] aspect-video"
+            />}
         </Container>
     )
 }
@@ -60,9 +63,8 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
 
                 <ButtonEditor label="Button" value={values.content?.button} onChange={(v) => handleSubmit({ ...values, content: { button: v } })} />
 
-                <ImageInput value={values.content?.image} onChange={(v) => handleSubmit({ content: { image: v } })} />
+                <MediaInput value={values.content?.image} allowYouTube onChange={(v) => handleSubmit({ content: { image: v } })} />
             </Panel>
-
         </>
     )
 }

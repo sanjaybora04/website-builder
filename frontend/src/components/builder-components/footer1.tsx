@@ -7,7 +7,7 @@ import { Button } from "../ui/button"
 import { Facebook, Github, Instagram, Linkedin, MessageCircle, PaintBucket, Slack, Twitter, X, Youtube } from "lucide-react"
 import { Input } from "../ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import ImageInput, { ImageComponent, ImageInputValue } from "../ui/editor/image-input"
+import {MediaInput, MediaComponent, MediaConfig } from "../ui/editor/media-input"
 import DebouncedInput from "../ui/editor/input"
 import { Label } from "../ui/label"
 import ColorPicker from "../ui/editor/color-picker"
@@ -37,7 +37,7 @@ type socials = {
 type ComponentType = {
   container?: ContainerConfig,
   content?: {
-    logo?: ImageInputValue
+    logo?: MediaConfig
     title?: string
     paragraph?: string
     groups?: FooterGroup[]
@@ -66,7 +66,7 @@ export function Component({ config }: { config: ComponentType }) {
             <div>
               <div className="flex gap-3 items-center mb-4">
                 {config.content?.logo && (
-                  <ImageComponent config={config.content.logo} className="w-10 h-10" />
+                  <MediaComponent config={config.content.logo} imageClassname="w-10 h-10" />
                 )}
                 {config.content?.title && (
                   <div className="text-xl sm:text-2xl font-semibold font-raleway">
@@ -133,7 +133,7 @@ export function Editor({
       <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} />
 
       <Panel title="Content">
-        <ImageInput
+        <MediaInput
           label="Logo"
           value={values.content?.logo}
           onChange={(v) => handleSubmit({ content: { logo: v } })}
@@ -247,7 +247,7 @@ export function Editor({
         />
       </Panel>
 
-      <Panel title="Socials">
+      <Panel title="Socials" defaultOpen={false}>
         <ColorPicker
           label="Socials Icon Color"
           icon={<PaintBucket />}

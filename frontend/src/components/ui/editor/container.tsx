@@ -1,14 +1,14 @@
 import { PaintBucket, Type } from "lucide-react"
 import { Input } from "../input"
 import ColorPicker from "./color-picker"
-import ImageInput, { ImageInputValue } from "./image-input"
+import {MediaInput, MediaConfig } from "./media-input"
 import Panel from "./panel"
 
 export type ContainerConfig = {
     id?: string
     color?: string
     backgroundColor?: string
-    backgroundImage?: ImageInputValue
+    backgroundImage?: MediaConfig
 }
 
 type ContainerProps = {
@@ -59,7 +59,7 @@ export function ContainerPanel({ config,onChange, enable }: ContainerEditorProps
                 <ColorPicker icon={<Type />} color={config?.color} onChange={(v) => onChange({color: v })} />
                 <ColorPicker icon={<PaintBucket />} color={config?.backgroundColor} onChange={(v) => onChange({ backgroundColor: v })} />
             </div>
-            {enable?.backgroundImage!=false&&<ImageInput label="Background Image" value={config?.backgroundImage} onChange={(v) => onChange({ backgroundImage: v })} />}
+            {enable?.backgroundImage!=false&&<MediaInput label="Background Image" value={config?.backgroundImage} onChange={(v) => onChange({ backgroundImage: v })} />}
             <hr />
 
         </Panel>

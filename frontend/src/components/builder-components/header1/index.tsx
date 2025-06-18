@@ -5,13 +5,13 @@ import RichTextEditor from "@/components/ui/editor/rich-text-editor"
 import { RepeaterEditor } from "@/components/ui/editor/repeater"
 import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
 import { Container, ContainerConfig, ContainerPanel } from "@/components/ui/editor/container"
-import ImageInput, { ImageComponent, ImageInputValue } from "@/components/ui/editor/image-input"
+import { MediaInput, MediaComponent, MediaConfig } from "@/components/ui/editor/media-input"
 
 export type ComponentType = {
     container?: ContainerConfig
     content?: {
         title?: string,
-        logo?: ImageInputValue,
+        logo?: MediaConfig,
         buttons?: ButtonConfig[]
     }
 }
@@ -25,7 +25,7 @@ export function Component({ config }: { config: ComponentType }) {
             className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 border-b shadow"
         >
             <div className="flex gap-3 items-center">
-                <ImageComponent config={config.content?.logo} className="w-10 h-10 object-cover" />
+                <MediaComponent config={config.content?.logo} imageClassname="w-10 h-10 object-cover" />
                 <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title} /></div>
             </div>
             <div className="hidden sm:flex items-center gap-5 sm:gap-7">
@@ -44,7 +44,7 @@ export function Editor({ values, handleSubmit }: { values: ComponentType, handle
             <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} enable={{ backgroundImage: false }} />
 
             <Panel title="Content" defaultOpen={true}>
-                <ImageInput
+                <MediaInput
                     label="Logo"
                     value={values.content?.logo}
                     onChange={(logo) => handleSubmit({ content: { logo } })}

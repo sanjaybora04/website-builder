@@ -4,6 +4,7 @@ import builderComponents from '@/lib/builder-components'
 import { headers } from 'next/headers'
 import { Website } from '@/lib/types'
 import { Metadata } from 'next'
+import Branding from '@/components/builder-components/branding'
 
 async function getWebsiteByDomain(host: string): Promise<Website> {
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/website/getbydomain', {
@@ -69,6 +70,7 @@ export default async function Page({ params }: { params: Promise<any> }) {
                 return <Comp key={index} config={c.config} />
             }
             )}
+            <Branding />
         </main>
     )
 }
