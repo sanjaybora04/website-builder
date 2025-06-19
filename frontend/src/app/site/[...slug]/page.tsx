@@ -4,8 +4,9 @@ import builderComponents from '@/lib/builder-components'
 import { headers } from 'next/headers'
 import { Website } from '@/lib/types'
 import { Metadata } from 'next'
+import Branding from '@/components/builder-components/branding'
 
-async function getWebsiteByDomain(host: string): Promise<Website> {
+async function getWebsiteByDomain(host: string): Promise<Website & { [key: string]: any }> {
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/website/getbydomain', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -69,6 +70,10 @@ export default async function Page({ params }: { params: Promise<any> }) {
                 return <Comp key={index} config={c.config} />
             }
             )}
+            {
+                site.admin.plan == 'free' &&
+                <Branding />
+            }
         </main>
     )
 }

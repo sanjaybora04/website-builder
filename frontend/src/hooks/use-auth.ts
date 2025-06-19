@@ -4,7 +4,8 @@ import { atomWithStorage } from 'jotai/utils';
 export type User = {
     token:string,
     name:string,
-    email:string
+    email:string,
+    plan: 'FREE' | 'PRO'
 }
 
 export const userAtom = atomWithStorage<User|undefined>('user',undefined)

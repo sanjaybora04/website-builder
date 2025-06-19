@@ -41,7 +41,8 @@ class User {
             return res.json({
                 token,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                plan: user.plan,
             })
         } else {
             const newUser = await prisma.user.create({
@@ -61,7 +62,8 @@ class User {
             return res.json({
                 token,
                 name: newUser.name,
-                email: newUser.email
+                email: newUser.email,
+                plan: newUser.plan,
             })
         }
 

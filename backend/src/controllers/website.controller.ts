@@ -15,11 +15,7 @@ class Website {
     async getAll(req: any, res: any) {
         const websites = await prisma.website.findMany({
             where: {
-                admins: {
-                    some: {
-                        id: req.user.id
-                    }
-                }
+                adminId: req.user.id
             }
         })
 
@@ -27,7 +23,7 @@ class Website {
     }
 
     async getByDomain(req: any, res: any) {
-        const website = await prisma.website.findFirst({ where: { domain: req.body.domain } })
+        const website = await prisma.website.findFirst({ where: { domain: req.body.domain }, include:{admin:true} })
         return res.json(website)
     }
 

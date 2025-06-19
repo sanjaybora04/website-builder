@@ -20,9 +20,8 @@ import { templates } from "@/lib/templates"
 import { ArrowUpRight, Trash2 } from "lucide-react"
 import Link from "next/link"
 import Routes from "@/lib/routes"
-import useAuth from "@/hooks/use-auth"
-import FileUploadComponent from "../storage/fileuploader"
 import FileSelector from "../storage/fileSelector"
+import useAuth from "@/hooks/use-auth"
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
@@ -47,6 +46,8 @@ export default function WebsiteForm({
     data?: Website
     onSubmit: (values: Website) => Promise<boolean>
 }) {
+    const {user} = useAuth()
+
     const form = useForm<FormType>({
         resolver: zodResolver(formSchema),
         defaultValues: data
@@ -84,6 +85,8 @@ export default function WebsiteForm({
             setDnsStatus("error")
         }
     }
+
+    console.log(user)
 
     return (
         <Form {...form}>
@@ -170,7 +173,7 @@ export default function WebsiteForm({
 
 
                     <TabsContent value="custom">
-                        {true ?
+                        {user?.plan!='FREE' ?
                             <FormField
                                 control={form.control}
                                 name="domain"

@@ -24,14 +24,14 @@ export const templates:Template[] = [
         }
     },
     {
-        name: "Startup",
+        name: "Starter",
         website:{
-          "name": "Startup Template",
-          "favicon": "https://sitecraft.sanjaybora.in/images/logo.svg",
+          "name": "Starter Template",
+          "favicon": "https://sitecraft.in/images/logo.svg",
           "pages": [
             {
               "path": "/",
-              "image": "https://sitecraft.sanjaybora.in/images/test.svg",
+              "image": "https://sitecraft.in/images/test.svg",
               "title": "HomePage",
               "components": [
                 {
@@ -45,7 +45,7 @@ export const templates:Template[] = [
                     },
                     "content": {
                       "logo": {
-                        "url": "https://sitecraft.sanjaybora.in/images/logo.svg",
+                        "url": "https://sitecraft.in/images/logo.svg",
                         "objectFit": "cover"
                       },
                       "title": "<p>SiteCraft</p>",
@@ -96,7 +96,7 @@ export const templates:Template[] = [
                     },
                     "content": {
                       "image": {
-                        "url": "https://sitecraft.sanjaybora.in/images/test.svg",
+                        "url": "https://sitecraft.in/images/test.svg",
                         "objectFit": "cover"
                       },
                       "title": "<h1>Boost Your<span style=\"color: oklch(0.145 0 0)\"> </span><span style=\"color: #ef6b6b\"><u>Startup</u></span><span style=\"color: oklch(0.145 0 0)\"> </span>Business Faster</h1>",
@@ -130,7 +130,7 @@ export const templates:Template[] = [
                       "cards": [
                         {
                           "image": {
-                            "url": "https://sitecraft.sanjaybora.in/images/test.svg",
+                            "url": "https://sitecraft.in/images/test.svg",
                             "objectFit": "cover"
                           },
                           "title": "Title",
@@ -142,7 +142,7 @@ export const templates:Template[] = [
                         },
                         {
                           "image": {
-                            "url": "https://sitecraft.sanjaybora.in/images/test.svg",
+                            "url": "https://sitecraft.in/images/test.svg",
                             "objectFit": "cover"
                           },
                           "title": "Title",
@@ -153,7 +153,7 @@ export const templates:Template[] = [
                         },
                         {
                           "image": {
-                            "url": "https://sitecraft.sanjaybora.in/images/test.svg",
+                            "url": "https://sitecraft.in/images/test.svg",
                             "objectFit": "cover"
                           },
                           "title": "<p>Title</p>",
@@ -179,21 +179,21 @@ export const templates:Template[] = [
                       "cards": [
                         {
                           "icon": {
-                            "url": "https://sitecraft.sanjaybora.in/images/logo.svg"
+                            "url": "https://sitecraft.in/images/logo.svg"
                           },
                           "title": "Feature title",
                           "paragraph": "Short description"
                         },
                         {
                           "icon": {
-                            "url": "https://sitecraft.sanjaybora.in/images/logo.svg"
+                            "url": "https://sitecraft.in/images/logo.svg"
                           },
                           "title": "Feature title",
                           "paragraph": "Short description"
                         },
                         {
                           "icon": {
-                            "url": "https://sitecraft.sanjaybora.in/images/logo.svg"
+                            "url": "https://sitecraft.in/images/logo.svg"
                           },
                           "title": "Feature title",
                           "paragraph": "Short description"
@@ -316,7 +316,7 @@ export const templates:Template[] = [
                   "config": {
                     "content": {
                       "logo": {
-                        "url": "https://s3.sanjaybora.in/sitecraft/6b027439-4921-424e-aa0c-d70ebe32a05d/0faf91bf-2f5c-4e13-a2f4-111b66061cd4"
+                        "url": "https://sitecraft.in/images/logo.svg",
                       },
                       "title": "<p>SiteCraft</p>",
                       "groups": [
