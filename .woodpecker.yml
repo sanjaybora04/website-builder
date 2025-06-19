@@ -12,7 +12,7 @@ pipeline:
         docker build \
           --build-arg NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=143876800064-2dp99jo42u5dmb7avteco297m13b276a.apps.googleusercontent.com \
           --build-arg NEXT_PUBLIC_API_URL=https://api.sitecraft.in \
-          --build-arg NEXT_PUBLIC_BASE_URL=https://sitecraft.in \
+          --build-arg NEXT_PUBLIC_BASE_URL=https://sitecraft.sanjaybora.in \
           --build-arg NEXT_PUBLIC_BASE_DOMAIN=sitecraft.in \
           --build-arg NEXT_PUBLIC_S3_URL=https://s3.sanjaybora.in \
           --build-arg NEXT_PUBLIC_SERVER_IP=82.29.161.181 \
