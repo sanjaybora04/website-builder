@@ -63,8 +63,8 @@ export default function TermsAndConditions() {
           <h2 className="text-lg font-medium mb-2">9. Contact</h2>
           <p>
             For questions, reach out to us at{" "}
-            <a href="mailto:sanjaybora380@gmail.com" className="underline text-primary">
-              sanjaybora380@gmail.com
+            <a href="mailto:contact@sitecraft.in" className="underline text-primary">
+              contact@sitecraft.in
             </a>.
           </p>
         </section>
