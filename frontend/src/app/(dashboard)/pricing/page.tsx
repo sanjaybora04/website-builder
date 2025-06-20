@@ -187,9 +187,9 @@ export default function PricingPage() {
           <h2 className="text-2xl font-bold">Need help or want to share feedback?</h2>
           <p className="text-muted-foreground">We&apos;re constantly improving. Reach out and help shape the future of this tool.</p>
           <Button variant="outline" size="lg" asChild>
-            <a href='mailto:sanjaybora380@gmail.com'>
+            <Link href={Routes.contact}>
               <MessageCircle className="h-4 w-4 mr-2" /> Contact Support
-            </a>
+            </Link>
           </Button>
         </section>
 

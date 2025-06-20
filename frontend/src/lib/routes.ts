@@ -10,7 +10,7 @@ const Routes = {
     home: "/home",
     about: '/about',
     pricing: '/pricing',
-    feedback: '/feedback',
+    contact: '/contact',
     support: '/support'
 }
 

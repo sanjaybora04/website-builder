@@ -20,7 +20,7 @@ export default function MainHeader() {
                     <Link href={Routes.home} className="hover:underline font-semibold">Home</Link>
                     <Link href={Routes.about} className="hover:underline font-semibold">About</Link>
                     <Link href={Routes.pricing} className="hover:underline font-semibold">Pricing</Link>
-                    <Link href={Routes.feedback} className="hover:underline font-semibold">Feedback</Link>
+                    <Link href={Routes.contact} className="hover:underline font-semibold">Contact Us</Link>
                     {/* <Link href={Routes.support} className="hover:underline font-semibold">Support</Link> */}
                 </div>
                 <Button size='icon' onClick={() => theme == 'light' ? setTheme('dark') : setTheme('light')}>
@@ -51,8 +51,8 @@ export default function MainHeader() {
                                 </Link>
                             </Button>
                             <Button variant='ghost' className="w-full">
-                                <Link href={Routes.feedback}>
-                                    Feedback
+                                <Link href={Routes.contact}>
+                                    Contact Us
                                 </Link>
                             </Button>
                             {/* <Button variant='ghost' className="w-full">Support</Button> */}

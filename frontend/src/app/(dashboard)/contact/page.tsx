@@ -17,20 +17,21 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
+import axios from "axios"
 
-const feedbackSchema = z.object({
+const contactSchema = z.object({
   name: z.string().optional(),
   email: z.string().email("Invalid email").optional(),
   message: z.string().min(10, "Message must be at least 10 characters"),
 })
 
-type FeedbackFormData = z.infer<typeof feedbackSchema>
+type ContactFormData = z.infer<typeof contactSchema>
 
-export default function FeedbackPage() {
+export default function Page() {
   const [submitted, setSubmitted] = useState(false)
 
-  const form = useForm<FeedbackFormData>({
-    resolver: zodResolver(feedbackSchema),
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -38,9 +39,14 @@ export default function FeedbackPage() {
     },
   })
 
-  const onSubmit = (data: FeedbackFormData) => {
-    console.log("Feedback submitted:", data)
-    // TODO: send to backend or 3rd party service
+  const onSubmit = (data: ContactFormData) => {
+    axios.post("/api/contact", {
+      name: data.name,
+      email: data.email,
+      message: data.message,
+      referrerUrl: document.referrer || "Direct",
+      sourceUrl: window.location.href || "Unknown",
+    })
     setSubmitted(true)
   }
 
@@ -101,7 +107,7 @@ export default function FeedbackPage() {
                       <FormLabel>Your Feedback</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Share your experience with the builder..."
+                          placeholder="Share your experience with SiteCraft..."
                           className="min-h-[120px]"
                           {...field}
                         />
@@ -113,13 +119,36 @@ export default function FeedbackPage() {
 
                 <Button type="submit" className="flex items-center gap-2">
                   <Send className="w-4 h-4" />
-                  Submit Feedback
+                  Submit
                 </Button>
               </form>
             </Form>
           )}
         </CardContent>
       </Card>
+
+      <section className="mt-12 text-center">
+        <h3 className="text-lg font-semibold mb-4">Join our community</h3>
+        <p className="text-muted-foreground mb-2">Connect with other users on:</p>
+        <div className="flex justify-center gap-4">
+          <a
+            href="https://reddit.com/r/SiteCraft"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            <img src="/images/reddit.png" className="w-6 h-6"/>
+          </a>
+          <a
+            href="https://chat.whatsapp.com/Kge9YOIGdmz1k0BjAofvpP"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-600 hover:underline"
+          >
+            <img src="/images/whatsapp.png" className="h-6 w-6"/>
+          </a>
+        </div>
+      </section>
     </main>
   )
 }

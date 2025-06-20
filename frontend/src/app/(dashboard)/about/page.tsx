@@ -60,7 +60,7 @@ export default function AboutPage() {
         <h2 className="text-2xl font-bold">Want to help shape the future of this tool?</h2>
         <p className="text-muted-foreground">Your feedback means the world to us. Let us know what you want to see next.</p>
         <Button size="lg" variant="outline" asChild>
-          <Link href={Routes.feedback}>
+          <Link href={Routes.contact}>
            <MessageCircle className="h-4 w-4 mr-2" /> Share Feedback
           </Link>
         </Button>
