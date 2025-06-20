@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, Send } from "lucide-react"
+import { CheckCircle, Mail, Send } from "lucide-react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -137,7 +137,7 @@ export default function Page() {
             rel="noopener noreferrer"
             className="text-blue-600 hover:underline"
           >
-            <img src="/images/reddit.png" className="w-6 h-6"/>
+            <img src="/images/reddit.png" className="w-6 h-6" />
           </a>
           <a
             href="https://chat.whatsapp.com/Kge9YOIGdmz1k0BjAofvpP"
@@ -145,10 +145,25 @@ export default function Page() {
             rel="noopener noreferrer"
             className="text-green-600 hover:underline"
           >
-            <img src="/images/whatsapp.png" className="h-6 w-6"/>
+            <img src="/images/whatsapp.png" className="h-6 w-6" />
           </a>
         </div>
       </section>
+
+      <section className="mt-8 text-center">
+        <h3 className="text-lg font-semibold mb-2">Prefer email?</h3>
+        <p className="text-muted-foreground text-sm">
+          You can also reach us at{" "}
+          <a
+            href="mailto:contact@sitecraft.in"
+            className="text-blue-600 underline"
+          >
+            <Mail className="inline mx-1 w-5 h-5"/>
+            contact@sitecraft.in
+          </a>
+        </p>
+      </section>
+
     </main>
   )
 }
