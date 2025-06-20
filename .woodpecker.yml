@@ -10,6 +10,7 @@ pipeline:
     commands:
       - |
         docker build \
+          --build-arg NEXT_PUBLIC_GOOGLE_TAG=GTM-TL7Z56JH \
           --build-arg NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID=143876800064-2dp99jo42u5dmb7avteco297m13b276a.apps.googleusercontent.com \
           --build-arg NEXT_PUBLIC_API_URL=https://api.sitecraft.in \
           --build-arg NEXT_PUBLIC_BASE_URL=https://sitecraft.in \
