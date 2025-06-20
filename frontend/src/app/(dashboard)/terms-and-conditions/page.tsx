@@ -48,7 +48,7 @@ export default function TermsAndConditions() {
         <section className="mb-6">
           <h2 className="text-lg font-medium mb-2">7. Limitation of Liability</h2>
           <p>
-            SiteCraft is provided "as is". We are not liable for any indirect damages or losses resulting from use of the platform.
+            SiteCraft is provided &quot;as is&quot;. We are not liable for any indirect damages or losses resulting from use of the platform.
           </p>
         </section>
   

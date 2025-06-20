@@ -32,7 +32,7 @@ function Component() {
             const id = toast.loading('Logging in...');
             const response = await api.user.signin(tokenResponse.access_token)
             if (response.status === 200) {
-                if([Routes.home,Routes.about,Routes.feedback,Routes.pricing,Routes.support].includes(window.location.pathname)){
+                if([Routes.home,Routes.about,Routes.contact,Routes.pricing,Routes.support].includes(window.location.pathname)){
                     router.push(Routes.overview)
                 }
                 toast.success('Logged In', { id });
