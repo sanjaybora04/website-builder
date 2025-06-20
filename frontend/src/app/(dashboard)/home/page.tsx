@@ -38,21 +38,21 @@ export default function LandingPage() {
             <CardContent className="p-6 text-center">
               <MousePointerClick size={40} className="mx-auto text-blue-600 mb-4" />
               <h3 className="font-semibold text-xl">Drag Components</h3>
-              <p className="text-gray-600 mt-2">Choose from a wide library of sections like heroes, testimonials, FAQs, and more.</p>
+              <p className="text-muted-foreground mt-2">Choose from a wide library of sections like heroes, testimonials, FAQs, and more.</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
               <UploadCloud size={40} className="mx-auto text-green-600 mb-4" />
               <h3 className="font-semibold text-xl">Customize Easily</h3>
-              <p className="text-gray-600 mt-2">Edit content, update colors, manage metadata — all visually in real-time.</p>
+              <p className="text-muted-foreground mt-2">Edit content, update colors, manage metadata — all visually in real-time.</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
               <Rocket size={40} className="mx-auto text-purple-600 mb-4" />
               <h3 className="font-semibold text-xl">Publish Instantly</h3>
-              <p className="text-gray-600 mt-2">Deploy your site on a custom or free subdomain with one click.</p>
+              <p className="text-muted-foreground mt-2">Deploy your site on a custom or free subdomain with one click.</p>
             </CardContent>
           </Card>
         </div>
