@@ -20,9 +20,9 @@ import { useState } from "react"
 import axios from "axios"
 
 const contactSchema = z.object({
-  name: z.string().optional(),
-  email: z.string().email("Invalid email").optional(),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  name: z.string(),
+  contact: z.string(),
+  message: z.string(),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
@@ -34,7 +34,7 @@ export default function Page() {
     resolver: zodResolver(contactSchema),
     defaultValues: {
       name: "",
-      email: "",
+      contact: "",
       message: "",
     },
   })
@@ -42,7 +42,7 @@ export default function Page() {
   const onSubmit = (data: ContactFormData) => {
     axios.post("/api/contact", {
       name: data.name,
-      email: data.email,
+      contact: data.contact,
       message: data.message,
       referrerUrl: document.referrer || "Direct",
       sourceUrl: window.location.href || "Unknown",
@@ -54,9 +54,11 @@ export default function Page() {
     <main className="max-w-xl mx-auto px-4 py-12">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">We’d love your feedback</CardTitle>
+          <CardTitle className="text-2xl">
+            Contact Us
+          </CardTitle>
           <p className="text-muted-foreground text-sm">
-            Help us improve the builder. Share what you love or what could be better.
+            We value your feedback and inquiries. Please fill out the form below to get in touch with us.
           </p>
         </CardHeader>
         <CardContent>
@@ -76,9 +78,9 @@ export default function Page() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Your Name (optional)</FormLabel>
+                      <FormLabel>Your Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Jane Doe" {...field} />
+                        <Input placeholder="Enter your name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -87,12 +89,12 @@ export default function Page() {
 
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="contact"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Your Email (optional)</FormLabel>
+                      <FormLabel>Your Contact Info</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="jane@example.com" {...field} />
+                        <Input placeholder="Enter your Email/Phone" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -104,10 +106,10 @@ export default function Page() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Your Feedback</FormLabel>
+                      <FormLabel>Your message</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="Share your experience with SiteCraft..."
+                          placeholder="Enter your message"
                           className="min-h-[120px]"
                           {...field}
                         />
@@ -126,6 +128,20 @@ export default function Page() {
           )}
         </CardContent>
       </Card>
+
+      <section className="mt-8 text-center">
+        <h3 className="text-lg font-semibold mb-2">Prefer email?</h3>
+        <p className="text-muted-foreground text-sm">
+          You can also reach us at{" "}
+          <a
+            href="mailto:contact@sitecraft.in"
+            className="text-blue-600 underline"
+          >
+            <Mail className="inline mx-1 w-5 h-5"/>
+            contact@sitecraft.in
+          </a>
+        </p>
+      </section>
 
       <section className="mt-12 text-center">
         <h3 className="text-lg font-semibold mb-4">Join our community</h3>
@@ -148,20 +164,6 @@ export default function Page() {
             <img src="/images/whatsapp.png" className="h-6 w-6" />
           </a>
         </div>
-      </section>
-
-      <section className="mt-8 text-center">
-        <h3 className="text-lg font-semibold mb-2">Prefer email?</h3>
-        <p className="text-muted-foreground text-sm">
-          You can also reach us at{" "}
-          <a
-            href="mailto:contact@sitecraft.in"
-            className="text-blue-600 underline"
-          >
-            <Mail className="inline mx-1 w-5 h-5"/>
-            contact@sitecraft.in
-          </a>
-        </p>
       </section>
 
     </main>

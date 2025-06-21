@@ -94,7 +94,18 @@ class User {
             data: { name, email }
         })
 
-        return res.json(user)
+        const token = jwt.sign({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        }, process.env.JWT_SECRET!, { expiresIn: "24d" })
+
+        return res.json({
+            token,
+            name: user.name,
+            email: user.email,
+            plan: user.plan,
+        })
     }
 
     getUploadUrl = async (req: any, res: any) => {

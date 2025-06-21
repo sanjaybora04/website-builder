@@ -32,14 +32,6 @@ export default function DashboardHeader() {
                     <div className="h-0.5 w-full bg-primary"></div>
                 }
             </div>
-            <div>
-                <Button variant='ghost' asChild>
-                    <Link href={Routes.plan}>Plan</Link>
-                </Button>
-                {pathname == Routes.plan &&
-                    <div className="h-0.5 w-full bg-primary"></div>
-                }
-            </div>
 
         </header>
     )

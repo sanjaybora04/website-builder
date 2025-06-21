@@ -222,7 +222,7 @@ export default function WebsiteForm({
                             <div className="text-sm text-muted-foreground py-5 text-center">
                                 <p className="mb-2 text-destructive-foreground">Custom domain support is not available on free plan.</p>
                                 <Button asChild>
-                                    <Link href={Routes.plan}>
+                                    <Link href={Routes.pricing}>
                                         Upgrade<ArrowUpRight />
                                     </Link>
                                 </Button>

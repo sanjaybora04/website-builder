@@ -6,6 +6,8 @@ const router = Router()
 
 router.post('/signin', User.signin)
 
+router.put('/',checkAuth,User.updateUser)
+
 router.get('/storage/uploadurl',checkAuth, User.getUploadUrl)
 
 router.get('/storage/usage',checkAuth, User.getUsage)

@@ -21,6 +21,7 @@ model User {
   assets        Asset[]
   usedStorage   Int       @default(0) // in bytes
   storageLimit  Int       @default(104857600) // e.g., 100 mb
+  maxWebsites  Int       @default(10) // Max number of websites a user can have
   folders       Folder[]
   plan          Plan      @default(FREE)
   planExpiresAt DateTime? // Nullable for free users
