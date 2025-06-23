@@ -29,8 +29,10 @@ class Website {
     }
 
     async create(req: any, res: any) {
-        const domain_exists = await prisma.website.findFirst({ where: { domain: req.body.domain } })
-        if (domain_exists) return res.status(409).json({ error: `Provided domain name :- ${req.body.domain} is already registered` })
+        const { domain } = req.body;
+
+        const domain_exists = await prisma.website.findFirst({ where: { domain: domain } })
+        if (domain_exists) return res.status(409).json({ error: `Provided domain name :- ${domain} is already registered` })
 
         // check max websites limit for the user
         const user = await prisma.user.findUnique({ where: { id: req.user.id }, include: { websites: true } })
@@ -39,42 +41,39 @@ class Website {
             return res.status(403).json({ error: `You have reached the maximum number of websites allowed for your plan.\nPlease upgrade your plan.` })
         }
 
-        // only allow sitecraft subdomain for free users
-        if (user.plan == 'FREE' && !req.body.domain.endsWith(process.env.WILDCARD_DOMAIN)) {
-            return res.status(403).json({ error: `You can only create websites with the sitecraft subdomain on free plan.\nPlease upgrade your plan to use custom domains.` })
-        }
-
-        const { domain } = req.body;
-
-
         // Validate domain format
         const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
         if (!domainRegex.test(domain)) {
             return res.status(400).json({ error: `Provided domain name :- ${domain} is not valid` });
         }
 
-        // DNS Lookup to verify if domain is pointing to the server
-        try {
-            const records = await dns.lookup(domain, { all: true });
-            const domainPointsToServer = records.some(record => record.address === process.env.SERVER_IP);
+        // dont allow custom domain for free users
+        if (!domain.endsWith(process.env.WILDCARD_DOMAIN)) {
+            if (user.plan == "FREE") return res.status(403).json({ error: `You can only create websites with the sitecraft subdomain on free plan.\nPlease upgrade your plan to use custom domains.` })
 
-            if (!domainPointsToServer) {
-                return res.status(404).json({
-                    error: `Domain ${domain} is not pointing to this server.`,
-                    records: records.map(r => r.address),
-                });
-            }
-        } catch (dnsError) {
+            // DNS Lookup to verify if domain is pointing to the server
             try {
-                const ns = await dns.resolveNs(domain);
-                return res.status(404).json({
-                    error: `Domain ${domain} is not pointing to this server.`,
-                    nameservers: ns,
-                });
-            } catch {
-                return res.status(404).json({
-                    error: `Domain ${domain} is not pointing to this server and no nameservers could be found.`,
-                });
+                const records = await dns.lookup(domain, { all: true });
+                const domainPointsToServer = records.some(record => record.address === process.env.SERVER_IP);
+
+                if (!domainPointsToServer) {
+                    return res.status(404).json({
+                        error: `Domain ${domain} is not pointing to this server.`,
+                        records: records.map(r => r.address),
+                    });
+                }
+            } catch (dnsError) {
+                try {
+                    const ns = await dns.resolveNs(domain);
+                    return res.status(404).json({
+                        error: `Domain ${domain} is not pointing to this server.`,
+                        nameservers: ns,
+                    });
+                } catch {
+                    return res.status(404).json({
+                        error: `Domain ${domain} is not pointing to this server and no nameservers could be found.`,
+                    });
+                }
             }
         }
 
@@ -94,12 +93,51 @@ class Website {
     async update(req: any, res: any) {
         const { websiteId } = req.params
 
-        if (req.body.domain) {
-            const domain_exists = await prisma.website.findFirst({ where: { domain: req.body.domain } })
-            if (domain_exists && domain_exists.id != websiteId) return res.status(409).json({ error: `${req.body.domain} is already registered` })
+        const { domain } = req.body;
+        if (domain) {
+            const user = await prisma.user.findUnique({ where: { id: req.user.id } })
+            if (!user) return res.status(404).json({ error: "User not found" })
+
+            // Validate domain format
+            const domainRegex = /^(?!:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+            if (!domainRegex.test(domain)) {
+                return res.status(400).json({ error: `Provided domain name :- ${domain} is not valid` });
+            }
+
+            // dont allow custom domain for free users
+            if (!domain.endsWith(process.env.WILDCARD_DOMAIN)) {
+                if (user.plan == "FREE") return res.status(403).json({ error: `You can only create websites with the sitecraft subdomain on free plan.\nPlease upgrade your plan to use custom domains.` })
+
+                // DNS Lookup to verify if domain is pointing to the server
+                try {
+                    const records = await dns.lookup(domain, { all: true });
+                    const domainPointsToServer = records.some(record => record.address === process.env.SERVER_IP);
+
+                    if (!domainPointsToServer) {
+                        return res.status(404).json({
+                            error: `Domain ${domain} is not pointing to this server.`,
+                            records: records.map(r => r.address),
+                        });
+                    }
+                } catch (dnsError) {
+                    try {
+                        const ns = await dns.resolveNs(domain);
+                        return res.status(404).json({
+                            error: `Domain ${domain} is not pointing to this server.`,
+                            nameservers: ns,
+                        });
+                    } catch {
+                        return res.status(404).json({
+                            error: `Domain ${domain} is not pointing to this server and no nameservers could be found.`,
+                        });
+                    }
+                }
+            }
         }
 
         // check if user owns the website
+        const userOwnsWebsite = await prisma.website.findFirst({ where: { id: websiteId, adminId: req.user.id } })
+        if (!userOwnsWebsite) return res.status(409).json({ error: "You dont have access to this website" })
 
         await prisma.website.update({
             where: { id: websiteId }, data: {
@@ -113,6 +151,8 @@ class Website {
         const { websiteId } = req.params
 
         // check if user owns the website
+        const userOwnsWebsite = await prisma.website.findFirst({ where: { id: websiteId, adminId: req.user.id } })
+        if (!userOwnsWebsite) return res.status(409).json({ error: "You dont have access to this website" })
 
         await prisma.website.delete({ where: { id: websiteId } })
         return res.end()
@@ -122,6 +162,8 @@ class Website {
         const { websiteId } = req.params
 
         // check if user owns the website
+        const userOwnsWebsite = await prisma.website.findFirst({ where: { id: websiteId, adminId: req.user.id } })
+        if (!userOwnsWebsite) return res.status(409).json({ error: "You dont have access to this website" })
 
         const website = await prisma.website.findFirst({ where: { id: websiteId } })
 
@@ -132,6 +174,8 @@ class Website {
         const { websiteId } = req.params
 
         // check if user owns the website
+        const userOwnsWebsite = await prisma.website.findFirst({ where: { id: websiteId, adminId: req.user.id } })
+        if (!userOwnsWebsite) return res.status(409).json({ error: "You dont have access to this website" })
 
         await prisma.website.update({
             where: { id: websiteId }, data: {

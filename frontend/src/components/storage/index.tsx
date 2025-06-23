@@ -1,7 +1,6 @@
 'use client'
 
 import { Edit, EllipsisVertical, FolderInput, Loader, SquareArrowOutUpRight, Trash2 } from "lucide-react";
-import { Input } from "../ui/input";
 import Stats from "./stats";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
@@ -12,8 +11,10 @@ import FolderCard from "./folderCard";
 import FileCard from "./fileCard";
 import StorageTopBar from "./storageTopBar";
 import Rename from "./rename";
+import { cn } from "@/lib/utils";
+import { ScrollArea } from "../ui/scroll-area";
 
-export default function Storage() {
+export default function Storage({ onFileSelect }: { onFileSelect?: any }) {
     const [usage, setUsage] = useState({
         loading: true,
         data: {
@@ -92,9 +93,11 @@ export default function Storage() {
     }
 
     return (
-        <div className="p-5 sm:px-10">
+        <ScrollArea className="p-5 sm:px-10 relative h-full">
+            <div className="sticky top-0 bg-background z-10 pb-2">
             <Stats usage={usage.data} />
             <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={() => loadData()} />
+            </div>
             <div className="flex flex-wrap gap-5 mt-10">
                 {data.loading && <div className="w-full h-52 flex items-center justify-center"><Loader className="w-10 h-10 animate-spin text-primary" /></div>}
                 {!data.loading && data?.folders?.map((f: any, index: any) =>
@@ -132,8 +135,12 @@ export default function Storage() {
                     </div>
                 )}
                 {!data.loading && data?.assets?.map((a: any, index: any) =>
-                    <div key={index} className="relative">
-                        <FileCard file={a} />
+                    <div key={index} className={cn('relative', onFileSelect && "cursor-pointer hover:bg-accent")}>
+                        <div
+                            onClick={() => onFileSelect(process.env.NEXT_PUBLIC_S3_URL + '/' + a.key)}
+                        >
+                            <FileCard file={a} />
+                        </div>
                         <DropdownMenu>
                             <DropdownMenuTrigger className="absolute top-2 right-2 text-primary bg-background/50 rounded p-1 cursor-pointer">
                                 <EllipsisVertical />
@@ -164,6 +171,6 @@ export default function Storage() {
                     </div>
                 )}
             </div>
-        </div>
+        </ScrollArea>
     )
 }

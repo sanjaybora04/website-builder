@@ -20,9 +20,9 @@ import { useState } from "react"
 import axios from "axios"
 
 const contactSchema = z.object({
-  name: z.string(),
-  contact: z.string(),
-  message: z.string(),
+  name: z.string().min(1, "Name is required"),
+  contact: z.string().min(1,"Contact Info is required"),
+  message: z.string().min(1,"Message is required"),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>

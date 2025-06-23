@@ -36,7 +36,7 @@ export const templates:Template[] = [
               "components": [
                 {
                   "id": "1",
-                  "name": "Basic Header",
+                  "name": "Header",
                   "dndId": "54b3a9fa-59e1-43bd-917c-8bcec06c67a7",
                   "index": 0,
                   "config": {

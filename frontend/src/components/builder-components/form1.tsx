@@ -25,7 +25,7 @@ type FormField = {
 
 type FormComponentType = {
   container?: ContainerConfig
-  styles?: {
+  form?: {
     textColor?: string
     backgroundColor?: string
   }
@@ -61,7 +61,10 @@ export function Component({ config }: { config: FormComponentType }) {
       </div>
       <form
         className={cn("w-full max-w-3xl space-y-4 mx-auto", `p-4 rounded`)}
-        style={{ backgroundColor: config.styles?.backgroundColor }}
+        style={{ 
+          backgroundColor: config.form?.backgroundColor,
+          color: config.form?.textColor
+        }}
       >
         {config.content?.fields?.map((field, i) => (
           <div key={i}>
@@ -108,10 +111,10 @@ export function Editor({
     <>
       <ContainerPanel config={values.container} onChange={(v) => handleSubmit({ container: v })} />
 
-      <Panel title="Styles" defaultOpen={false}>
+      <Panel title="Form" defaultOpen={false}>
         <div className="flex gap-1">
-          <ColorPicker icon={<Type />} color={values.styles?.textColor} onChange={(v) => handleSubmit({ styles: { ...values.styles, textColor: v } })} />
-          <ColorPicker icon={<PaintBucket />} color={values.styles?.backgroundColor} onChange={(v) => handleSubmit({ styles: { ...values.styles, backgroundColor: v } })} />
+          <ColorPicker icon={<Type />} color={values.form?.textColor} onChange={(v) => handleSubmit({ form: { textColor: v } })} />
+          <ColorPicker icon={<PaintBucket />} color={values.form?.backgroundColor} onChange={(v) => handleSubmit({ form: { backgroundColor: v } })} />
         </div>
       </Panel>
 
@@ -119,7 +122,7 @@ export function Editor({
         <RichTextEditor
           label="Title"
           value={values.content?.title}
-          onChange={(v) => handleSubmit({ content: { ...values.content, title: v } })}
+          onChange={(v) => handleSubmit({ content: { title: v } })}
           showAlignment
           showHeading
           showLink
@@ -127,7 +130,7 @@ export function Editor({
         <RichTextEditor
           label="Description"
           value={values.content?.paragraph}
-          onChange={(v) => handleSubmit({ content: { ...values.content, paragraph: v } })}
+          onChange={(v) => handleSubmit({ content: { paragraph: v } })}
           showAlignment
           showList
           showBackgroundColor

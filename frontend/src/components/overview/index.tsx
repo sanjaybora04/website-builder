@@ -7,6 +7,7 @@ import { useEffect } from "react"
 import api from "@/lib/api"
 import WebsiteCard from "./website-card"
 import AddWebsite from "./add-website"
+import { Button, buttonVariants } from "../ui/button"
 
 const websitesAtom = atom<Website[]>()
 
@@ -36,6 +37,14 @@ export default function Overview() {
                         <WebsiteCard key={w.id} website={w} loadWebsites={loadWebsites}/>
                     ) : <div>...loading</div>}
                 </div>
+                    {websites?.length==0&&
+                        <div className="mt-20 flex flex-col items-center gap-3 w-full">
+                            <div className="text-lg">Create Your first Website</div>
+                            <label htmlFor="addWebsiteButton" className={buttonVariants()}>
+                            Add Website
+                            </label>
+                        </div>
+                    }
             </div>
         </>
     )

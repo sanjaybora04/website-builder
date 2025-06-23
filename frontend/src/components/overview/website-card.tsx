@@ -3,7 +3,7 @@ import { Website } from "@/lib/types";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { DownloadIcon, Edit, Ellipsis, Trash2 } from "lucide-react";
+import { DownloadIcon, Edit, Ellipsis, Settings, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
 import WebsiteForm from "./website-form";
@@ -90,11 +90,12 @@ export default function WebsiteCard({ website, loadWebsites }: { website: Websit
                     <Ellipsis />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+
                     <Dialog open={editWebsiteFormOpen} onOpenChange={setEditWebsiteFormOpen}>
                         <DialogTrigger asChild>
                             <Button variant='ghost' className="w-full justify-start">
-                                <Edit />
-                                Edit
+                                <Settings />
+                                Settings
                             </Button>
                         </DialogTrigger>
                         <DialogContent>

@@ -55,6 +55,34 @@ export default function AboutPage() {
         </p>
       </section>
 
+      {/* COMMUNITY INVITE */}
+      <section className="py-20 px-6 bg-muted/50">
+        <h2 className="text-3xl font-semibold text-center mb-8">Join Our Community</h2>
+        <p className="text-lg text-center max-w-2xl mx-auto mb-10 text-muted-foreground">
+          Get tips, share ideas, and stay updated with other creators using SiteCraft.
+        </p>
+        <div className="flex justify-center flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+          <a
+            href="https://reddit.com/r/SiteCraft" // replace with your actual subreddit link
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-red-500 rounded-xl text-red-600 font-semibold hover:bg-red-100 transition"
+          >
+            <img src="/images/reddit.png" className="w-5 h-5" />
+            Join Reddit
+          </a>
+          <a
+            href="https://chat.whatsapp.com/Kge9YOIGdmz1k0BjAofvpP" // replace with your WhatsApp group invite
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-green-600 rounded-xl text-green-700 font-semibold hover:bg-green-100 transition"
+          >
+            <img src="/images/whatsapp.png" className="w-5 h-5" />
+            Join WhatsApp
+          </a>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-muted py-12 rounded-xl text-center space-y-4">
         <h2 className="text-2xl font-bold">Want to help shape the future of this tool?</h2>

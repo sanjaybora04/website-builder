@@ -42,7 +42,7 @@ export default function AddWebsite({loadWebsites}:{loadWebsites:any}){
     }
     return (
         <Dialog open={step!=0} onOpenChange={(v)=>setStep(v?1:0)}>
-            <DialogTrigger asChild>
+            <DialogTrigger asChild id="addWebsiteButton">
                 <Button>
                     <Plus/>
                     Add Website

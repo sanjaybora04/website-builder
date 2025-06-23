@@ -9,7 +9,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export default function LandingPage() {
-  const {user} = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
 
   return (
@@ -21,11 +21,11 @@ export default function LandingPage() {
           Our drag-and-drop builder lets you design, customize, and launch stunning websites in minutes. No code required.
         </p>
         <Button size="lg" asChild>
-          {user?
-          <Link href={Routes.overview}>Start Building Now</Link>:
-          <label htmlFor="signin">
-            Start Building Now
-          </label>
+          {user ?
+            <Link href={Routes.overview}>Start Building Now</Link> :
+            <label htmlFor="signin">
+              Start Building Now
+            </label>
           }
         </Button>
       </section>
@@ -126,14 +126,43 @@ export default function LandingPage() {
         <h2 className="text-4xl font-bold mb-4">Launch Your Website Today</h2>
         <p className="text-lg mb-6">Join 1,000+ creators building online with zero code.</p>
         <Button size="lg" asChild>
-        {user?
-          <Link href={Routes.overview}>Get Started for Free</Link>:
-          <label htmlFor="signin">
-            Get Started for Free
-          </label>
+          {user ?
+            <Link href={Routes.overview}>Get Started for Free</Link> :
+            <label htmlFor="signin">
+              Get Started for Free
+            </label>
           }
         </Button>
       </section>
+
+      {/* COMMUNITY INVITE */}
+      <section className="py-20 px-6 bg-muted/50">
+        <h2 className="text-3xl font-semibold text-center mb-8">Join Our Community</h2>
+        <p className="text-lg text-center max-w-2xl mx-auto mb-10 text-muted-foreground">
+          Get tips, share ideas, and stay updated with other creators using SiteCraft.
+        </p>
+        <div className="flex justify-center flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+          <a
+            href="https://reddit.com/r/SiteCraft" // replace with your actual subreddit link
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-red-500 rounded-xl text-red-600 font-semibold hover:bg-red-100 transition"
+          >
+            <img src="/images/reddit.png" className="w-5 h-5" />
+            Join Reddit
+          </a>
+          <a
+            href="https://chat.whatsapp.com/Kge9YOIGdmz1k0BjAofvpP" // replace with your WhatsApp group invite
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-green-600 rounded-xl text-green-700 font-semibold hover:bg-green-100 transition"
+          >
+            <img src="/images/whatsapp.png" className="w-5 h-5" />
+            Join WhatsApp
+          </a>
+        </div>
+      </section>
+
 
       {/* FOOTER */}
       <footer className=" text-center text-sm py-6 border-t mt-12">

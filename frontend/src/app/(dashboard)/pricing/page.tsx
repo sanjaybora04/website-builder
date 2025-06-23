@@ -17,10 +17,11 @@ const plans = [
     price: { monthly: "₹0", yearly: "₹0" },
     description: "Perfect for hobby projects and testing.",
     features: {
-      websites: "5",
+      websites: "10",
       storage: "100MB",
       support: "Community only",
       branding: false,
+      ads: false,
       customDomain: false,
     },
   },
@@ -29,10 +30,11 @@ const plans = [
     price: { monthly: "₹200", yearly: "₹2,000" },
     description: "For freelancers and solo makers.",
     features: {
-      websites: "5",
+      websites: "10",
       storage: "1GB",
       support: "Email",
       branding: true,
+      ads: true,
       customDomain: true,
     },
   },
@@ -41,10 +43,11 @@ const plans = [
     price: { monthly: "₹1000", yearly: "₹10,000" },
     description: "Best for small agencies and teams.",
     features: {
-      websites: "20",
+      websites: "50",
       storage: "5GB",
       support: "Priority",
       branding: true,
+      ads: true,
       customDomain: true,
     },
   },
@@ -64,7 +67,7 @@ export default function PricingPage() {
           Whether you&apos;re a hobbyist, freelancer, or agency — get started for free or upgrade anytime.
         </p>
         <div className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-md text-sm font-medium">
-          <Rocket className="h-4 w-4" /> We’re now live! Choose your plan below.
+          <Rocket className="h-4 w-4" /> Currently in beta – your feedback is shaping our future.
         </div>
       </section>
 
@@ -107,6 +110,10 @@ export default function PricingPage() {
                 <li className="flex items-center">
                   {plan.features.branding ? <Check className="h-4 w-4 mr-2 text-green-500" /> : <Minus className="h-4 w-4 mr-2 text-gray-400" />}
                   Remove Branding
+                </li>
+                <li className="flex items-center">
+                  {plan.features.ads ? <Check className="h-4 w-4 mr-2 text-green-500" /> : <Minus className="h-4 w-4 mr-2 text-gray-400" />}
+                  Remove Ads
                 </li>
               </ul>
               <Button className="w-full mt-6" asChild>

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Folder, Loader } from "lucide-react";
 import StorageTopBar from "./storageTopBar";
 import { Button } from "../ui/button";
+import Storage from ".";
 
 export default function FileSelector({ onSelect }: { onSelect?: any }) {
     const [open, setOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function FileSelector({ onSelect }: { onSelect?: any }) {
                 </Button>
             </DrawerTrigger>
             <DrawerContent className="!w-full !max-w-2xl">
-                <div className="p-5 space-y-5">
+                {/* <div className="p-5 space-y-5">
                     <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={()=>loadData()} />
                     <div className="flex flex-wrap gap-5 mb-5">
                         {loading && <div className="w-full h-52 flex items-center justify-center"><Loader className="w-10 h-10 animate-spin text-primary" /></div>}
@@ -67,7 +68,8 @@ export default function FileSelector({ onSelect }: { onSelect?: any }) {
                             </button>
                         ))}
                     </div>
-                </div>
+                </div> */}
+                <Storage onFileSelect={(url:string)=>onSelect(url)}/>
             </DrawerContent>
         </Drawer>
     );
