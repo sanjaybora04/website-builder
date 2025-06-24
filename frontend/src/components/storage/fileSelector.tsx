@@ -4,7 +4,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 import FolderCard from "./folderCard";
 import FileCard from "./fileCard";
 import { useEffect, useState } from "react";
-import { Folder, Loader } from "lucide-react";
+import { Folder, Loader, X } from "lucide-react";
 import StorageTopBar from "./storageTopBar";
 import { Button } from "../ui/button";
 import Storage from ".";
@@ -40,35 +40,10 @@ export default function FileSelector({ onSelect }: { onSelect?: any }) {
                 </Button>
             </DrawerTrigger>
             <DrawerContent className="!w-full !max-w-2xl">
-                {/* <div className="p-5 space-y-5">
-                    <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={()=>loadData()} />
-                    <div className="flex flex-wrap gap-5 mb-5">
-                        {loading && <div className="w-full h-52 flex items-center justify-center"><Loader className="w-10 h-10 animate-spin text-primary" /></div>}
-                        {!loading && folders.map((f: any, index: any) => (
-                            <button
-                                key={index}
-                                onClick={() => {
-                                    setFolderPath((prev: any) => ([...prev, f]));
-                                }}
-                                className="hover:bg-accent cursor-pointer"
-                            >
-                                <FolderCard folder={f} />
-                            </button>
-                        ))}
-                        {!loading && assets.map((a: any, index: any) => (
-                            <button key={index} className="hover:bg-accent cursor-pointer"
-                                onClick={() => {
-                                    if (onSelect) {
-                                        onSelect(process.env.NEXT_PUBLIC_S3_URL + '/' + a.key)
-                                    }
-                                    setOpen(false);
-                                }}
-                            >
-                                <FileCard file={a} />
-                            </button>
-                        ))}
-                    </div>
-                </div> */}
+                
+                <button className="absolute top-2 right-2 cursor-pointer z-10"
+                    onClick={()=>setOpen(false)}
+                ><X className="w-5 h-5"/></button>
                 <Storage onFileSelect={(url:string)=>onSelect(url)}/>
             </DrawerContent>
         </Drawer>
