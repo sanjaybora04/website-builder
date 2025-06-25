@@ -19,11 +19,11 @@ export const metadata: Metadata = {
   description: "Build your website in 30 minutes",
   openGraph:{
     type:'website',
-    images: '/images/thumbnail.png'
+    images: process.env.NEXT_PUBLIC_BASE_URL+'/images/thumbnail.png'
   },
   twitter:{
     card:'summary_large_image',
-    images: '/images/thumbnail.png'
+    images: process.env.NEXT_PUBLIC_BASE_URL+'/images/thumbnail.png'
   },
   icons: process.env.NEXT_PUBLIC_BASE_URL + '/images/logo.png',
 };
