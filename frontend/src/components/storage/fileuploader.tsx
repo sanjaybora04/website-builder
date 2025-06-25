@@ -80,14 +80,14 @@ export default function FileUploader({onUpload,parentId}:{onUpload?:any,parentId
     return (
         <>
             <input
-                id="fileupload"
+                id="fileUploadButton"
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
                 disabled={uploading || compressing}
                 className="hidden"
             />
-            <label htmlFor="fileupload" className={buttonVariants({size:'icon'})} title='Upload file'>
+            <label htmlFor="fileUploadButton" className={buttonVariants({size:'icon'})} title='Upload file'>
                 <Upload className="mr-1" />
             </label>
 

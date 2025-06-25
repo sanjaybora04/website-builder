@@ -1,6 +1,6 @@
 'use client'
 
-import { Edit, EllipsisVertical, FolderInput, Loader, SquareArrowOutUpRight, Trash2 } from "lucide-react";
+import { Edit, EllipsisVertical, FolderInput, Loader, SquareArrowOutUpRight, Trash2, Upload } from "lucide-react";
 import Stats from "./stats";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
@@ -13,6 +13,7 @@ import StorageTopBar from "./storageTopBar";
 import Rename from "./rename";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "../ui/scroll-area";
+import { buttonVariants } from "../ui/button";
 
 export default function Storage({ onFileSelect }: { onFileSelect?: any }) {
     const [usage, setUsage] = useState({
@@ -75,7 +76,7 @@ export default function Storage({ onFileSelect }: { onFileSelect?: any }) {
         const res = await api.user.deleteAsset(key)
         if (res.status == 200) {
             toast.success('Asset Deleted', { id })
-            window.location.reload()
+            loadData()
         } else {
             toast.dismiss(id)
         }
@@ -86,7 +87,7 @@ export default function Storage({ onFileSelect }: { onFileSelect?: any }) {
         const res = await api.user.deleteFolder(folderId)
         if (res.status == 200) {
             toast.success('Folder Deleted', { id })
-            setFolderPath((prev: any) => (prev.slice(0, -1)))
+            loadData()
         } else {
             toast.dismiss(id)
         }
@@ -170,6 +171,15 @@ export default function Storage({ onFileSelect }: { onFileSelect?: any }) {
                         </DropdownMenu>
                     </div>
                 )}
+                {!data.loading && data?.folders.length==0 && data?.assets.length==0 &&
+                    <div className="mt-20 flex flex-col items-center gap-3 w-full">
+                    <div className="text-lg">This folder is empty</div>
+                    <label htmlFor="fileUploadButton" className={buttonVariants()}>
+                        Upload File
+                        <Upload/>
+                    </label>
+                </div>
+                }
             </div>
         </ScrollArea>
     )

@@ -7,7 +7,7 @@ import { useEffect } from "react"
 import api from "@/lib/api"
 import WebsiteCard from "./website-card"
 import AddWebsite from "./add-website"
-import { Button, buttonVariants } from "../ui/button"
+import { buttonVariants } from "../ui/button"
 
 const websitesAtom = atom<Website[]>()
 
