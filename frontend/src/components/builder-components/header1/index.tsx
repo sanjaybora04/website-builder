@@ -1,3 +1,5 @@
+'use client'
+
 import Sidebar from "./sidebar"
 import { ButtonComponent, ButtonConfig, ButtonEditor } from "@/components/ui/editor/button"
 import Panel from "@/components/ui/editor/panel"
@@ -6,6 +8,7 @@ import { RepeaterEditor } from "@/components/ui/editor/repeater"
 import RenderHtml from "@/components/ui/editor/rich-text-editor/render-html"
 import { Container, ContainerConfig, ContainerPanel } from "@/components/ui/editor/container"
 import { MediaInput, MediaComponent, MediaConfig } from "@/components/ui/editor/media-input"
+import { useEffect } from "react"
 
 export type ComponentType = {
     container?: ContainerConfig
@@ -19,23 +22,33 @@ export type ComponentType = {
 
 
 export function Component({ config }: { config: ComponentType }) {
-    return (
-        <Container
-            config={config.container}
-            className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 border-b shadow"
-        >
-            <div className="flex gap-3 items-center">
-                <MediaComponent config={config.content?.logo} imageClassname="w-10 h-10 object-cover" />
-                <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title} /></div>
-            </div>
-            <div className="hidden sm:flex items-center gap-5 sm:gap-7">
-                {config.content?.buttons?.map((b, index) =>
-                    <ButtonComponent key={index} config={b} />
-                )}
-            </div>
-            {config.content?.buttons && <Sidebar config={config} />}
-        </Container>
-    )
+    useEffect(() => {
+        // Add scroll padding
+        const originalScrollPaddingTop = document.body.style.scrollPaddingTop;
+        document.body.style.scrollPaddingTop = "80px";
+
+        // Clean up on unmount
+        return () => {
+            document.body.style.scrollPaddingTop = originalScrollPaddingTop;
+        };
+    }, []);
+return (
+    <Container
+        config={config.container}
+        className="sticky top-0 left-0 z-50 h-20 flex items-center justify-between gap-5 border-b shadow"
+    >
+        <div className="flex gap-3 items-center">
+            <MediaComponent config={config.content?.logo} imageClassname="w-10 h-10 object-cover" />
+            <div className="text-xl sm:text-2xl font-semibold font-raleway"><RenderHtml html={config.content?.title} /></div>
+        </div>
+        <div className="hidden sm:flex items-center gap-5 sm:gap-7">
+            {config.content?.buttons?.map((b, index) =>
+                <ButtonComponent key={index} config={b} />
+            )}
+        </div>
+        {config.content?.buttons && <Sidebar config={config} />}
+    </Container>
+)
 }
 
 export function Editor({ values, handleSubmit }: { values: ComponentType, handleSubmit: (data: ComponentType) => Promise<boolean> }) {

@@ -35,9 +35,9 @@ export function Component({ config }: { config: ComponentType }) {
                 <div className="text-2xl sm:text-3xl font-semibold font-raleway" ><RenderHtml html={config.content?.title} /></div>
                 <div className="mt-2"><RenderHtml html={config.content?.paragraph} /></div>
             </div>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-5 mt-5">
+            <div className="flex flex-wrap justify-center items-center gap-5 mt-5">
                 {config.content?.cards?.map((c, index) =>
-                    <div key={index} className="w-full max-w-96 sm:w-96 border rounded shadow p-4" style={{ backgroundColor: config.card?.backgroundColor, color: config.card?.color }}>
+                    <div key={index} className="w-full max-w-80 border rounded shadow p-4" style={{ backgroundColor: config.card?.backgroundColor, color: config.card?.color }}>
                         <MediaComponent config={c.image}
                             imageClassname="aspect-video w-full"
                             youtubeClassname="aspect-video w-full"

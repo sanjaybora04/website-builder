@@ -166,9 +166,7 @@ export function ButtonComponent({ config, className, variables }: { config?: But
         });
       }
 
-      const isInternalLink =
-        href.startsWith("/") ||
-        (!href.startsWith("http://") && !href.startsWith("https://"));
+      const isInternalLink = href.startsWith("/")
 
       return (
         <Link

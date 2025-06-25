@@ -33,10 +33,10 @@ export function Component({ config }: { config: ComponentType }) {
                     <RenderHtml html={config.content?.paragraph} />
                 </div>
             </div>
-            <div className="flex flex-wrap gap-5 sm:gap-10 lg:gap-20 justify-center max-w-5xl mx-auto mt-5">
+            <div className="flex flex-wrap gap-5 sm:gap-10 lg:gap-16 justify-center max-w-6xl mx-auto mt-5">
                 {config.content?.cards?.map((c, index) => {
                     return (
-                        <div key={index} className="p-4 rounded text-center">
+                        <div key={index} className="p-4 rounded text-center max-w-80">
                             <MediaComponent config={c.icon} imageClassname="w-14 h-14 mx-auto mb-3" />
                             <div className="text-lg font-semibold">
                                 <RenderHtml html={c.title} />

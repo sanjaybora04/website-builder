@@ -534,6 +534,29 @@ const builderComponents: BuilderComponent[] = [
       }
     ]
   },
+  {
+    id: '12',
+    name: "BlockQuote",
+    tags: ['other'],
+    configInput: dynamic(() => import('@/components/builder-components/blockquote').then(mod => mod.Editor)),
+    component: dynamic(() => import('@/components/builder-components/blockquote').then(mod => mod.Component)),
+    examples: [
+      {
+        "content": {
+          "title": "<p>Personal Details</p>",
+          "button": {
+            "color": "#5c5fff",
+            "label": "<p><span style=\"color: #ffffff\">About Me</span></p>"
+          },
+          "paragraph": "<p><span style=\"color: #292929\">I am a passionate Full Stack Web Developer with extensive experience in designing, developing, and maintaining robust web applications. My expertise lies in leveraging technologies such as React, Next.js, Node.js, and Express.js to create responsive and dynamic interfaces that enhance user engagement and satisfaction. Throughout my career, I have successfully implemented RESTful APIs for smooth client-server communication and utilized MongoDB, SQL, and Sequelize for efficient database management.</span><br><br></p><p><span style=\"color: #292929\">I have a strong background in cloud services, particularly AWS, ensuring scalability and uptime for applications. Collaborating closely with cross-functional teams, including UI/UX designers, I strive to deliver user-friendly interfaces that optimize user experiences. My dedication to continuous learning drives me to explore and integrate new technologies, enhancing development workflows and staying ahead in the ever-evolving tech landscape. Passionate about crafting seamless digital experiences, I am committed to delivering innovative solutions that meet project goals and exceed expectations.</span></p>"
+        },
+        "blockquote": {
+          "color": "#5c5fff",
+          "backgroundColor": "#f5f5f5"
+        }
+      }
+    ]
+  },
 
 ]
 
