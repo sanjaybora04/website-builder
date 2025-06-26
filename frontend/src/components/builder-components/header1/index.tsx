@@ -1,3 +1,4 @@
+"use client"
 import Sidebar from "./sidebar"
 import { ButtonComponent, ButtonConfig, ButtonEditor } from "@/components/ui/editor/button"
 import Panel from "@/components/ui/editor/panel"
