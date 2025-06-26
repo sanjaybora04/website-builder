@@ -4,11 +4,12 @@ import { useAtom } from "jotai";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { websiteEditorAtom } from "@/lib/atoms";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import AddComponent from "./add-component";
-import { Grip,Trash2 } from "lucide-react";
+import { Copy, Grip, Trash2 } from "lucide-react";
 import { Component } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function PageComponents() {
     const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom);
@@ -41,6 +42,7 @@ export default function PageComponents() {
         }));
     };
 
+
     return (
         <div className="mt-2">
             <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -49,12 +51,7 @@ export default function PageComponents() {
                     <AddComponent index={0} />
                     <div className="w-px h-2 border mx-auto" />
                     {items.map((component) => (
-                        <div key={component.dndId}>
-                            <SortableItem component={component} />
-                            <div className="w-px h-2 border mx-auto" />
-                            <AddComponent index={component.index + 1} />
-                            <div className="w-px h-2 border mx-auto" />
-                        </div>
+                        <Comp key={component.id} component={component}/>
                     ))}
                 </SortableContext>
             </DndContext>
@@ -63,7 +60,7 @@ export default function PageComponents() {
 }
 
 
-function SortableItem({ component }: { component: Component }) {
+function Comp({ component }: { component: Component }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: component.dndId });
     const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom);
 
@@ -75,7 +72,7 @@ function SortableItem({ component }: { component: Component }) {
     function onDelete(dndId: string, event: React.MouseEvent) {
         event.stopPropagation(); // Prevent select interference
 
-        setWebsiteEditor((prev:any) => {
+        setWebsiteEditor((prev: any) => {
             const updatedPages = prev?.website?.pages?.map((p: any) => {
                 if (p.path === prev.activePage) {
                     const filteredComponents = p.components.filter((c: any) => c.dndId !== dndId);
@@ -93,7 +90,7 @@ function SortableItem({ component }: { component: Component }) {
 
             return {
                 ...prev,
-                activeComponent:prev?.activeComponent==dndId?undefined:prev?.activeComponent, // if active component was deleted, set active component to null
+                activeComponent: prev?.activeComponent == dndId ? undefined : prev?.activeComponent, // if active component was deleted, set active component to null
                 website: {
                     ...prev?.website,
                     pages: updatedPages,
@@ -108,20 +105,52 @@ function SortableItem({ component }: { component: Component }) {
         setWebsiteEditor((prev: any) => ({ ...prev, activeComponent: dndId }))
     }
 
+    async function copy(e: React.MouseEvent) {
+        e.preventDefault()
+        e.stopPropagation()
+        const wrapper = {
+            __sitecraft_clipboard__: true,
+            type: 'component',
+            payload: component,
+        };
+
+        try {
+            await navigator.clipboard.writeText(JSON.stringify(wrapper));
+            toast.success("Component copied!");
+        } catch (err) {
+            toast.error("Copy failed!!");
+        }
+    }
+
     return (
-        <div ref={setNodeRef} style={style} className={cn("p-3 bg-background flex justify-between items-center gap-1 border cursor-pointer", websiteEditor?.activeComponent == component.dndId && 'border-primary')}
-            onClick={(e) => setActiveComponent(component.dndId, e)}>
-            {/* Grip icon - Only this should be draggable */}
-            <span {...attributes} {...listeners} className="cursor-grab">
-                <Grip className="text-muted-foreground" />
-            </span>
+        <div key={component.dndId}>
+            <div ref={setNodeRef} style={style} className={cn("p-3 bg-background flex justify-between items-center gap-1 border cursor-pointer", websiteEditor?.activeComponent == component.dndId && 'border-primary')}
+                onClick={(e) => setActiveComponent(component.dndId, e)}
+                title="Select"
+                >
+                {/* Grip icon - Only this should be draggable */}
+                <span {...attributes} {...listeners} className="cursor-grab" title="Rearrange">
+                    <Grip className="text-muted-foreground" />
+                </span>
 
-            {component.name}
+                {component.name}
 
-            {/* Delete button should work normally */}
-            <button onClick={(e) => onDelete(component.dndId, e)} className="cursor-pointer">
-                <Trash2 className="w-5 h-5 text-red-500" />
-            </button>
+                {/* Delete button should work normally */}
+                <div className="flex gap-2">
+                    <button className="cursor-pointer"
+                        onClick={(e) => copy(e)}
+                        title="Copy"
+                    >
+                        <Copy className="w-5 h-5 text-muted-foreground" />
+                    </button>
+                    <button onClick={(e) => onDelete(component.dndId, e)} className="cursor-pointer" title="Delete">
+                        <Trash2 className="w-5 h-5 text-destructive" />
+                    </button>
+                </div>
+            </div>
+            <div className="w-px h-2 border mx-auto" />
+            <AddComponent index={component.index + 1} />
+            <div className="w-px h-2 border mx-auto" />
         </div>
     );
 }

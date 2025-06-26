@@ -10,7 +10,7 @@ const builderComponents: BuilderComponent[] = [
     component: dynamic(() => import('@/components/builder-components/header1').then(mod => mod.Component)),
     examples: [
       {
-        "layout": {
+        "container": {
           "backgroundColor": "#ffffff"
         },
         "content": {
@@ -51,11 +51,6 @@ const builderComponents: BuilderComponent[] = [
     component: dynamic(() => import('@/components/builder-components/cards1').then(mod => mod.Component)),
     examples: [
       {
-        "layout": {
-          "card": {
-            "backgroundColor": "#f0ebeb"
-          }
-        },
         "content": {
           "cards": [
             {
@@ -108,10 +103,6 @@ const builderComponents: BuilderComponent[] = [
     component: dynamic(() => import('@/components/builder-components/hero1').then(mod => mod.Component)),
     examples: [
       {
-        "layout": {
-          "id": "",
-          "backgroundColor": "#f0ebeb"
-        },
         "content": {
           "image": {
             "url": `${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
@@ -187,6 +178,18 @@ const builderComponents: BuilderComponent[] = [
           "faqs": [
             {
               "answer": "<p>You can return items within 30 days.</p>",
+              "question": "What is your return policy?"
+            },
+            {
+              "answer": "You can return items within 30 days.",
+              "question": "What is your return policy?"
+            },
+            {
+              "answer": "You can return items within 30 days.",
+              "question": "What is your return policy?"
+            },
+            {
+              "answer": "You can return items within 30 days.",
               "question": "What is your return policy?"
             },
             {
@@ -301,9 +304,6 @@ const builderComponents: BuilderComponent[] = [
               "type": "link"
             }
           }
-        },
-        "container": {
-          "id": "contact"
         }
       }
     ]
@@ -398,11 +398,6 @@ const builderComponents: BuilderComponent[] = [
     component: dynamic(() => import('@/components/builder-components/carouselCards').then(mod => mod.Component)),
     examples: [
       {
-        "layout": {
-          "carousel": {
-            "backgroundColor": "#f0ebeb"
-          }
-        },
         "content": {
           "cards": [
             {

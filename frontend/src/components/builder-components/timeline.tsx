@@ -49,7 +49,7 @@ export function Component({ config }: { config: TimelineConfig }) {
                         }}
                     />
 
-                    <div className="flex flex-col gap-10">
+                    <div className="flex flex-col">
                         {config.content?.items?.map((item, index) => {
                             const isLeft = index % 2 === 0
 
@@ -62,7 +62,7 @@ export function Component({ config }: { config: TimelineConfig }) {
                                     )}
                                 >
                                     {/* Dot on the line */}
-                                    <div className="absolute top-2 left-2 md:-translate-x-1/2 md:left-1/2 w-4 h-4 rounded-full z-10"
+                                    <div className="absolute top-2 left-3 md:-translate-x-1/2 md:left-1/2 w-2.5 h-2.5 rounded-full z-10"
                                         style={{
                                             backgroundColor: config.timeline?.color
                                         }}
