@@ -135,14 +135,14 @@ export default function AddComponent({ index }: { index: number }) {
                     <DialogHeader>
                         <DialogTitle>Select Component</DialogTitle>
                     </DialogHeader>
-                    <TagInput
+                    {/* <TagInput
                         allTags={[...new Set(builderComponents.flatMap(b => b.tags))].map(t => ({ label: t, value: t }))}
                         tags={tags}
                         setTags={(v) => setTags(v)}
                         className="w-80 mx-auto"
                         placeholder="Filter by tags"
-                    />
-                    <ScrollArea className="h-[calc(100vh-13rem)]" >
+                    /> */}
+                    <ScrollArea className="h-[calc(100vh-7rem)]" >
                         <div className="flex flex-wrap gap-5 justify-center items-start">
                             {builderComponents.map(c => {
                                 const matchCount = tags.filter((t: any) => c.tags.includes(t.value)).length

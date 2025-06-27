@@ -51,7 +51,7 @@ export default function PageComponents() {
                     <AddComponent index={0} />
                     <div className="w-px h-2 border mx-auto" />
                     {items.map((component) => (
-                        <Comp key={component.id} component={component}/>
+                        <Comp key={component.dndId} component={component}/>
                     ))}
                 </SortableContext>
             </DndContext>

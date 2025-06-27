@@ -21,7 +21,7 @@ export function Component({ config }: { config: ComponentType }) {
     return (
         <Container config={config.container} className="flex flex-col sm:flex-row gap-5 sm:gap-10">
             <div className="sm:w-1/2 flex flex-col justify-center gap-5">
-                <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold font-raleway"><RenderHtml html={config.content?.title} /></div>
+                <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-medium font-raleway"><RenderHtml html={config.content?.title} /></div>
                 <div><RenderHtml html={config.content?.paragraph} /></div>
                 <ButtonComponent config={config.content?.button} />
             </div>

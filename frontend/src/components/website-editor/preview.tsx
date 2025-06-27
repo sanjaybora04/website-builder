@@ -56,7 +56,7 @@ export default function Preview() {
 
     return (
         <div id="previewContainer" className="flex justify-center items-center w-full h-full p-4">
-            <iframe src={Routes.preview} className={cn("border shadow-lg",)} style={{ zoom, height, width }}/>
+            <iframe src={Routes.preview} className={cn("border shadow-lg duration-200",)} style={{ zoom, height, width }}/>
         </div>
     );
 }

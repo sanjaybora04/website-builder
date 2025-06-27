@@ -30,3 +30,5 @@
 * update debounce delay automatically based on time taken to update the data
 
 * open external links in new tab
+
+* rearranging in repeater
