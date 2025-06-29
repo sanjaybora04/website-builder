@@ -171,14 +171,18 @@ export function ButtonComponent({ config, className, variables }: { config?: But
       return (
         <Link
           href={href}
+          target={isInternalLink?"_self":"_blank"}
           onClick={(e) => {
+            const path = href.split(/[?#]/)[0]
             if (websiteEditor && isInternalLink) {
               e.preventDefault();
-              setWebsiteEditor((prev: any) => ({
-                ...prev,
-                activePage: href,
-                activeComponent: undefined,
-              }));
+              if(websiteEditor.website.pages.some(p=>p.path==path)){
+                setWebsiteEditor((prev: any) => ({
+                  ...prev,
+                  activePage: path,
+                  activeComponent: undefined,
+                }));
+              }
             }
           }}
           style={{

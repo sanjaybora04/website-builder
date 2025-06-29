@@ -13,7 +13,7 @@ import {
     Bold, Italic, Underline as UnderlineIcon,
     Link as LinkIcon, X,
     AlignLeft, AlignCenter, AlignRight,
-     Type,
+    Type,
     List, ListOrdered,
     PaintBucket
 } from 'lucide-react'
@@ -24,6 +24,8 @@ import { CustomBulletList } from './custombulletlist'
 import { CustomOrderedList } from './customorderedlist'
 import { CustomListItem } from './customlistitem'
 import { useDebouncedCallback } from 'use-debounce'
+import { useEffect } from 'react'
+import ColorPicker from '../color-picker'
 
 export default function RichTextEditor({
     label,
@@ -49,7 +51,7 @@ export default function RichTextEditor({
     const debouncedOnChange = useDebouncedCallback((html: string) => {
         onChange(html)
     }, Number(process.env.NEXT_PUBLIC_DEBOUNCE_DELAY)) // 300ms delay (you can adjust this)
-    
+
 
     const editor = useEditor({
         extensions: [
@@ -76,6 +78,16 @@ export default function RichTextEditor({
             debouncedOnChange(editor.getHTML())
         },
     })
+
+    // update value if it changes from upstream
+    useEffect(() => {
+        if (!editor) return
+
+        const currentContent = editor.getHTML()
+        if (value !== currentContent) {
+            editor.commands.setContent(value || '', false) // second arg: emitUpdate=false
+        }
+    }, [value, editor])
 
     if (!editor) return null
 
@@ -194,47 +206,33 @@ export default function RichTextEditor({
                 )}
 
                 {/* Always: Text color */}
-                <div className='flex'>
-                    <label className="cursor-pointer w-5 h-5 rounded relative flex flex-col items-center gap-1">
-                        <Type />
-                        <div className="w-full h-1" style={{ backgroundColor: editor.getAttributes('textStyle')?.color || '#ff0000' }} />
-                        <input
-                            type="color"
-                            onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                            title="Text Color"
-                        />
-                    </label>
-                    {editor.getAttributes('textStyle')?.color && (
-                        <button
-                            className='w-4 h-5 cursor-pointer'
-                            title='Remove Text Color'
-                            onClick={() => editor.chain().focus().unsetColor().run()}
-                        ><X className='w-full h-full' /></button>
-                    )}
-                </div>
+                <ColorPicker
+                    icon={<Type />}
+                    color={editor.getAttributes('textStyle')?.color}
+                    onChange={(v) => {
+                        if (v) {
+                            editor.chain().focus().setColor(v).run()
+                        } else {
+                            editor.chain().focus().unsetColor().run()
+                        }
+                    }
+                    }
+                />
 
                 {/* Optional: Highlight (background color) */}
                 {showBackgroundColor && (
-                    <div className='flex'>
-                        <label className="cursor-pointer w-5 h-5 rounded relative flex flex-col items-center gap-1">
-                            <PaintBucket />
-                            <div className="w-full h-1" style={{ backgroundColor: editor.getAttributes('highlight')?.color || '#ff0000' }} />
-                            <input
-                                type="color"
-                                onChange={(e) => editor.chain().focus().setHighlight({ color: e.target.value }).run()}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                title="Background Color"
-                            />
-                        </label>
-                        {editor.getAttributes('highlight')?.color && (
-                            <button
-                                className='w-4 h-5 cursor-pointer'
-                                title='Remove Background Color'
-                                onClick={() => editor.chain().focus().unsetHighlight().run()}
-                            ><X className='w-full h-full' /></button>
-                        )}
-                    </div>
+                    <ColorPicker
+                        icon={<PaintBucket />}
+                        color={editor.getAttributes('highlight')?.color}
+                        onChange={(v) => {
+                            if (v) {
+                                editor.chain().focus().setHighlight({ color: v }).run()
+                            } else {
+                                editor.chain().focus().unsetHighlight().run()
+                            }
+                        }
+                        }
+                    />
                 )}
             </div>
 

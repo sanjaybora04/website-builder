@@ -30,6 +30,8 @@ export default function LandingPage() {
         </Button>
       </section>
 
+      <iframe src="https://www.youtube.com/embed/LkuLQJiSj9E" className="px-6 mx-auto max-w-4xl w-full aspect-video" allowFullScreen/>
+
       {/* HOW IT WORKS */}
       <section className="py-20 px-6">
         <h2 className="text-3xl font-semibold text-center mb-12">How It Works</h2>
