@@ -78,7 +78,7 @@ export default function FormSubmissionsTable() {
                   <TableRow key={submission.id}>
                     <TableCell>{submission.website.name}</TableCell>
                     <TableCell>{submission.page}</TableCell>
-                    <TableCell>{format(new Date(submission.createdAt), 'yyyy-MM-dd HH:mm')}</TableCell>
+                    <TableCell>{format(new Date(submission.createdAt), 'dd LLL,yyyy hh:mm aa')}</TableCell>
                     <TableCell>
                       <div className="text-sm space-y-1">
                         {preview.map(([key, value]) => (
