@@ -300,8 +300,7 @@ const builderComponents: BuilderComponent[] = [
             "color": "#ef5252",
             "label": "<p><span style=\"color: rgb(255, 255, 255)\">Submit</span></p>",
             "action": {
-              "href": "https://wa.me/919548983449?text=name%3D{{name}}%0Aphone%3D{{phone}}%0Amessage%3D{{message}}",
-              "type": "link"
+              "type": "form"
             }
           }
         }

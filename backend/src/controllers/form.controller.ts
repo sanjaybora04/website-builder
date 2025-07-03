@@ -57,8 +57,9 @@ class Form {
                 page:path,
                 userId:req.user.id
             },
+            include:{website:true},
             take:Number(limit),
-            skip:(Number(page)-1)*Number(limit)
+            skip:(Number(page))*Number(limit)
         })
 
         function extractDynamicFields(submissions: any[]): string[] {
