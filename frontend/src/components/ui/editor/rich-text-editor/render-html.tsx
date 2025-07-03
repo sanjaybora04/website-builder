@@ -1,13 +1,11 @@
 'use client'
-
-import { websiteEditorAtom } from '@/lib/atoms'
+import useWebsiteEditor from '@/hooks/use-website-editor'
 import parse, { domToReact, Element as DOMNode } from 'html-react-parser'
-import { useAtom } from 'jotai'
 import Link from 'next/link'
 import React from 'react'
 
 export default function RenderHtml({ html }: { html?: string }) {
-  const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
+  const {websiteEditor, setWebsiteEditor} = useWebsiteEditor()
 
   const handleClick = (e: React.MouseEvent, href: string) => {
     const isInternal = href?.startsWith("/") || (!href?.startsWith("http://") && !href?.startsWith("https://"))

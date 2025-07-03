@@ -12,13 +12,12 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Page, Website } from "@/lib/types"
+import { Page } from "@/lib/types"
 import { useAtom } from "jotai"
-import { websiteEditorAtom } from "@/lib/atoms"
 import { toast } from "sonner"
-import FileUploadComponent from "@/components/storage/fileuploader"
 import FileSelector from "@/components/storage/fileSelector"
 import { Trash2 } from "lucide-react"
+import useWebsiteEditor from "@/hooks/use-website-editor"
 
 
 const formSchema = z.object({
@@ -35,7 +34,7 @@ const formSchema = z.object({
 type formType = z.infer<typeof formSchema>
 
 export default function PageForm({ data, onSubmit }: { data?: Page, onSubmit: (values: Page) => Promise<boolean> }) {
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
+    const {websiteEditor} = useWebsiteEditor()
     // 1. Define your form.
     const form = useForm<formType>({
         resolver: zodResolver(formSchema),

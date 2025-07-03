@@ -3,16 +3,16 @@
 import { useAtom } from "jotai";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
-import { websiteEditorAtom } from "@/lib/atoms";
 import { useMemo, useState } from "react";
 import AddComponent from "./add-component";
 import { Copy, Grip, Trash2 } from "lucide-react";
 import { Component } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import useWebsiteEditor from "@/hooks/use-website-editor";
 
 export default function PageComponents() {
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom);
+    const {websiteEditor, setWebsiteEditor} = useWebsiteEditor();
 
     // Find the active page once instead of chaining ?. multiple times
     const activePage = useMemo(() =>
@@ -62,7 +62,7 @@ export default function PageComponents() {
 
 function Comp({ component }: { component: Component }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: component.dndId });
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom);
+    const {websiteEditor, setWebsiteEditor} = useWebsiteEditor();
 
     const style = {
         transform: transform ? `translateY(${transform.y}px)` : undefined,

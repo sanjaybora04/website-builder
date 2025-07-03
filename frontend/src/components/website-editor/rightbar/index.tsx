@@ -1,13 +1,12 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { websiteEditorAtom } from "@/lib/atoms";
 import builderComponents from "@/lib/builder-components";
-import { useAtom } from "jotai";
-import { Edit, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useMemo } from "react";
 import { deepMergeWithDeletion } from "@/lib/utils";
+import useWebsiteEditor from "@/hooks/use-website-editor";
 
 export default function EditorRightBar() {
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
+    const {websiteEditor, setWebsiteEditor} = useWebsiteEditor()
 
     const activeComponent = useMemo(() => {
         return websiteEditor?.website?.pages

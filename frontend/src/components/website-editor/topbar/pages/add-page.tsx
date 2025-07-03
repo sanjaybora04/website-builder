@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import PageForm from "./page-form";
-import { useAtom } from "jotai";
-import { websiteEditorAtom } from "@/lib/atoms";
 import { Page } from "@/lib/types";
 import { useState } from "react";
+import useWebsiteEditor from "@/hooks/use-website-editor";
 
 export default function AddPage() {
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
+    const {setWebsiteEditor} = useWebsiteEditor()
     const [open,setOpen] = useState(false)
 
     async function addPage(data: Page) {

@@ -13,8 +13,8 @@ const apiClient = axios.create({
 // Set token dynamically before each request
 apiClient.interceptors.request.use((config) => {
     const user = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
-    
-    const token = user&&user!=='undefined' ? JSON.parse(user)?.token : null;
+
+    const token = user && user !== 'undefined' ? JSON.parse(user)?.token : null;
     if (token) {
         config.headers['token'] = token;
     }
@@ -50,16 +50,16 @@ const api = {
 
         getUploadUrl: async () => await apiClient.get(`/user/storage/uploadurl`),
         getUsage: async () => await apiClient.get('/user/storage/usage'),
-        getAssets: async (folderId?:string) => await apiClient.get('/user/storage/assets?folderId=' + folderId),
-        addAsset: async(key:string,filename:string,parentId?:string)=> await apiClient.post('/user/storage/assets/add', {key, filename, parentId}),
-        moveAsset: async (key: any, folderId?: string) => await apiClient.post('/user/storage/assets/move', { key, folderId:folderId||null }),
+        getAssets: async (folderId?: string) => await apiClient.get('/user/storage/assets?folderId=' + folderId),
+        addAsset: async (key: string, filename: string, parentId?: string) => await apiClient.post('/user/storage/assets/add', { key, filename, parentId }),
+        moveAsset: async (key: any, folderId?: string) => await apiClient.post('/user/storage/assets/move', { key, folderId: folderId || null }),
         renameAsset: async (key: any, newName: string) => await apiClient.post('/user/storage/assets/rename', { key, newName }),
-        deleteAsset: async (key: any) => await apiClient.post(`/user/storage/assets/delete`,{key}),
+        deleteAsset: async (key: any) => await apiClient.post(`/user/storage/assets/delete`, { key }),
 
-        getFolders: async (folderId:string) => await apiClient.get('/user/storage/folder?folderId=' + folderId),
-        addFolder: async (name: string,parentId:string) => await apiClient.post('/user/storage/folder/add', { name,parentId }),
+        getFolders: async (folderId: string) => await apiClient.get('/user/storage/folder?folderId=' + folderId),
+        addFolder: async (name: string, parentId: string) => await apiClient.post('/user/storage/folder/add', { name, parentId }),
         deleteFolder: async (folderId: string) => await apiClient.post('/user/storage/folder/delete', { folderId }),
-        moveFolder: async (folderId: string, newParentId?: string) => await apiClient.post('/user/storage/folder/move', { folderId, newParentId:newParentId||null }),
+        moveFolder: async (folderId: string, newParentId?: string) => await apiClient.post('/user/storage/folder/move', { folderId, newParentId: newParentId || null }),
         renameFolder: async (folderId: string, newName: string) => await apiClient.post('/user/storage/folder/rename', { folderId, newName }),
     },
     website: {
@@ -74,6 +74,19 @@ const api = {
 
         checkDomain: async (websiteId: string) => await apiClient.get(`/website/domain/${websiteId}`),
         setDomain: async (websiteId: string, data: object) => await apiClient.put(`/website/domain/${websiteId}`, data),
+    },
+    form: {
+        get: async (websiteId?: string, path?: string, limit?: string, page?: any) => {
+            const params = new URLSearchParams()
+
+            if (websiteId) params.append("websiteId", websiteId)
+            if (path) params.append("path", path)
+            if (limit) params.append("limit", limit)
+            if (page !== undefined && page !== null) params.append("page", page.toString())
+
+            return await apiClient.get(`/form?${params.toString()}`)
+        },
+        submit: async (data: any) => await apiClient.post(`/form`, data),
     }
 };
 

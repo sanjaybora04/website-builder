@@ -1,14 +1,13 @@
 import { Button } from "@/components/ui/button"
-import { websiteEditorAtom } from "@/lib/atoms"
 import { cn } from "@/lib/utils"
-import { useAtom } from "jotai"
 import { LaptopMinimal, ScanEye, Smartphone } from "lucide-react"
 import Pages from "./pages"
 import { PublishWebsiteButton } from "./publish"
 import Routes from "@/lib/routes"
+import useWebsiteEditor from "@/hooks/use-website-editor"
 
 export default function EditorTopBar() {
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
+    const {websiteEditor, setWebsiteEditor} = useWebsiteEditor()
     return (
         <div className="bg-accent h-10 w-full border sticky top-0 flex justify-between items-center p-3">
             <div className="flex h-full items-center gap-1">

@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
+import useWebsiteEditor from "@/hooks/use-website-editor";
 import api from "@/lib/api";
-import { websiteEditorAtom } from "@/lib/atoms";
-import { useAtomValue, useSetAtom } from "jotai";
 import { Upload } from "lucide-react";
 import { toast } from "sonner";
 
 export function PublishWebsiteButton(){
-    const websiteEditor = useAtomValue(websiteEditorAtom)
+    const {websiteEditor} = useWebsiteEditor()
 
     async function publish(){
         const id = toast.loading('Publishing website...')

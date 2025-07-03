@@ -26,6 +26,14 @@ export default function DashboardHeader() {
             </div>
             <div>
                 <Button variant='ghost' asChild>
+                    <Link href={Routes.formData}>Form Data</Link>
+                </Button>
+                {pathname == Routes.formData &&
+                    <div className="h-0.5 w-full bg-primary"></div>
+                }
+            </div>
+            <div>
+                <Button variant='ghost' asChild>
                     <Link href={Routes.settings}>Settings</Link>
                 </Button>
                 {pathname == Routes.settings &&

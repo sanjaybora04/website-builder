@@ -1,5 +1,6 @@
 import { Nunito, Raleway } from "next/font/google";
 import "../globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -24,6 +25,7 @@ export default function RootLayout({
           className={`${raleway.variable} ${nunito.variable} antialiased scroll-smooth`}
         >
           {children}
+          <Toaster/>
         </body>
       </html>
     </>

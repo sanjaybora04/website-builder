@@ -2,14 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { websiteEditorAtom } from "@/lib/atoms";
-import { useAtom } from "jotai";
 import { ChevronsUpDown, EllipsisIcon, Trash2 } from "lucide-react";
 import AddPage from "./add-page";
 import EditPage from "./edit-page";
+import useWebsiteEditor from "@/hooks/use-website-editor";
 
 export default function Pages() {
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
+    const {websiteEditor, setWebsiteEditor} = useWebsiteEditor()
 
     if (!websiteEditor) return null
 

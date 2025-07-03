@@ -2,6 +2,7 @@
 import { X } from "lucide-react";
 import { useDebounce } from "use-debounce";
 import { useEffect, useState } from "react";
+import { rgbToHex } from "@/lib/utils";
 
 type ColorPickerProps = {
   label?: string;
@@ -18,7 +19,7 @@ export default function ColorPicker({
   onChange,
 }: ColorPickerProps) {
   const [localColor, setLocalColor] = useState(color);
-  const [debouncedColor] = useDebounce(localColor, Number(process.env.NEXT_PUBLIC_DEBOUNCE_DELAY));
+  const [debouncedColor] = useDebounce(rgbToHex(localColor), Number(process.env.NEXT_PUBLIC_DEBOUNCE_DELAY));
 
   useEffect(() => {
     // Only call onChange if it's actually different

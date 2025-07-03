@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { useAtomValue } from "jotai";
-import { websiteEditorAtom } from "@/lib/atoms";
 import Routes from "@/lib/routes";
+import useWebsiteEditor from "@/hooks/use-website-editor";
+
 const mobileWidth = 360
 const mobileHeight = 640
 const desktopWidth = 1920
@@ -11,7 +11,7 @@ const desktopRatio = desktopWidth/desktopHeight
 const mobileRatio = mobileWidth/mobileHeight
 
 export default function Preview() {
-    const websiteEditor = useAtomValue(websiteEditorAtom)
+    const {websiteEditor} = useWebsiteEditor()
     const selectedDevice = useMemo(()=>websiteEditor?.previewSize,[websiteEditor])
     const [zoom, setZoom] = useState("1");
     const [height, setHeight] = useState("100%");

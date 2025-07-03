@@ -2,17 +2,17 @@
 import { ChevronRight, Edit, LaptopMinimal, Smartphone, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo } from "react";
-import { websiteEditorAtom } from "@/lib/atoms";
 import { useAtom, useAtomValue } from "jotai";
 import Preview from "./preview";
 import EditorLeftBar from "./leftbar";
 import EditorTopBar from "./topbar";
 import EditorRightBar from "./rightbar";
 import api from "@/lib/api";
+import useWebsiteEditor from "@/hooks/use-website-editor";
 
 export default function WebsiteEditor({ websiteId }: { websiteId: string }) {
 
-    const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom)
+    const {websiteEditor, setWebsiteEditor} = useWebsiteEditor()
 
     async function loadWebsite(){
         const res = await api.website.get(websiteId)

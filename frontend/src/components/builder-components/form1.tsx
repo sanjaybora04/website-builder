@@ -191,6 +191,7 @@ export function Editor({
           value={values.content?.submitButton}
           onChange={(v) => handleSubmit({ content: { submitButton: v } })}
           variables={values.content?.fields?.map(field => field.name) || []} // Use field names as variables
+          form
         />
       </Panel>
     </>

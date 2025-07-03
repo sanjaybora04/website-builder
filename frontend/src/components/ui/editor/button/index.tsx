@@ -14,12 +14,14 @@ import Link from "next/link";
 import { PaintBucket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ColorPicker from "../color-picker";
-import { useAtom } from "jotai";
-import { websiteEditorAtom } from "@/lib/atoms";
+import useWebsiteEditor from "@/hooks/use-website-editor";
+import api from "@/lib/api";
+import { toast } from "sonner";
 
 export type ButtonAction =
   | { type: "none" }
-  | { type: "link"; href?: string };
+  | { type: "link"; href?: string }
+  | { type: "form" }
 
 export type ButtonConfig = {
   label?: string;
@@ -33,12 +35,14 @@ export function ButtonEditor({
   label,
   value,
   onChange,
-  variables
+  variables,
+  form,
 }: {
   label?: string;
   value?: ButtonConfig;
   onChange: (val: ButtonConfig) => void;
   variables?: any[];
+  form?: boolean
 }) {
   const update = (partial: Partial<ButtonConfig>) =>
     onChange({ ...value, ...partial });
@@ -104,6 +108,8 @@ export function ButtonEditor({
             onValueChange={(type: ButtonAction["type"]) => {
               if (type === "link") {
                 update({ action: { type, href: "" } });
+              } else if (type === "form") {
+                update({ action: { type } });
               } else {
                 update({ action: { type: "none" } });
               }
@@ -114,6 +120,7 @@ export function ButtonEditor({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">None</SelectItem>
+              {form && <SelectItem value="form">Form</SelectItem>}
               <SelectItem value="link">Link</SelectItem>
             </SelectContent>
           </Select>
@@ -133,7 +140,7 @@ export function ButtonEditor({
 
 export function ButtonComponent({ config, className, variables }: { config?: ButtonConfig; className?: string; variables?: { label?: string, value?: string }[] }) {
   const labelHTML = { __html: config?.label || "" };
-  const [websiteEditor, setWebsiteEditor] = useAtom(websiteEditorAtom);
+  const { websiteEditor, setWebsiteEditor } = useWebsiteEditor()
 
   const variant = config?.variant || "default";
   const size = config?.size || "default";
@@ -155,6 +162,29 @@ export function ButtonComponent({ config, className, variables }: { config?: But
         ? "h-10 px-6"
         : "h-9 px-4";
 
+  const handleSubmitForm = async () => {
+
+    if (variables) {
+      for (const v of variables) {
+        if (!v.value) {
+          toast.warning(`${v.label} is required!!`);
+          return; // ❌ exit the whole function
+        }
+      }
+    }
+
+    const data = variables?.reduce((acc: Record<string, any>, { label, value }) => {
+      acc[label||''] = value;
+      return acc;
+    }, {} as Record<string, any>)
+
+    const res = await api.form.submit(data)
+
+    if (res.status == 200) {
+      toast.success('Form Submitted Successfully')
+    }
+  };
+
   const renderButton = () => {
     if (action?.type === "link") {
       // Replace variables in the href if provided
@@ -171,12 +201,12 @@ export function ButtonComponent({ config, className, variables }: { config?: But
       return (
         <Link
           href={href}
-          target={isInternalLink?"_self":"_blank"}
+          target={isInternalLink ? "_self" : "_blank"}
           onClick={(e) => {
             const path = href.split(/[?#]/)[0]
             if (websiteEditor && isInternalLink) {
               e.preventDefault();
-              if(websiteEditor.website.pages.some(p=>p.path==path)){
+              if (websiteEditor.website.pages.some(p => p.path == path)) {
                 setWebsiteEditor((prev: any) => ({
                   ...prev,
                   activePage: path,
@@ -201,24 +231,47 @@ export function ButtonComponent({ config, className, variables }: { config?: But
         </Link>
       );
     }
-
-    return (
-      <button
-        style={{
-          backgroundColor: variant !== "link" ? color : undefined,
-          color: variant === "link" ? color : undefined,
-        }}
-        className={cn(
-          baseClasses,
-          fontSizeClass,
-          variant !== "link" && defaultSizeClasses,
-          variant === "link" && "hover:underline",
-          className
-        )}
-      >
-        <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
-      </button>
-    );
+    else if (action?.type === 'form') {
+      return (
+        <button
+          type="button"
+          style={{
+            backgroundColor: variant !== "link" ? color : undefined,
+            color: variant === "link" ? color : undefined,
+          }}
+          className={cn(
+            baseClasses,
+            fontSizeClass,
+            variant !== "link" && defaultSizeClasses,
+            variant === "link" && "hover:underline",
+            className
+          )}
+          onClick={() => handleSubmitForm()}
+        >
+          <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
+        </button>
+      )
+    }
+    else {
+      return (
+        <button
+          type="button"
+          style={{
+            backgroundColor: variant !== "link" ? color : undefined,
+            color: variant === "link" ? color : undefined,
+          }}
+          className={cn(
+            baseClasses,
+            fontSizeClass,
+            variant !== "link" && defaultSizeClasses,
+            variant === "link" && "hover:underline",
+            className
+          )}
+        >
+          <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
+        </button>
+      );
+    }
   };
 
   return <div>{renderButton()}</div>;

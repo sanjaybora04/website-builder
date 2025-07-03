@@ -10,8 +10,8 @@ export function cn(...inputs: ClassValue[]) {
  * @param color 
  * @returns 
  */
-export function rgbToHex(color: string): string {
-  if (color.startsWith('#')) return color
+export function rgbToHex(color?: string): string|undefined {
+  if (!color||color.startsWith('#')) return color
 
   const result = /^rgb\((\d+), ?(\d+), ?(\d+)\)$/.exec(color)
   if (!result) return '#000000'

@@ -1,9 +1,7 @@
 "use client";
-import { Clipboard, Plus, SquareArrowOutUpRight } from "lucide-react";
-import { useSetAtom } from "jotai";
-import { websiteEditorAtom } from "@/lib/atoms";
+import { Clipboard, Plus } from "lucide-react";
 import { v4 as uuidv4 } from 'uuid'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import builderComponents from "@/lib/builder-components";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
@@ -14,14 +12,11 @@ import { Button } from "@/components/ui/button";
 import { Component } from "@/lib/types";
 import { toast } from "sonner";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
+import useWebsiteEditor from "@/hooks/use-website-editor";
 
 export default function AddComponent({ index }: { index: number }) {
-    const setWebsiteEditor = useSetAtom(websiteEditorAtom);
+    const {setWebsiteEditor} = useWebsiteEditor()
     const [open, setOpen] = useState(false)
-
-    // paste menu
-    const [showMenu, setShowMenu] = useState(false);
-    const [menuPosition, setMenuPosition] = useState({ x: 0, y: 0 });
 
     const [tags, setTags] = useState<any>([])
 
@@ -100,7 +95,6 @@ export default function AddComponent({ index }: { index: number }) {
         } catch (err) {
             toast.error("Paste failed");
         }
-        setShowMenu(false)
     };
 
     return (
