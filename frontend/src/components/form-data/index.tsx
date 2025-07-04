@@ -13,10 +13,35 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue
 } from '../ui/select'
 import {
-  ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Copy, Loader
+  CalendarIcon,
+  ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Copy, Download, Loader
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useQuery } from '@tanstack/react-query'
+import { addDays } from 'date-fns'
+import { DateRange } from 'react-day-picker'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { cn } from '@/lib/utils'
+import { Calendar } from '../ui/calendar'
+export function downloadAsCSV(rows: Record<string, string>[], filename: string) {
+  if (!rows.length) return
+
+  const headers = Object.keys(rows[0])
+  const csv = [
+    headers.join(','),
+    ...rows.map(row => headers.map(h => `"${(row[h] ?? '').replace(/"/g, '""')}"`).join(','))
+  ].join('\n')
+
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = window.URL.createObjectURL(blob)
+
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  window.URL.revokeObjectURL(url)
+}
+
 
 type Submission = {
   id: string
@@ -30,26 +55,128 @@ export default function FormSubmissionsTable() {
   const [page, setPage] = useState(0)
   const [limit, setLimit] = useState('10')
   const [pathFilter, setPathFilter] = useState('')
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: addDays(new Date(), -30),
+    to: new Date(),
+  })
 
   const { data, isFetching } = useQuery({
-    queryKey: ['submissions', { page, limit, pathFilter }],
+    queryKey: ['submissions', { page, dateRange, limit, pathFilter }],
     queryFn: async () => {
       const res = await api.form.get(
         undefined, // websiteId (optional)
         pathFilter,
+        dateRange?.from?.toISOString(),
+        dateRange?.to?.toISOString(),
         limit,
         page
       )
       return res.data
     },
-    staleTime: 60*1000
+    staleTime: 60 * 1000
   })
 
   const submissions: Submission[] = data?.data || []
   const total: number = data?.total || 0
 
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  async function handleDownload() {
+    setIsDownloading(true)
+    try {
+      const res = await api.form.get(undefined, pathFilter,
+        dateRange?.from?.toISOString(),
+        dateRange?.to?.toISOString(),
+        limit,
+        page
+      )
+
+      const allSubmissions: Submission[] = res.data.data || []
+
+      // 1. Collect all dynamic keys
+      const allKeys = new Set<string>()
+      allSubmissions.forEach(sub => {
+        Object.keys(sub.data || {}).forEach(key => allKeys.add(key))
+      })
+
+      // 2. Build rows with flattened data
+      const rows = allSubmissions.map(sub => {
+        const flat: Record<string, string> = {
+          id: sub.id,
+          website: sub.website?.name || '',
+          page: sub.page,
+          createdAt: format(new Date(sub.createdAt), 'yyyy-MM-dd HH:mm:ss'),
+        }
+        allKeys.forEach(key => {
+          flat[key] = String(sub.data?.[key] ?? '')
+        })
+        return flat
+      })
+
+      // 3. Convert to CSV and download
+      downloadAsCSV(rows, 'submissions.csv')
+      toast.success('Download started')
+    } catch (e) {
+      console.error(e)
+      toast.error('Failed to download')
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
+
   return (
     <div className="p-6 space-y-4">
+
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-[260px] justify-start text-left font-normal",
+                !dateRange && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {dateRange?.from ? (
+                dateRange.to ? (
+                  <>
+                    {format(dateRange.from, "LLL dd, y")} -{" "}
+                    {format(dateRange.to, "LLL dd, y")}
+                  </>
+                ) : (
+                  format(dateRange.from, "LLL dd, y")
+                )
+              ) : (
+                <span>Pick a date range</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={dateRange?.from}
+              selected={dateRange}
+              onSelect={setDateRange}
+              numberOfMonths={2}
+              showOutsideDays={false}
+            />
+          </PopoverContent>
+        </Popover>
+
+        <Button onClick={handleDownload} disabled={isDownloading} title='Download CSV'>
+          {isDownloading ? (
+              <Loader className="animate-spin" />
+          ) : (
+            <>
+            <Download/>
+            </>
+          )}
+        </Button>
+      </div>
+
 
       <div className="border rounded-md overflow-x-auto">
         <Table>

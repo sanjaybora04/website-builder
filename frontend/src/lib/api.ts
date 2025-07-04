@@ -76,17 +76,23 @@ const api = {
         setDomain: async (websiteId: string, data: object) => await apiClient.put(`/website/domain/${websiteId}`, data),
     },
     form: {
-        get: async (websiteId?: string, path?: string, limit?: string, page?: any) => {
+        get: async (websiteId?: string, path?: string, from?: string, to?: string, limit?: string, page?: any) => {
             const params = new URLSearchParams()
 
             if (websiteId) params.append("websiteId", websiteId)
             if (path) params.append("path", path)
+            if (from) params.append("from", from)
+            if (to) params.append("to", to)
             if (limit) params.append("limit", limit)
             if (page !== undefined && page !== null) params.append("page", page.toString())
 
             return await apiClient.get(`/form?${params.toString()}`)
         },
-        submit: async (data: any) => await apiClient.post(`/form`, data),
+        submit: async (data: any) => await apiClient.post(`/form`, {
+            data,
+            page:window.location.pathname,
+            referrerUrl:document.referrer
+        }),
     }
 };
 

@@ -16,7 +16,7 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: "SiteCraft",
-  description: "Build your website in 30 minutes",
+  description: "Build your website in 10 minutes",
   openGraph:{
     type:'website',
     images: process.env.NEXT_PUBLIC_BASE_URL+'/images/thumbnail.png'

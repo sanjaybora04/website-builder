@@ -17,6 +17,7 @@ import ColorPicker from "../color-picker";
 import useWebsiteEditor from "@/hooks/use-website-editor";
 import api from "@/lib/api";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export type ButtonAction =
   | { type: "none" }
@@ -162,12 +163,15 @@ export function ButtonComponent({ config, className, variables }: { config?: But
         ? "h-10 px-6"
         : "h-9 px-4";
 
+  const [submitting,setSubmitting] = useState(false)
   const handleSubmitForm = async () => {
+    const id = toast.loading('Submitting')
+    setSubmitting(true)
 
     if (variables) {
       for (const v of variables) {
         if (!v.value) {
-          toast.warning(`${v.label} is required!!`);
+          toast.warning(`${v.label} is required!!`,{id});
           return; // ❌ exit the whole function
         }
       }
@@ -181,7 +185,9 @@ export function ButtonComponent({ config, className, variables }: { config?: But
     const res = await api.form.submit(data)
 
     if (res.status == 200) {
-      toast.success('Form Submitted Successfully')
+      toast.success('Form Submitted Successfully',{id})
+    }else{
+      toast.dismiss(id)
     }
   };
 
@@ -246,6 +252,7 @@ export function ButtonComponent({ config, className, variables }: { config?: But
             variant === "link" && "hover:underline",
             className
           )}
+          disabled={submitting}
           onClick={() => handleSubmitForm()}
         >
           <div dangerouslySetInnerHTML={labelHTML} className="inline-flex" />
