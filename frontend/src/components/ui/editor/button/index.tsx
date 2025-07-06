@@ -165,12 +165,13 @@ export function ButtonComponent({ config, className, variables }: { config?: But
 
   const [submitting,setSubmitting] = useState(false)
   const handleSubmitForm = async () => {
-    const id = toast.loading('Submitting')
+    const id = toast.loading('Submitting...')
     setSubmitting(true)
 
     if (variables) {
       for (const v of variables) {
         if (!v.value) {
+          setSubmitting(false)
           toast.warning(`${v.label} is required!!`,{id});
           return; // ❌ exit the whole function
         }
