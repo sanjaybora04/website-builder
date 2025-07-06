@@ -23,6 +23,7 @@ import { DateRange } from 'react-day-picker'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { cn } from '@/lib/utils'
 import { Calendar } from '../ui/calendar'
+import useWebsites from '@/hooks/use-websites'
 export function downloadAsCSV(rows: Record<string, string>[], filename: string) {
   if (!rows.length) return
 
@@ -52,20 +53,22 @@ type Submission = {
 }
 
 export default function FormSubmissionsTable() {
+  const { websites } = useWebsites()
   const [page, setPage] = useState(0)
   const [limit, setLimit] = useState('10')
-  const [pathFilter, setPathFilter] = useState('')
+  const [pageFilter, setPageFilter] = useState('')
+  const [websiteFilter, setWebsiteFilter] = useState('')
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: addDays(new Date(), -30),
     to: new Date(),
   })
 
   const { data, isFetching } = useQuery({
-    queryKey: ['submissions', { page, dateRange, limit, pathFilter }],
+    queryKey: ['submissions', { page, dateRange, limit, pageFilter, websiteFilter }],
     queryFn: async () => {
       const res = await api.form.get(
-        undefined, // websiteId (optional)
-        pathFilter,
+        websiteFilter,
+        pageFilter,
         dateRange?.from?.toISOString(),
         dateRange?.to?.toISOString(),
         limit,
@@ -84,7 +87,7 @@ export default function FormSubmissionsTable() {
   async function handleDownload() {
     setIsDownloading(true)
     try {
-      const res = await api.form.get(undefined, pathFilter,
+      const res = await api.form.get(websiteFilter, pageFilter,
         dateRange?.from?.toISOString(),
         dateRange?.to?.toISOString(),
         limit,
@@ -129,49 +132,72 @@ export default function FormSubmissionsTable() {
     <div className="p-6 space-y-4">
 
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "w-[260px] justify-start text-left font-normal",
-                !dateRange && "text-muted-foreground"
+        <div className='flex flex-wrap gap-3'>
+          <Select value={websiteFilter} onValueChange={setWebsiteFilter}>
+            <SelectTrigger>
+              <SelectValue placeholder='Select Website' />
+            </SelectTrigger>
+            <SelectContent>
+              {websites.data.map(w =>
+                <SelectItem key={w.id} value={w.id || ''}>{w.name}</SelectItem>
               )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {dateRange?.from ? (
-                dateRange.to ? (
-                  <>
-                    {format(dateRange.from, "LLL dd, y")} -{" "}
-                    {format(dateRange.to, "LLL dd, y")}
-                  </>
+            </SelectContent>
+          </Select>
+          {websiteFilter &&
+            <Select value={pageFilter} onValueChange={setPageFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder='Select Page' />
+              </SelectTrigger>
+              <SelectContent>
+                {websites.data.find(w=>w.id==websiteFilter)?.pages.map(p=>(
+                  <SelectItem key={p.path} value={p.path}>{p.path}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          }
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-[260px] justify-start text-left font-normal",
+                  !dateRange && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {dateRange?.from ? (
+                  dateRange.to ? (
+                    <>
+                      {format(dateRange.from, "LLL dd, y")} -{" "}
+                      {format(dateRange.to, "LLL dd, y")}
+                    </>
+                  ) : (
+                    format(dateRange.from, "LLL dd, y")
+                  )
                 ) : (
-                  format(dateRange.from, "LLL dd, y")
-                )
-              ) : (
-                <span>Pick a date range</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              initialFocus
-              mode="range"
-              defaultMonth={dateRange?.from}
-              selected={dateRange}
-              onSelect={setDateRange}
-              numberOfMonths={2}
-              showOutsideDays={false}
-            />
-          </PopoverContent>
-        </Popover>
-
+                  <span>Pick a date range</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                initialFocus
+                mode="range"
+                defaultMonth={dateRange?.from}
+                selected={dateRange}
+                onSelect={setDateRange}
+                numberOfMonths={2}
+                showOutsideDays={false}
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
         <Button onClick={handleDownload} disabled={isDownloading} title='Download CSV'>
           {isDownloading ? (
-              <Loader className="animate-spin" />
+            <Loader className="animate-spin" />
           ) : (
             <>
-            <Download/>
+              <Download />
             </>
           )}
         </Button>

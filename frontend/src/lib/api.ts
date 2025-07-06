@@ -89,9 +89,10 @@ const api = {
             return await apiClient.get(`/form?${params.toString()}`)
         },
         submit: async (data: any) => await apiClient.post(`/form`, {
-            data,
+            data:{...data,
+                referrerUrl:document.referrer
+            },
             page:window.location.pathname,
-            referrerUrl:document.referrer
         }),
     }
 };

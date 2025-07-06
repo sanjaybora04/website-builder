@@ -1,5 +1,5 @@
 'use client'
-import { ChevronRight, Edit, LaptopMinimal, Smartphone, X } from "lucide-react";
+import { ChevronRight, Edit, LaptopMinimal, Loader, Smartphone, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useMemo } from "react";
 import { useAtom, useAtomValue } from "jotai";
@@ -69,7 +69,7 @@ export default function WebsiteEditor({ websiteId }: { websiteId: string }) {
         };
     }, []);
 
-    if(!websiteEditor) return <div>Loading...</div>
+    if(!websiteEditor) return <div className="flex flex-col items-center gap-2 mt-28"><Loader className="animate-spin"/>Loading...</div>
 
     return (
         <>

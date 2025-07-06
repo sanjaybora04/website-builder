@@ -100,7 +100,7 @@ export default function Storage({ onFileSelect }: { onFileSelect?: any }) {
             <StorageTopBar folderPath={folderPath} setFolderPath={setFolderPath} reload={() => loadData()} />
             </div>
             <div className="flex flex-wrap gap-5 mt-10">
-                {data.loading && <div className="w-full h-52 flex items-center justify-center"><Loader className="w-10 h-10 animate-spin text-primary" /></div>}
+                {data.loading && <div className="w-full flex flex-col items-center gap-2 mt-20"><Loader className="animate-spin" />Loading...</div>}
                 {!data.loading && data?.folders?.map((f: any, index: any) =>
                     <div className="relative" key={index}>
                         <button
