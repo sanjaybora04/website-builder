@@ -23,6 +23,7 @@ const plans = [
       branding: false,
       ads: false,
       customDomain: false,
+      submissions: "Last 100 form submissions",
     },
   },
   {
@@ -36,6 +37,7 @@ const plans = [
       branding: true,
       ads: true,
       customDomain: true,
+      submissions: "Last 5,000 form submissions",
     },
   },
   {
@@ -49,13 +51,13 @@ const plans = [
       branding: true,
       ads: true,
       customDomain: true,
+      submissions: "Last 10,000 form submissions",
     },
   },
 ]
 
 export default function PricingPage() {
   const [isYearly, setIsYearly] = useState(false)
-  const { user } = useAuth()
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 space-y-24">
@@ -102,6 +104,10 @@ export default function PricingPage() {
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center"><Check className="h-4 w-4 mr-2 text-green-500" />{plan.features.websites} Websites</li>
                 <li className="flex items-center"><Check className="h-4 w-4 mr-2 text-green-500" />{plan.features.storage} Storage</li>
+                <li className="flex items-center">
+                  <Check className="h-4 w-4 mr-2 text-green-500" />
+                  {plan.features.submissions}
+                </li>
                 <li className="flex items-center"><Check className="h-4 w-4 mr-2 text-green-500" />{plan.features.support} Support</li>
                 <li className="flex items-center">
                   {plan.features.customDomain ? <Check className="h-4 w-4 mr-2 text-green-500" /> : <Minus className="h-4 w-4 mr-2 text-gray-400" />}
@@ -118,18 +124,13 @@ export default function PricingPage() {
               </ul>
               <Button className="w-full mt-6" asChild>
                 {plan.name === "Free" ? (
-                  user ? (
-                    <Link href={Routes.overview}>Get Started</Link>
-                  ) : (
-                    <label htmlFor="signin">Get Started</label>
-                  )
+                  <Link href={Routes.addWebsite}>Get Started</Link>
                 ) : (
                   <Link href={`${Routes.contact}?plan=${plan.name.toLowerCase()}`}>
                     Contact us to upgrade
                   </Link>
                 )}
               </Button>
-
             </CardContent>
           </Card>
         ))}

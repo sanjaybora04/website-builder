@@ -11,7 +11,8 @@ const Routes = {
     about: '/about',
     pricing: '/pricing',
     contact: '/contact',
-    support: '/support'
+    support: '/support',
+    addWebsite: '/new'
 }
 
 export default Routes

@@ -41,12 +41,14 @@ type FormType = z.infer<typeof formSchema>
 
 export default function WebsiteForm({
     data,
-    onSubmit
+    onSubmit,
+    hideFavicon
 }: {
     data?: Website
-    onSubmit: (values: Website) => Promise<boolean>
+    onSubmit: (values: Website) => any
+    hideFavicon?: boolean
 }) {
-    const {user} = useAuth()
+    const { user } = useAuth()
 
     const form = useForm<FormType>({
         resolver: zodResolver(formSchema),
@@ -65,9 +67,7 @@ export default function WebsiteForm({
     const [domainType, setDomainType] = useState<"subdomain" | "custom">(!data?.domain || data?.domain?.endsWith(process.env.NEXT_PUBLIC_BASE_DOMAIN!) ? "subdomain" : "custom")
 
     async function handleSubmit(values: FormType) {
-        if (await onSubmit({ ...values })) {
-            console.log('form submitted')
-        }
+        await onSubmit({ ...values })
     }
 
     async function checkDNS(domain: string) {
@@ -86,8 +86,6 @@ export default function WebsiteForm({
         }
     }
 
-    console.log(user)
-
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
@@ -105,32 +103,34 @@ export default function WebsiteForm({
                     )}
                 />
 
-                <FormField
-                    control={form.control}
-                    name="favicon"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Favicon</FormLabel>
-                            <FormControl>
-                                {/* <Input placeholder="Social share image" {...field} /> */}
-                                {field.value ?
-                                    <div className="relative my-2">
-                                        <img src={field.value} className="rounded-full w-14 h-14" />
-                                        <Button variant='destructive' size='icon' className="absolute top-2 right-2"
-                                            onClick={() => {
-                                                field.onChange('')
-                                            }}
-                                        ><Trash2 /></Button>
-                                    </div> :
-                                    <div className="flex items-center gap-2">
-                                        <FileSelector onSelect={(url: string) => field.onChange(url)} />
-                                    </div>
-                                }
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                {!hideFavicon &&
+                    <FormField
+                        control={form.control}
+                        name="favicon"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Favicon</FormLabel>
+                                <FormControl>
+                                    {/* <Input placeholder="Social share image" {...field} /> */}
+                                    {field.value ?
+                                        <div className="relative my-2">
+                                            <img src={field.value} className="rounded-full w-14 h-14" />
+                                            <Button variant='destructive' size='icon' className="absolute top-2 right-2"
+                                                onClick={() => {
+                                                    field.onChange('')
+                                                }}
+                                            ><Trash2 /></Button>
+                                        </div> :
+                                        <div className="flex items-center gap-2">
+                                            <FileSelector onSelect={(url: string) => field.onChange(url)} />
+                                        </div>
+                                    }
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                }
 
                 <Tabs value={domainType} onValueChange={(val) => { form.setValue('domain', ''); setDomainType(val as "subdomain" | "custom") }}>
                     <TabsList>
@@ -156,7 +156,7 @@ export default function WebsiteForm({
                                                     placeholder="Subdomain"
                                                     value={prefix}
                                                     onChange={(e) => {
-                                                        const newPrefix = e.target.value.replace(/\s+/g, "")
+                                                        const newPrefix = e.target.value.replace(/\s+/g, "").toLowerCase()
                                                         field.onChange(`${newPrefix}.${process.env.NEXT_PUBLIC_BASE_DOMAIN}`)
                                                     }}
                                                     className="w-1/2"
@@ -173,7 +173,15 @@ export default function WebsiteForm({
 
 
                     <TabsContent value="custom">
-                        {user?.plan!='FREE' ?
+                        {user?.plan != 'PRO' ?
+                            <div className="text-sm text-muted-foreground py-5 text-center">
+                                <p className="mb-2 text-destructive-foreground">Custom domain support is not available on free plan.</p>
+                                <Button asChild>
+                                    <Link href={Routes.pricing}>
+                                        Upgrade<ArrowUpRight />
+                                    </Link>
+                                </Button>
+                            </div> :
                             <FormField
                                 control={form.control}
                                 name="domain"
@@ -181,7 +189,9 @@ export default function WebsiteForm({
                                     <FormItem>
                                         <FormLabel>Custom Domain</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="example.com" {...field} />
+                                            <Input placeholder="example.com" {...field}
+                                                onChange={e => field.onChange(e.target.value.toLowerCase())}
+                                            />
                                         </FormControl>
                                         <FormMessage />
 
@@ -218,15 +228,7 @@ export default function WebsiteForm({
                                         )}
                                     </FormItem>
                                 )}
-                            /> :
-                            <div className="text-sm text-muted-foreground py-5 text-center">
-                                <p className="mb-2 text-destructive-foreground">Custom domain support is not available on free plan.</p>
-                                <Button asChild>
-                                    <Link href={Routes.pricing}>
-                                        Upgrade<ArrowUpRight />
-                                    </Link>
-                                </Button>
-                            </div>
+                            />
                         }
                     </TabsContent>
                 </Tabs>

@@ -1,15 +1,12 @@
 'use client'
 
 import DashboardHeader from "../layout/dashboard-header"
-import { atom, useAtom } from "jotai"
-import { Website } from "@/lib/types"
-import { useEffect } from "react"
-import api from "@/lib/api"
 import WebsiteCard from "./website-card"
-import AddWebsite from "./add-website"
-import { buttonVariants } from "../ui/button"
+import { Button, buttonVariants } from "../ui/button"
 import useWebsites from "@/hooks/use-websites"
-import { Loader } from "lucide-react"
+import { Loader, Plus } from "lucide-react"
+import Link from "next/link"
+import Routes from "@/lib/routes"
 
 
 
@@ -24,9 +21,14 @@ export default function Overview() {
                     <div className="text-lg sm:text-xl font-raleway font-semibold">
                         Start Building Your Online Presence
                     </div>
-                    <AddWebsite loadWebsites={loadWebsites} />
+                    <Button asChild>
+                        <Link href={Routes.addWebsite}>
+                            <Plus />
+                            Add Website
+                        </Link>
+                    </Button>
                 </div>
-                {websites.loading ? <div className="mt-28 flex flex-col gap-2 items-center"><Loader className="animate-spin"/>Loading...</div> :
+                {websites.loading ? <div className="mt-28 flex flex-col gap-2 items-center"><Loader className="animate-spin" />Loading...</div> :
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 my-7">
                         {websites.data.map(w =>
                             <WebsiteCard key={w.id} website={w} loadWebsites={loadWebsites} />

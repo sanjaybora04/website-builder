@@ -11,7 +11,7 @@ export type Page = {
     path: string,
     title: string,
     description: string,
-    image: string,
+    image?: string,
     components: Component[]
 }
 

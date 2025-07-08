@@ -1,13 +1,16 @@
 import { Website } from "./types";
 
-type Template = {
+export type Template = {
+    id:string,
     name:string,
+    previewUrl?: string,
     image?: string,
     website:Website
 }
 
 export const templates:Template[] = [
     {
+        id:'1',
         name: "Blank",
         website:{
             name: "New Website",
@@ -17,14 +20,16 @@ export const templates:Template[] = [
                     path:'/',
                     title:"HomePage",
                     description:"description",
-                    image:`${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
                     components: []
                 }
             ]
         }
     },
     {
+        id: '2',
         name: "Starter",
+        // previewUrl: "https://sanjaybora.sitecraft.in",
+        // image:`${process.env.NEXT_PUBLIC_BASE_URL}/images/test.svg`,
         website:{
           "name": "Starter Template",
           "favicon": "https://sitecraft.in/images/logo.svg",

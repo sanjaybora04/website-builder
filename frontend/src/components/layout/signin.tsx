@@ -15,14 +15,6 @@ import Routes from "@/lib/routes";
 import { useRouter } from "next/navigation";
 
 export default function Signin() {
-    return (
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID!}>
-            <Component />
-        </GoogleOAuthProvider>
-    )
-}
-
-function Component() {
     const router = useRouter()
     const { user, authorize, unauthorize } = useAuth()
     const { theme, setTheme } = useTheme()
