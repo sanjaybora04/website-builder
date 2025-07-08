@@ -38,9 +38,12 @@ export default function Overview() {
                 {!websites.loading && websites.data?.length == 0 &&
                     <div className="mt-20 flex flex-col items-center gap-3 w-full">
                         <div className="text-lg">Create Your first Website</div>
-                        <label htmlFor="addWebsiteButton" className={buttonVariants()}>
-                            Add Website
-                        </label>
+                        <Button asChild>
+                            <Link href={Routes.addWebsite}>
+                                <Plus />
+                                Add Website
+                            </Link>
+                        </Button>
                     </div>
                 }
             </div>
