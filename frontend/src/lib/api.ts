@@ -27,7 +27,6 @@ apiClient.interceptors.response.use(
     (error: any) => {
         if (error.response?.data?.unauthorized) {
             localStorage.clear();
-            window.location.href = Routes.home;
             return { status: 444 };
         } else {
             console.error(error);
