@@ -15,11 +15,11 @@ export default function LandingPage() {
           Our drag-and-drop builder lets you design, customize, and launch stunning websites in minutes. No code required.
         </p>
         <Button size="lg" asChild>
-            <Link href={Routes.addWebsite}>Start Building Now</Link>
+          <Link href={Routes.addWebsite}>Start Building Now</Link>
         </Button>
       </section>
 
-      <iframe src="https://www.youtube.com/embed/LkuLQJiSj9E" className="px-6 mx-auto max-w-4xl w-full aspect-video" allowFullScreen/>
+      <iframe src="https://www.youtube.com/embed/LkuLQJiSj9E" className="px-6 mx-auto max-w-4xl w-full aspect-video" allowFullScreen />
 
       {/* HOW IT WORKS */}
       <section className="py-20 px-6">
@@ -112,12 +112,36 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* PARTNERS */}
+      <section className="py-20 px-6 bg-muted/50">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4">Partnered with the Best</h2>
+        <p className="text-lg text-muted-foreground text-center max-w-xl mx-auto mb-12">
+          Built alongside trusted platforms used by top creators and teams.
+        </p>
+        <div className="flex flex-wrap gap-5 items-center justify-center max-w-6xl mx-auto">
+          {[
+            { name: "Vume Ai", logo: "/images/partners/vume.png", url: 'https://vume.ai?ref=SiteCraft' },
+            { name: "Shadfinity", logo: "/images/partners/shadfinity.png", url: 'https://shadfinity.sanjaybora.in?ref=SiteCraft' },
+          ].map((partner, i) => (
+            <a href={partner.url} target="_blank" key={i} className="flex items-center justify-center grayscale hover:grayscale-0 transition">
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                className="h-12 max-w-[150px] object-contain shadow-lg border"
+                title={partner.name}
+              />
+            </a>
+          ))}
+        </div>
+      </section>
+
+
       {/* CTA */}
       <section className="text-center py-24 px-6">
         <h2 className="text-4xl font-bold mb-4">Launch Your Website Today</h2>
         <p className="text-lg mb-6">Join 1,000+ creators building online with zero code.</p>
         <Button size="lg" asChild>
-            <Link href={Routes.addWebsite}>Get Started for Free</Link>
+          <Link href={Routes.addWebsite}>Get Started for Free</Link>
         </Button>
       </section>
 
