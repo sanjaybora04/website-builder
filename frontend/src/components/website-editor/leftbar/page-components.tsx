@@ -5,7 +5,7 @@ import { DndContext, closestCenter } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { useMemo, useState } from "react";
 import AddComponent from "./add-component";
-import { Copy, Grip, Trash2 } from "lucide-react";
+import { Copy, Edit, Grip, Trash2 } from "lucide-react";
 import { Component } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -132,11 +132,14 @@ function Comp({ component }: { component: Component }) {
                 <span {...attributes} {...listeners} className="cursor-grab" title="Rearrange">
                     <Grip className="text-muted-foreground" />
                 </span>
-
+                <div className="max-w-36 text-ellipsis overflow-hidden">
                 {component.name}
-
+                </div>
                 {/* Delete button should work normally */}
                 <div className="flex gap-2">
+                    <button className="cursor-pointer">
+                        <Edit className="w-5 h-5 text-muted-foreground"/>
+                    </button>
                     <button className="cursor-pointer"
                         onClick={(e) => copy(e)}
                         title="Copy"

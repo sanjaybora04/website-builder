@@ -2,13 +2,11 @@
 
 import DashboardHeader from "../layout/dashboard-header"
 import WebsiteCard from "./website-card"
-import { Button, buttonVariants } from "../ui/button"
+import { Button } from "../ui/button"
 import useWebsites from "@/hooks/use-websites"
 import { Loader, Plus } from "lucide-react"
 import Link from "next/link"
 import Routes from "@/lib/routes"
-
-
 
 export default function Overview() {
     const { websites, loadWebsites } = useWebsites()

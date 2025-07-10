@@ -2,20 +2,11 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import Routes from "@/lib/routes";
-import { usePathname, useRouter } from "next/navigation";
-import useAuth from "@/hooks/use-auth";
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function DashboardHeader() {
     const pathname = usePathname()
-    const {user} = useAuth()
-    const router = useRouter()
 
-    useEffect(()=>{
-        if(!user){
-            router.push(Routes.home)
-        }
-    },[])
     return (
         <header className="sticky top-14 left-0 z-50 h-10 w-screen border-b flex gap-2 items-center justify-center bg-background px-5">
             <div>
