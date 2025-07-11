@@ -34,7 +34,7 @@ export default function TemplateCard({ template }: { template: Template }) {
 
         if (res.status === 200) {
             loadWebsites()
-            router.push(Routes.overview)
+            router.push(Routes.websiteEditor(res.data.id))
             toast.success('Website created', { id });
         } else {
             toast.dismiss(id);

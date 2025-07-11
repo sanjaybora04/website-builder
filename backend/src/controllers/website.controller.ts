@@ -78,16 +78,17 @@ class Website {
         }
 
         //create a unique website domain based on website name
-        await prisma.user.update({
-            where: { id: req.user.id }, data: {
-                websites: {
-                    create: {
-                        ...req.body
-                    }
-                }
-            }
+        const website = await prisma.website.create({
+            data: {
+                ...req.body,
+                adminId: req.user.id,
+            },
+            select: {
+                id: true,
+            },
         })
-        return res.end()
+        
+        return res.json({ id: website.id })
     }
 
     async update(req: any, res: any) {
