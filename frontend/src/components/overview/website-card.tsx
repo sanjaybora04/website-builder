@@ -48,9 +48,9 @@ export default function WebsiteCard({ website, loadWebsites }: { website: Websit
             const res = await api.website.get(website.id!) // Fetch full exportable data
     
             // Remove `id` and `domain` from the data
-            const { id: _, domain, draftPages, ...cleanedData } = res.data
+            const { name,favicon,pages } = res.data
     
-            const blob = new Blob([JSON.stringify(cleanedData, null, 2)], {
+            const blob = new Blob([JSON.stringify({name,favicon,pages}, null, 2)], {
                 type: 'application/json',
             })
             const url = URL.createObjectURL(blob)
