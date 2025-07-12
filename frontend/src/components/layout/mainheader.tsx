@@ -6,9 +6,17 @@ import Routes from "@/lib/routes";
 import Link from "next/link";
 import Signin from "./signin";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "../ui/drawer";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function MainHeader() {
     const { theme, setTheme } = useTheme()
+
+    const [drawerOpen, setDrawerOpen] = useState(false)
+
+    const pathname = usePathname()
+
+    useEffect(()=>{setDrawerOpen(false)},[pathname])
     return (
         <header className="z-50 h-14 w-full sticky top-0 left-0 bg-background flex px-5 items-center justify-between">
             <Link href={Routes.overview} className="flex items-center gap-2 font-bold">
@@ -27,7 +35,7 @@ export default function MainHeader() {
                     {theme == "light" ? <Moon /> : <Sun />}
                 </Button>
                 <Signin />
-                <Drawer>
+                <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
                     <DrawerTrigger className="sm:hidden"><Menu /></DrawerTrigger>
                     <DrawerContent>
                         <DrawerHeader>
