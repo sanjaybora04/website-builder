@@ -6,8 +6,8 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import './blog.css'
 
-export async function generateMetadata({ params }: { params: { blog: string } }): Promise<Metadata> {
-    const { blog } = params
+export async function generateMetadata({ params }: { params: Promise<any> }): Promise<Metadata> {
+    const { blog } = await params
     const blogPost = await getBlog(blog)
     if(!blogPost) return notFound()
     return {
@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: { params: { blog: string } })
     }
 }
 
-export default async function Page({ params }: { params: { blog: string } }) {
-    const { blog } = params
+export default async function Page({ params }: { params: Promise<any> }) {
+    const { blog } = await params
     const blogPost = await getBlog(blog)
     const blogs = (await getBlogs()).blogs
     if (!blogPost) return notFound()
