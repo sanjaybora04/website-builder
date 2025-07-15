@@ -42,7 +42,7 @@ export async function POST(req: any) {
         // Add row to Google Sheet
         await sheet.addRow({
             Name: data.name,
-            Email: data.email,
+            Contact: data.contact,
             Message: data.message,
             IpLocation: region+", "+country,
             SourceUrl: data.sourceUrl,
