@@ -3,6 +3,8 @@ const Routes = {
     storage: '/storage',
     settings: '/settings',
     formData: '/form-data',
+    blog:'/blog',
+    blogPost:(slug:string)=>`/blog/${slug}`,
     websiteEditor: (websiteId:string)=>`/website-editor/${websiteId}`,
     preview: '/preview',
     previewComponent:(componentId:string)=>`/preview-component/${componentId}`,

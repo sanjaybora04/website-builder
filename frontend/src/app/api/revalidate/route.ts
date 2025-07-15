@@ -9,6 +9,10 @@ export async function POST(req: any) {
             case 'tag':
                 revalidateTag(body.tag)
                 break;
+            case 'blog':
+                revalidateTag('blog')
+                revalidateTag('blog/'+body.slug)
+                break;
         }
 
         return NextResponse.json({
