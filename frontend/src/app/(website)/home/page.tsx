@@ -15,7 +15,7 @@ export default function LandingPage() {
           Our drag-and-drop builder lets you design, customize, and launch stunning websites in minutes. No code required.
         </p>
         <Button size="lg" asChild>
-          <Link href={Routes.addWebsite}>Start Building Now</Link>
+          <Link href={Routes.addWebsite}>View Templates</Link>
         </Button>
       </section>
 
