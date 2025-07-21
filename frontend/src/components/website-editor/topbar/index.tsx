@@ -17,7 +17,7 @@ export default function EditorTopBar() {
             <Pages />
             <div className="flex gap-2">
             <Button size='icon' variant='ghost' asChild>
-                <a target="_blank" href={Routes.preview}>
+                <a target="_blank" href={Routes.preview} title='Live Preview'>
                 <ScanEye/>
                 </a>
             </Button>

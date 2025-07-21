@@ -19,7 +19,7 @@ export default function LandingPage() {
         </Button>
       </section>
 
-      <iframe src="https://www.youtube.com/embed/LkuLQJiSj9E" className="px-6 mx-auto max-w-4xl w-full aspect-video" allowFullScreen />
+      {/* <iframe src="https://www.youtube.com/embed/LkuLQJiSj9E" className="px-6 mx-auto max-w-4xl w-full aspect-video" allowFullScreen /> */}
 
       {/* HOW IT WORKS */}
       <section className="py-20 px-6">
@@ -27,22 +27,22 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <Card>
             <CardContent className="p-6 text-center">
-              <MousePointerClick size={40} className="mx-auto text-blue-600 mb-4" />
-              <h3 className="font-semibold text-xl">Drag Components</h3>
+              <img src="/images/how-it-works/add-components.webp" alt="sitecraft add components"/>
+              <h3 className="font-semibold text-xl mt-4">Drag Components</h3>
               <p className="text-muted-foreground mt-2">Choose from a wide library of sections like heroes, testimonials, FAQs, and more.</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <UploadCloud size={40} className="mx-auto text-green-600 mb-4" />
-              <h3 className="font-semibold text-xl">Customize Easily</h3>
+              <img src="/images/how-it-works/configure.webp" alt="sitecraft configure"/>
+              <h3 className="font-semibold text-xl mt-4">Customize Easily</h3>
               <p className="text-muted-foreground mt-2">Edit content, update colors, manage metadata — all visually in real-time.</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-6 text-center">
-              <Rocket size={40} className="mx-auto text-purple-600 mb-4" />
-              <h3 className="font-semibold text-xl">Publish Instantly</h3>
+              <img src="/images/how-it-works/publish.webp" alt="sitecraft publish"/>
+              <h3 className="font-semibold text-xl mt-4">Publish Instantly</h3>
               <p className="text-muted-foreground mt-2">Deploy your site on a custom or free subdomain with one click.</p>
             </CardContent>
           </Card>

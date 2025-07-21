@@ -3,8 +3,10 @@ import { templates } from "@/lib/templates";
 import { FolderDown } from "lucide-react";
 import { useRef } from "react";
 import TemplateCard from "./templateCard";
+import useModal from "@/hooks/use-modal";
 
 export default function Page() {
+    const {setModal} = useModal()
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,8 +23,7 @@ export default function Page() {
                 return;
             }
 
-            // setData(json);
-            // setStep(2);
+            setModal({id:'addWebsite',data:{website:json}})
         } catch (error) {
             alert("Error reading file");
             console.error(error);
