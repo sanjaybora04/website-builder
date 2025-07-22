@@ -13,7 +13,7 @@ export type Blog = {
 
 export async function getBlogs(limit = 12, offset = 0): Promise<{ blogs: Blog[]; total: number }> {
   const res = await fetch(
-    `https://cms.sanjaybora.in/items/blog?sort=-date_created&limit=${limit}&offset=${offset}&meta=total_count&access_token=${process.env.DIRECTUS_ACCESS_TOKEN}`,
+    `https://cms.sanjaybora.in/items/blog?filter[status][_eq]=published&sort=-date_created&limit=${limit}&offset=${offset}&meta=total_count&access_token=${process.env.DIRECTUS_ACCESS_TOKEN}`,
     {
       next: { tags: ["blog"] },
     }
