@@ -97,7 +97,7 @@ export function MediaInput({
             </div>
           </div>
         ) : (
-          <FileSelector onSelect={(url: string) => onChange({ type: 'image', url })} />
+          <FileSelector onSelect={(url: string) => onChange({ type: 'image', url, objectFit:'contain' })} />
         )
       ) : (
         <div className="flex flex-col gap-2">

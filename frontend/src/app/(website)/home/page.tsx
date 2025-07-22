@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import useAuth from "@/hooks/use-auth"
 import Routes from "@/lib/routes"
-import { CheckCircle, MousePointerClick, UploadCloud, Rocket } from "lucide-react"
+import { CheckCircle } from "lucide-react"
 import Link from "next/link"
 
 export default function LandingPage() {
@@ -74,13 +73,14 @@ export default function LandingPage() {
         <h2 className="text-3xl font-semibold text-center mb-12">Perfect For</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto text-center">
           {[
-            { title: "Freelancers", desc: "Quickly launch client websites and landing pages." },
-            { title: "Small Businesses", desc: "Promote services and collect leads without hiring a dev." },
-            { title: "Agencies", desc: "Streamline your design-to-deploy workflow with reusable sections." },
+            { title: "Freelancers", icon:'/images/use-cases/freelancer.svg', desc: "Quickly launch client websites and landing pages." },
+            { title: "Small Businesses", icon:'/images/use-cases/small-business.svg', desc: "Promote services and collect leads without hiring a dev." },
+            { title: "Agencies", icon:'/images/use-cases/agency.svg', desc: "Streamline your design-to-deploy workflow with reusable sections." },
           ].map((item, i) => (
             <Card key={i}>
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <img src={item.icon} alt={item.title} className="w-28 h-28 object-cover mx-auto"/>
+                <h3 className="text-xl font-semibold my-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.desc}</p>
               </CardContent>
             </Card>
