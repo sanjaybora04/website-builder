@@ -31,7 +31,7 @@ export default function Page() {
     };
     return (
         <div className="p-4">
-            <div className="text-xl my-5">Select a Template</div>
+            <div className="text-2xl my-5">Select a Template</div>
             <div className="flex justify-center sm:justify-start flex-wrap gap-4">
                 <div
                     className="w-64 p-4 border rounded cursor-pointer hover:bg-muted text-center aspect-square flex flex-col items-center justify-center gap-2"

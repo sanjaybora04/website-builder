@@ -23,6 +23,8 @@ export const metadata: Metadata = {
   },
   twitter:{
     card:'summary_large_image',
+    site:'@sitecraft04',
+    creator:'@sanjaybora04',
     images: process.env.NEXT_PUBLIC_BASE_URL+'/images/thumbnail.jpg'
   },
   icons: process.env.NEXT_PUBLIC_BASE_URL + '/images/logo.png',
