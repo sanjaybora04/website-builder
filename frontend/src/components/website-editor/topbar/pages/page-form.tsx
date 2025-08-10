@@ -119,8 +119,8 @@ export default function PageForm({ data, onSubmit }: { data?: Page, onSubmit: (v
                             <FormControl>
                                 {/* <Input placeholder="Social share image" {...field} /> */}
                                 {field.value ?
-                                    <div className="relative">
-                                        <img src={field.value} className="max-w-80 max-h-80 mx-auto" />
+                                    <div className="relative max-w-80 max-h-80 mx-auto">
+                                        <img src={field.value} className="w-full h-full object-contain" />
                                         <Button variant='destructive' size='icon' className="absolute top-2 right-2"
                                             onClick={() => {
                                                 field.onChange('')
