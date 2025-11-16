@@ -18,14 +18,14 @@ pipeline:
           --build-arg NEXT_PUBLIC_S3_URL=https://s3.sanjaybora.in \
           --build-arg NEXT_PUBLIC_SERVER_IP=82.29.161.181 \
           --build-arg NEXT_PUBLIC_DEBOUNCE_DELAY=50 \
-          -t website-builder-frontend:latest ./frontend
+          -t website-builder-frontend:latest -f ./docker/client.dockerfile .
   
   build-backend:
     image: docker
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     commands:
-      - docker build -t website-builder-backend:latest ./backend
+      - docker build -t website-builder-backend:latest -f ./docker/api.dockerfile .
 
   redeploy:
     image: docker

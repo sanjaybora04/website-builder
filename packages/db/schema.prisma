@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+model User {
+  id            String    @id @default(uuid()) @db.Uuid
+  email         String
+  name          String
+  googleOauthId String
+  usedStorage   Int       @default(0) // in bytes
+  storageLimit  Int       @default(104857600) // e.g., 100 mb
+  maxWebsites  Int       @default(10) // Max number of websites a user can have
+  maxFormSubmissions Int   @default(100)  // Max form submissions per month
+  websites      Website[]
+  assets        Asset[]
+  folders       Folder[]
+  formSubmissions FormSubmission[]
+  plan          Plan      @default(FREE)
+  planExpiresAt DateTime? // Nullable for free users
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Website {
+  id                String   @id @default(uuid()) @db.Uuid
+  name              String
+  domain            String   @unique
+  googleTag         String?
+  favicon           String?
+  customCodeForHead String?
+  adminId           String  @db.Uuid
+  admin             User    @relation(fields: [adminId], references: [id])
+  draftPages        Json[]
+  pages             Json[]
+  formSubmissions   FormSubmission[]
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Folder {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  parentId  String?  @db.Uuid
+  parent    Folder?  @relation("FolderParent", fields: [parentId], references: [id])
+  children  Folder[] @relation("FolderParent")
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id])
+  assets    Asset[]
+  createdAt DateTime @default(now())
+
+  @@unique([userId, parentId, name]) // Prevent duplicate folders in the same path
+}
+
+model Asset {
+  key         String   @id
+  userId      String   @db.Uuid
+  user        User     @relation(fields: [userId], references: [id])
+  parentId    String?  @db.Uuid
+  folder      Folder?  @relation(fields: [parentId], references: [id])
+  filename    String
+  size        Int
+  contentType String
+  createdAt   DateTime @default(now())
+}
+
+model FormSubmission {
+  id         String   @id @default(uuid()) @db.Uuid
+  websiteId  String   @db.Uuid
+  website    Website  @relation(fields: [websiteId], references: [id])
+  userId     String   @db.Uuid
+  user       User     @relation(fields: [userId], references: [id])
+  page   String 
+  data       Json
+  createdAt  DateTime @default(now())
+
+  @@index([websiteId,userId])
+}
