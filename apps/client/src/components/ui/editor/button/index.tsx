@@ -141,7 +141,7 @@ export function ButtonEditor({
 
 export function ButtonComponent({ config, className, variables }: { config?: ButtonConfig; className?: string; variables?: { label?: string, value?: string }[] }) {
   const labelHTML = { __html: config?.label || "" };
-  const { websiteEditor, setWebsiteEditor } = useWebsiteEditor()
+  const editor = useWebsiteEditor()
 
   const variant = config?.variant || "default";
   const size = config?.size || "default";
@@ -211,15 +211,9 @@ export function ButtonComponent({ config, className, variables }: { config?: But
           target={isInternalLink ? "_self" : "_blank"}
           onClick={(e) => {
             const path = href.split(/[?#]/)[0]
-            if (websiteEditor && isInternalLink) {
+            if (editor.website && isInternalLink) {
               e.preventDefault();
-              if (websiteEditor.website.pages.some(p => p.path == path)) {
-                setWebsiteEditor((prev: any) => ({
-                  ...prev,
-                  activePage: path,
-                  activeComponent: undefined,
-                }));
-              }
+              editor.setActivePage(path)
             }
           }}
           style={{

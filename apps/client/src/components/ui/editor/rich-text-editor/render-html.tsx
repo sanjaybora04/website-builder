@@ -5,17 +5,13 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function RenderHtml({ html }: { html?: string }) {
-  const {websiteEditor, setWebsiteEditor} = useWebsiteEditor()
+  const editor = useWebsiteEditor()
 
   const handleClick = (e: React.MouseEvent, href: string) => {
     const isInternal = href?.startsWith("/") || (!href?.startsWith("http://") && !href?.startsWith("https://"))
-    if (websiteEditor && isInternal) {
+    if (editor.website && isInternal) {
       e.preventDefault()
-      setWebsiteEditor((prev:any) => ({
-        ...prev,
-        activePage: href,
-        activeComponent: undefined
-      }))
+      editor.setActivePage(href)
     }
   }
 
@@ -36,7 +32,7 @@ export default function RenderHtml({ html }: { html?: string }) {
         }
       }
     })
-  }, [html, websiteEditor])
+  }, [html, editor])
 
   return <>{replacedHtml}</>
 }
