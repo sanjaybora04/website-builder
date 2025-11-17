@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import prisma from '../../prisma';
+import prisma from '../lib/prisma';
 import axios from 'axios';
 import jwt from 'jsonwebtoken'
 import * as Minio from 'minio'

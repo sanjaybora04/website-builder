@@ -15,6 +15,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.787.0",
     "@prisma/client": "^5.22.0",
+    "@sitecraft/db": "workspace:*",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

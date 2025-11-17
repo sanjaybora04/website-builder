@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import prisma from '../../prisma';
+import prisma from '../lib/prisma';
 import { addMonths } from 'date-fns';
 dotenv.config();
 

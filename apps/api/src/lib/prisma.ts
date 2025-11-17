@@ -1,8 +1,8 @@
 // src/prisma.ts
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@sitecraft/db';
 
 // Create a PrismaClient instance
-const prisma = new PrismaClient();
+let prisma = new PrismaClient();
 
 // Gracefully disconnect the client when the process exits
 process.on('beforeExit', async () => {
