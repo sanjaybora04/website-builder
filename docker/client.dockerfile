@@ -10,17 +10,7 @@ RUN pnpm install --filter @sitecraft/db --filter @sitecraft/api-client --frozen-
 RUN pnpm --filter @sitecraft/db generate
 RUN pnpm --filter @sitecraft/api-client build
 
-
 FROM base AS builder
-# Copy root package files and backend workspace package
-COPY apps/client/package.json apps/client/
-
-# Install all dependencies (root + workspace)
-RUN pnpm install --filter @sitecraft/client --frozen-lockfile
-
-# Copy api
-COPY apps/client/  apps/client/
-COPY --from=package-builder /app/packages packages/
 
 ARG NEXT_PUBLIC_GOOGLE_TAG
 ARG NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID
@@ -42,7 +32,17 @@ ENV NEXT_PUBLIC_DEBOUNCE_DELAY=$NEXT_PUBLIC_DEBOUNCE_DELAY
 
 ENV COREPACK_DEFAULT_TO_LATEST=0
 
-# Build api
+# Copy root package files and backend workspace package
+COPY apps/client/package.json apps/client/
+
+# Install all dependencies (root + workspace)
+RUN pnpm install --filter @sitecraft/client --frozen-lockfile
+
+# Copy api
+COPY apps/client/  apps/client/
+COPY --from=package-builder /app/packages packages/
+
+# # Build api
 RUN pnpm --filter @sitecraft/client build
 
 # Production image, copy all the files and run next
@@ -66,4 +66,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD HOSTNAME="0.0.0.0" node server.js
+CMD HOSTNAME="0.0.0.0" node apps/client/server.js

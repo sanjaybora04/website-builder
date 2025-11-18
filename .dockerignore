@@ -1,0 +1,4 @@
+node_modules
+apps/client/node_modules
+apps/client/.next
+apps/api/node_modules
